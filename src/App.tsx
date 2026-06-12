@@ -1,122 +1,93 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import './App.css'
+import { useState } from 'react';
+import Header from './components/Header';
+import Footer from './components/Footer';
+import LoginForm from './components/LoginForm';
+import SignupForm from './components/SignupForm';
+import './App.css';
+
+type AuthView = 'login' | 'signup' | 'success';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [view, setView] = useState<AuthView>('login');
+  const [userEmail, setUserEmail] = useState('');
+  const [userName, setUserName] = useState('');
+
+  const handleLoginSuccess = (email: string) => {
+    setUserEmail(email);
+    // Extrapolate name from email
+    const namePart = email.split('@')[0];
+    const formattedName = namePart.charAt(0).toUpperCase() + namePart.slice(1);
+    setUserName(formattedName);
+    setView('success');
+  };
+
+  const handleSignupSuccess = (name: string) => {
+    setUserName(name);
+    setView('success');
+  };
+
+  const handleLogout = () => {
+    setView('login');
+    setUserEmail('');
+    setUserName('');
+  };
 
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.tsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
+    <div className="flex flex-col min-h-screen w-full">
+      <Header onLogoClick={() => setView('login')} />
+      
+      <main className="flex-1 flex items-center justify-center px-4 w-full">
+        {view === 'login' && (
+          <LoginForm
+            onSwitchToSignup={() => setView('signup')}
+            onLoginSuccess={handleLoginSuccess}
+          />
+        )}
+        
+        {view === 'signup' && (
+          <SignupForm
+            onSwitchToLogin={() => setView('login')}
+            onSignupSuccess={handleSignupSuccess}
+          />
+        )}
 
-      <div className="ticks"></div>
+        {view === 'success' && (
+          <div className="w-full max-w-[520px] my-10 mx-auto animate-fade-in">
+            <div className="bg-white border border-slate-100 rounded-[20px] p-14 text-center backdrop-blur-md flex flex-col items-center max-sm:p-6 max-sm:rounded-2xl shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05),0_10px_15px_-3px_rgba(0,0,0,0.05),0_20px_25px_-5px_rgba(0,0,0,0.02)]">
+              <div className="text-brand-green-dark bg-brand-green-light p-4 rounded-full flex items-center justify-center mb-8 shadow-[0_4px_12px_rgba(137,207,174,0.2)]">
+                <svg
+                  width="48"
+                  height="48"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                  <polyline points="22 4 12 14.01 9 11.01" />
+                </svg>
+              </div>
+              
+              <h1 className="font-brand text-[2rem] font-medium text-slate-800 mb-4 max-sm:text-2xl">Bienvenue, {userName} !</h1>
+              <p className="font-sans text-[0.95rem] text-slate-500 leading-relaxed mb-6">
+                Votre voyage académique sur MemoFlow commence ici. Votre espace est prêt et structuré pour libérer tout votre potentiel.
+              </p>
+              
+              {userEmail && <p className="font-mono text-[0.8rem] text-brand-green-dark bg-brand-green-light px-3 py-1.5 rounded-lg mb-8">Identifiant : {userEmail}</p>}
+              
+              <button onClick={handleLogout} className="bg-transparent border border-brand-green-dark text-brand-green-dark px-8 py-3 rounded-xl font-sans text-[0.9rem] font-medium cursor-pointer hover:bg-brand-green-light transition-all">
+                Se déconnecter
+              </button>
+            </div>
+          </div>
+        )}
+      </main>
 
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+      <Footer />
+    </div>
+  );
 }
 
-export default App
+export default App;
