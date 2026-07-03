@@ -8,11 +8,31 @@
   --color-brand-green-light: #eefaf4;
   --color-brand-green-muted: rgba(137, 207, 174, 0.15);
 
+  /* Style Guide Colors */
+  --color-menthe-claire: #C4F4C7;
+  --color-jade: #94D2B8;
+  --color-celadon: #6DAEA7;
+  --color-teal-brand: #518B91;
+  --color-ardoise: #3E6976;
+  --color-profond: #2F4858;
+  
+  /* Semantic Colors */
+  --color-status-success-bg: #EAF3DE;
+  --color-status-success-text: #639922;
+  --color-status-warning-bg: #FAEEDA;
+  --color-status-warning-text: #BA7517;
+  --color-status-error-bg: #FCEBEB;
+  --color-status-error-text: #E24B4A;
+  --color-status-neutre-bg: #F8FAFA;
+  --color-status-neutre-text: #6B8090;
+
   --font-brand: 'Outfit', 'Inter', system-ui, sans-serif;
   --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
   --font-mono: 'JetBrains Mono', ui-monospace, monospace;
   
   --animate-fade-in: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  --animate-pulse-slow: pulseSlow 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  --animate-glow: glow 2s ease-in-out infinite;
 }
 
 @keyframes fadeIn {
@@ -23,6 +43,26 @@
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+@keyframes pulseSlow {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.85;
+    transform: scale(1.03);
+  }
+}
+
+@keyframes glow {
+  0%, 100% {
+    box-shadow: 0 0 8px rgba(196, 244, 199, 0.15), 0 0 15px rgba(81, 139, 145, 0.1);
+  }
+  50% {
+    box-shadow: 0 0 15px rgba(196, 244, 199, 0.35), 0 0 25px rgba(81, 139, 145, 0.25);
   }
 }
 
@@ -38,4 +78,23 @@
   input:focus {
     outline: none;
   }
+}
+
+/* Custom premium scrollbar for dark dashboard */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: rgba(22, 37, 47, 0.5);
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(81, 139, 145, 0.4);
+  border-radius: 9999px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(81, 139, 145, 0.6);
 }
