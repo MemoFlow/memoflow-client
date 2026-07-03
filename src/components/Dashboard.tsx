@@ -1,4 +1,6 @@
 import { useState, useEffect } from 'react';
+import TemplatesPage from './TemplatesPage';
+import WritingSpace from './WritingSpace';
 
 interface DashboardProps {
   userName?: string;
@@ -15,8 +17,9 @@ interface Toast {
 
 export default function Dashboard({ userName = 'Mélanie', userEmail, onLogout }: DashboardProps) {
   // Navigation states
-  const [activeMenu, setActiveMenu] = useState('Ma Progression');
+  const [activeMenu, setActiveMenu] = useState('Modèles');
   const [showProfileDropdown, setShowProfileDropdown] = useState(false);
+  const [isFocusMode, setIsFocusMode] = useState(false);
 
   // Gamification & Progression interactive states
   const [challenge1Checked, setChallenge1Checked] = useState(false);
@@ -91,6 +94,18 @@ export default function Dashboard({ userName = 'Mélanie', userEmail, onLogout }
     );
   };
 
+  const handleUseTemplate = (templateName: string) => {
+    addToast('success', 'Modèle activé', `Le modèle "${templateName}" a été chargé dans votre espace d'écriture.`);
+  };
+
+  const handleConsultGuide = () => {
+    addToast('assistant', 'Guide d\'utilisation', 'Ouverture du guide méthodologique...');
+  };
+
+  const handleContactExpert = () => {
+    addToast('assistant', 'Expertise académique', 'Connexion avec un expert en méthodologie de recherche...');
+  };
+
   // Mock bar chart data
   const writingData = [
     { day: 'Lun', words: 350 },
@@ -106,7 +121,7 @@ export default function Dashboard({ userName = 'Mélanie', userEmail, onLogout }
     <div className="flex h-screen w-screen overflow-hidden bg-[#F8FAFB] text-[#2F4858] font-sans select-none antialiased">
       
       {/* SIDEBAR */}
-      <aside className="w-[260px] flex-shrink-0 bg-white border-r border-[#E5E9EB] flex flex-col justify-between p-6 max-lg:hidden shadow-[0_0_15px_rgba(0,0,0,0.02)]">
+      <aside className={`w-[260px] flex-shrink-0 bg-white border-r border-[#E5E9EB] flex flex-col justify-between p-6 max-lg:hidden shadow-[0_0_15px_rgba(0,0,0,0.02)] transition-all duration-300 ${isFocusMode ? 'w-0 opacity-0 !p-0 border-none overflow-hidden pointer-events-none' : ''}`}>
         <div className="flex flex-col gap-8">
           {/* Logo Section */}
           <div className="flex flex-col gap-1">
@@ -119,49 +134,48 @@ export default function Dashboard({ userName = 'Mélanie', userEmail, onLogout }
                   <path d="M2 12l10 5 10-5" />
                 </svg>
               </div>
-              <span className="font-brand text-[1.4rem] font-bold text-[#2F4858] tracking-tight leading-none flex items-center gap-1.5">
-                MemoFlow
-              </span>
-            </div>
-            <span className="text-[0.68rem] uppercase tracking-wider text-slate-400 font-bold font-brand pl-0.5">
-              Espace Académique
+            <span className="font-brand text-[1.4rem] font-bold text-[#2F4858] tracking-tight leading-none flex items-center gap-1.5">
+              MemoFlow
             </span>
           </div>
+          <span className="text-[0.68rem] uppercase tracking-wider text-slate-400 font-bold font-brand pl-0.5">
+            Espace Académique
+          </span>
+        </div>
 
-          {/* Navigation Links */}
-          <nav className="flex flex-col gap-1.5">
-            {[
-              { name: 'Ma Progression', icon: (
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <line x1="18" y1="20" x2="18" y2="10" />
-                  <line x1="12" y1="20" x2="12" y2="4" />
-                  <line x1="6" y1="20" x2="6" y2="14" />
-                </svg>
-              )},
-              { name: 'Modèles', icon: (
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <rect x="3" y="3" width="7" height="9" rx="1" />
-                  <rect x="14" y="3" width="7" height="5" rx="1" />
-                  <rect x="14" y="12" width="7" height="9" rx="1" />
-                  <rect x="3" y="16" width="7" height="5" rx="1" />
-                </svg>
-              )},
-              { name: "Espace d'Écriture", icon: (
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M12 20h9" />
-                  <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z" />
-                </svg>
-              )},
-              { name: 'Centre de Contexte', icon: (
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M18 3a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3 3 3 0 0 0 3-3V6a3 3 0 0 0-3-3z" />
-                  <path d="M6 3a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3 3 3 0 0 0 3-3V6a3 3 0 0 0-3-3z" />
-                  <line x1="9" y1="6" x2="15" y2="6" />
-                  <line x1="9" y1="12" x2="15" y2="12" />
-                  <line x1="9" y1="18" x2="15" y2="18" />
-                </svg>
-              )},
-            ].map((item) => {
+        {/* Navigation Links */}
+        <nav className="flex flex-col gap-1.5">
+          {[
+            { name: 'Ma Progression', icon: (
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <line x1="18" y1="20" x2="18" y2="10" />
+                <line x1="12" y1="20" x2="12" y2="4" />
+                <line x1="6" y1="20" x2="6" y2="14" />
+              </svg>
+            )},
+            { name: 'Modèles', icon: (
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M2 17 12 22 22 17" />
+                <path d="M2 12 12 17 22 12" />
+                <path d="M12 2 2 7 12 12 22 7Z" />
+              </svg>
+            )},
+            { name: "Espace d'Écriture", icon: (
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M12 20h9" />
+                <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z" />
+              </svg>
+            )},
+            { name: 'Centre de Contexte', icon: (
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M18 3a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3 3 3 0 0 0 3-3V6a3 3 0 0 0-3-3z" />
+                <path d="M6 3a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3 3 3 0 0 0 3-3V6a3 3 0 0 0-3-3z" />
+                <line x1="9" y1="6" x2="15" y2="6" />
+                <line x1="9" y1="12" x2="15" y2="12" />
+                <line x1="9" y1="18" x2="15" y2="18" />
+              </svg>
+            )},
+          ].map((item) => {
               const isActive = activeMenu === item.name;
               return (
                 <button
@@ -232,7 +246,8 @@ export default function Dashboard({ userName = 'Mélanie', userEmail, onLogout }
       <div className="flex-1 flex flex-col min-w-0 overflow-y-auto custom-scrollbar">
         
         {/* HEADER */}
-        <header className="h-[76px] px-8 flex-shrink-0 border-b border-[#E5E9EB] bg-white flex justify-between items-center z-20 max-sm:px-4 shadow-[0_1px_4px_rgba(0,0,0,0.01)]">
+        {activeMenu !== "Espace d'Écriture" && (
+          <header className="h-[76px] px-8 flex-shrink-0 border-b border-[#E5E9EB] bg-white flex justify-between items-center z-20 max-sm:px-4 shadow-[0_1px_4px_rgba(0,0,0,0.01)]">
           {/* Search bar */}
           <div className="relative w-[340px] max-md:w-[200px] max-sm:hidden">
             <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400">
@@ -243,7 +258,7 @@ export default function Dashboard({ userName = 'Mélanie', userEmail, onLogout }
             </span>
             <input
               type="text"
-              placeholder="Rechercher..."
+              placeholder="Rechercher un modèle..."
               className="w-full pl-10 pr-4 py-2 text-[0.88rem] bg-[#F1F5F7] border border-[#E5E9EB] rounded-xl text-slate-800 placeholder-slate-400 focus:outline-none focus:bg-white focus:border-[#518B91] focus:ring-1 focus:ring-[#518B91]/35 transition-all duration-200"
             />
           </div>
@@ -338,13 +353,48 @@ export default function Dashboard({ userName = 'Mélanie', userEmail, onLogout }
             </div>
           </div>
         </header>
+        )}
 
         {/* CONTENT SPACE */}
-        <main className="flex-1 p-8 overflow-y-auto custom-scrollbar max-sm:p-4 max-sm:pb-24">
-          <div className="max-w-[1200px] mx-auto grid grid-cols-12 gap-6">
-            
-            {/* LEFT SECTION (Progression + Timeline + Bar Charts) */}
-            <div className="col-span-8 flex flex-col gap-6 max-lg:col-span-12">
+        <main className={`flex-1 overflow-y-auto custom-scrollbar transition-all duration-300 ${
+          activeMenu === "Espace d'Écriture" ? 'p-0 overflow-hidden bg-white' : 'p-8 max-sm:p-4 max-sm:pb-24'
+        }`}>
+          {activeMenu === 'Modèles' && (
+            <TemplatesPage
+              onUseTemplate={handleUseTemplate}
+              onConsultGuide={handleConsultGuide}
+              onContactExpert={handleContactExpert}
+            />
+          )}
+
+          {activeMenu === "Espace d'Écriture" && (
+            <WritingSpace
+              isFocusMode={isFocusMode}
+              onToggleFocusMode={setIsFocusMode}
+              userName={userName}
+              userEmail={userEmail}
+            />
+          )}
+
+          {activeMenu === 'Centre de Contexte' && (
+            <div className="flex flex-col items-center justify-center py-20 text-center animate-fade-in bg-white border border-[#E5E9EB] rounded-2xl p-8 shadow-[0_4px_20px_rgba(47,72,88,0.02)] m-8">
+              <div className="bg-[#EAF3DE] p-4 rounded-full mb-4 border border-[#94D2B8]/30 flex items-center justify-center">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#3E6976" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="12" cy="12" r="10" />
+                  <line x1="12" y1="16" x2="12" y2="12" />
+                  <line x1="12" y1="8" x2="12.01" y2="8" />
+                </svg>
+              </div>
+              <h3 className="text-lg font-bold text-[#2F4858] font-brand mb-1">Espace en cours de développement</h3>
+              <p className="text-sm text-slate-500 max-w-[400px] leading-relaxed font-medium">Cette section sera disponible très prochainement pour compléter votre flux de travail académique.</p>
+            </div>
+          )}
+
+          {activeMenu === 'Ma Progression' && (
+            <div className="max-w-[1200px] mx-auto grid grid-cols-12 gap-6">
+              
+              {/* LEFT SECTION (Progression + Timeline + Bar Charts) */}
+              <div className="col-span-8 flex flex-col gap-6 max-lg:col-span-12">
               
               {/* CURRENT LEVEL CARD */}
               <div className="bg-white border border-[#E5E9EB] rounded-xl p-6 relative overflow-hidden shadow-[0_4px_20px_rgba(47,72,88,0.04)] hover:border-[#94D2B8]/40 transition-all duration-300">
@@ -788,6 +838,7 @@ export default function Dashboard({ userName = 'Mélanie', userEmail, onLogout }
             </div>
 
           </div>
+          )}
         </main>
       </div>
 
