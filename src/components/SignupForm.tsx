@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import InputField from './InputField';
+import { apiFetch, setToken } from '../services/api';
+import type { UserResponseDto } from '../services/api';
 
 interface SignupFormProps {
   onSwitchToLogin: () => void;
-  onSignupSuccess: (name: string) => void;
+  onSignupSuccess: (email: string, name: string) => void;
 }
 
 export default function SignupForm({ onSwitchToLogin, onSignupSuccess }: SignupFormProps) {
@@ -14,9 +16,10 @@ export default function SignupForm({ onSwitchToLogin, onSignupSuccess }: SignupF
   const [agreeTerms, setAgreeTerms] = useState(false);
 
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [generalError, setGeneralError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const newErrors: Record<string, string> = {};
 
@@ -31,8 +34,8 @@ export default function SignupForm({ onSwitchToLogin, onSignupSuccess }: SignupF
 
     if (!password) {
       newErrors.password = 'Le mot de passe est requis';
-    } else if (password.length < 6) {
-      newErrors.password = 'Le mot de passe doit contenir au moins 6 caractères';
+    } else if (password.length < 8) {
+      newErrors.password = 'Le mot de passe doit contenir au moins 8 caractères';
     }
 
     if (!agreeTerms) {
@@ -46,11 +49,35 @@ export default function SignupForm({ onSwitchToLogin, onSignupSuccess }: SignupF
 
     setErrors({});
     setIsLoading(true);
-    // Simulate API call
-    setTimeout(() => {
+    setGeneralError('');
+
+    try {
+      const displayName = `${firstName.trim()} ${lastName.trim()}`;
+
+      // 1. Submit registration request
+      await apiFetch<UserResponseDto>('/auth/register', {
+        method: 'POST',
+        body: JSON.stringify({
+          email,
+          password,
+          display_name: displayName,
+        }),
+      });
+
+      // 2. Perform login automatically to obtain JWT token
+      const loginRes = await apiFetch<{ accessToken: string }>('/auth/login', {
+        method: 'POST',
+        body: JSON.stringify({ email, password }),
+      });
+      setToken(loginRes.accessToken);
+
       setIsLoading(false);
-      onSignupSuccess(firstName);
-    }, 1200);
+      onSignupSuccess(email, displayName);
+    } catch (err: unknown) {
+      setIsLoading(false);
+      const errMsg = err instanceof Error ? err.message : 'L\'inscription a échoué. Veuillez réessayer.';
+      setGeneralError(errMsg);
+    }
   };
 
   const clearError = (field: string) => {
@@ -62,6 +89,7 @@ export default function SignupForm({ onSwitchToLogin, onSignupSuccess }: SignupF
       });
     }
   };
+
 
   return (
     <div className="bg-white border border-slate-100 rounded-[20px] p-12 w-full max-w-[520px] shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05),0_10px_15px_-3px_rgba(0,0,0,0.05),0_20px_25px_-5px_rgba(0,0,0,0.02)] text-center my-10 mx-auto backdrop-blur-md max-sm:p-6 max-sm:my-6 max-sm:rounded-2xl animate-fade-in">
@@ -86,6 +114,12 @@ export default function SignupForm({ onSwitchToLogin, onSignupSuccess }: SignupF
 
       <h1 className="font-brand text-[1.5rem] font-medium text-slate-800 mb-2 tracking-tight max-sm:text-xl">Commencer l'aventure MemoFlow</h1>
       <p className="font-sans text-[0.85rem] text-slate-500 mb-9">Structurez votre pensée, libérez votre potentiel</p>
+
+      {generalError && (
+        <div className="mb-6 p-3.5 bg-[#FCEBEB] border border-[#E24B4A]/25 text-[#E24B4A] rounded-xl text-[0.8rem] font-sans text-left font-medium animate-fade-in">
+          {generalError}
+        </div>
+      )}
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-2" noValidate>
         {/* Name Row */}

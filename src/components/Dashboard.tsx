@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import TemplatesPage from './TemplatesPage';
 import WritingSpace from './WritingSpace';
 import ContextCenter from './ContextCenter';
+import ConnectorsManager from './ConnectorsManager';
 
 interface DashboardProps {
   userName?: string;
@@ -21,6 +22,7 @@ export default function Dashboard({ userName = 'Mélanie', userEmail, onLogout }
   const [activeMenu, setActiveMenu] = useState('Modèles');
   const [showProfileDropdown, setShowProfileDropdown] = useState(false);
   const [isFocusMode, setIsFocusMode] = useState(false);
+  const [contextTab, setContextTab] = useState<'cadrage' | 'connectors'>('cadrage');
 
   // Gamification & Progression interactive states
   const [challenge1Checked, setChallenge1Checked] = useState(false);
@@ -375,12 +377,48 @@ export default function Dashboard({ userName = 'Mélanie', userEmail, onLogout }
               isFocusMode={isFocusMode}
               onToggleFocusMode={setIsFocusMode}
               userName={userName}
-              userEmail={userEmail}
+              addToast={addToast}
             />
           )}
 
           {activeMenu === 'Centre de Contexte' && (
-            <ContextCenter onAddToast={addToast} />
+            <div className="flex flex-col gap-6">
+              {/* Context sub-navigation tabs */}
+              <div className="flex border-b border-[#E5E9EB] pb-3 gap-6">
+                <button
+                  onClick={() => setContextTab('cadrage')}
+                  className={`font-brand text-sm font-bold pb-2 transition-all border-none bg-transparent cursor-pointer relative ${
+                    contextTab === 'cadrage'
+                      ? 'text-[#2F4858]'
+                      : 'text-slate-400 hover:text-[#2F4858]'
+                  }`}
+                >
+                  Cadrage de Projet
+                  {contextTab === 'cadrage' && (
+                    <span className="absolute bottom-0 left-0 right-0 h-[2px] bg-[#518B91] rounded-full"></span>
+                  )}
+                </button>
+                <button
+                  onClick={() => setContextTab('connectors')}
+                  className={`font-brand text-sm font-bold pb-2 transition-all border-none bg-transparent cursor-pointer relative ${
+                    contextTab === 'connectors'
+                      ? 'text-[#2F4858]'
+                      : 'text-slate-400 hover:text-[#2F4858]'
+                  }`}
+                >
+                  Intégrations & Connecteurs
+                  {contextTab === 'connectors' && (
+                    <span className="absolute bottom-0 left-0 right-0 h-[2px] bg-[#518B91] rounded-full"></span>
+                  )}
+                </button>
+              </div>
+
+              {contextTab === 'cadrage' ? (
+                <ContextCenter onAddToast={addToast} />
+              ) : (
+                <ConnectorsManager addToast={addToast} />
+              )}
+            </div>
           )}
 
           {activeMenu === 'Ma Progression' && (
