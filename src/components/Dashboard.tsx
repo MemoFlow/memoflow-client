@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import TemplatesPage from './TemplatesPage';
 import WritingSpace from './WritingSpace';
+import ConnectorsManager from './ConnectorsManager';
 
 interface DashboardProps {
   userName?: string;
@@ -372,22 +373,12 @@ export default function Dashboard({ userName = 'Mélanie', userEmail, onLogout }
               isFocusMode={isFocusMode}
               onToggleFocusMode={setIsFocusMode}
               userName={userName}
-              userEmail={userEmail}
+              addToast={addToast}
             />
           )}
 
           {activeMenu === 'Centre de Contexte' && (
-            <div className="flex flex-col items-center justify-center py-20 text-center animate-fade-in bg-white border border-[#E5E9EB] rounded-2xl p-8 shadow-[0_4px_20px_rgba(47,72,88,0.02)] m-8">
-              <div className="bg-[#EAF3DE] p-4 rounded-full mb-4 border border-[#94D2B8]/30 flex items-center justify-center">
-                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#3E6976" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <circle cx="12" cy="12" r="10" />
-                  <line x1="12" y1="16" x2="12" y2="12" />
-                  <line x1="12" y1="8" x2="12.01" y2="8" />
-                </svg>
-              </div>
-              <h3 className="text-lg font-bold text-[#2F4858] font-brand mb-1">Espace en cours de développement</h3>
-              <p className="text-sm text-slate-500 max-w-[400px] leading-relaxed font-medium">Cette section sera disponible très prochainement pour compléter votre flux de travail académique.</p>
-            </div>
+            <ConnectorsManager addToast={addToast} />
           )}
 
           {activeMenu === 'Ma Progression' && (

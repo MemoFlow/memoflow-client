@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import InputField from './InputField';
+import { apiFetch, setToken } from '../services/api';
+import type { UserResponseDto } from '../services/api';
 
 interface LoginFormProps {
   onSwitchToSignup: () => void;
-  onLoginSuccess: (email: string) => void;
+  onLoginSuccess: (email: string, displayName: string) => void;
 }
 
 export default function LoginForm({ onSwitchToSignup, onLoginSuccess }: LoginFormProps) {
@@ -11,9 +13,10 @@ export default function LoginForm({ onSwitchToSignup, onLoginSuccess }: LoginFor
   const [password, setPassword] = useState('');
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
+  const [generalError, setGeneralError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     let hasError = false;
 
@@ -42,12 +45,28 @@ export default function LoginForm({ onSwitchToSignup, onLoginSuccess }: LoginFor
     if (hasError) return;
 
     setIsLoading(true);
-    // Simulate API call
-    setTimeout(() => {
+    setGeneralError('');
+
+    try {
+      // 1. Authenticate to get a JWT token
+      const res = await apiFetch<{ accessToken: string }>('/auth/login', {
+        method: 'POST',
+        body: JSON.stringify({ email, password }),
+      });
+      setToken(res.accessToken);
+
+      // 2. Load the actual authenticated user details
+      const user = await apiFetch<UserResponseDto>('/users/me');
+      
       setIsLoading(false);
-      onLoginSuccess(email);
-    }, 1200);
+      onLoginSuccess(user.email, user.display_name);
+    } catch (err: unknown) {
+      setIsLoading(false);
+      const errMsg = err instanceof Error ? err.message : 'Identifiants invalides ou serveur indisponible.';
+      setGeneralError(errMsg);
+    }
   };
+
 
   const forgotPasswordLink = (
     <a
@@ -66,6 +85,12 @@ export default function LoginForm({ onSwitchToSignup, onLoginSuccess }: LoginFor
     <div className="bg-white border border-slate-100 rounded-[20px] p-12 w-full max-w-[520px] shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05),0_10px_15px_-3px_rgba(0,0,0,0.05),0_20px_25px_-5px_rgba(0,0,0,0.02)] text-center my-10 mx-auto backdrop-blur-md max-sm:p-6 max-sm:my-6 max-sm:rounded-2xl animate-fade-in">
       <h1 className="font-brand text-[2rem] font-medium text-slate-800 mb-2 tracking-tight max-sm:text-2xl">Bon retour parmi nous</h1>
       <p className="font-sans text-[0.9rem] text-slate-500 mb-10">Continuez votre voyage académique</p>
+
+      {generalError && (
+        <div className="mb-6 p-3.5 bg-[#FCEBEB] border border-[#E24B4A]/25 text-[#E24B4A] rounded-xl text-[0.8rem] font-sans text-left font-medium animate-fade-in">
+          {generalError}
+        </div>
+      )}
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-2" noValidate>
         <InputField
