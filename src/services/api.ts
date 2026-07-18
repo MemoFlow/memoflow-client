@@ -30,10 +30,128 @@ export class ApiError extends Error {
   }
 }
 
+// Mock states for admin@memoflow.fr offline mode
+let mockJobStatus: 'pending' | 'running' | 'completed' = 'pending';
+let mockJobTimeout1: number | null = null;
+let mockJobTimeout2: number | null = null;
+
 // Main fetch wrapper
 export async function apiFetch<T>(path: string, options: RequestInit = {}): Promise<T> {
-  const url = `${API_BASE}${path.startsWith('/') ? '' : '/'}${path}`;
   const token = getToken();
+
+  // Intercept authentication for admin@memoflow.fr
+  if (path === '/auth/login' && options.body) {
+    try {
+      const body = JSON.parse(options.body as string);
+      if (body.email === 'admin@memoflow.fr' && body.password === '12345678') {
+        console.log('[Mock API] Intercepted admin login');
+        return { accessToken: 'mock_admin_token' } as unknown as T;
+      }
+    } catch (e) {
+      // Ignored
+    }
+  }
+
+  // Intercept other endpoints when logged in as mock admin
+  if (token === 'mock_admin_token') {
+    console.log(`[Mock API] Intercepted ${options.method || 'GET'} ${path}`);
+    
+    if (path === '/users/me') {
+      return {
+        id: 'mock-admin-uuid',
+        email: 'admin@memoflow.fr',
+        display_name: 'Administrateur',
+        role: 'admin',
+        xp: 12500,
+        level: 25,
+        last_active_at: new Date().toISOString()
+      } as unknown as T;
+    }
+
+    if (path === '/connectors') {
+      // Returns a default active Notion connector and an initiated Trello connector for visual completeness
+      return [
+        { id: 'notion-id', provider: 'notion', status: 'active', connected_at: new Date().toISOString(), created_at: new Date().toISOString() },
+        { id: 'trello-id', provider: 'trello', status: 'initiated', connected_at: null, created_at: new Date().toISOString() }
+      ] as unknown as T;
+    }
+
+    if (path.startsWith('/connectors/') && path.endsWith('/connect') && options.method === 'POST') {
+      const provider = path.split('/')[2];
+      return {
+        redirect_url: 'https://composio.dev/mock-oauth-redirect',
+        connection_id: `${provider}-mock-id`,
+        status: 'initiated'
+      } as unknown as T;
+    }
+
+    if (path.startsWith('/connectors/') && options.method === 'DELETE') {
+      return {} as unknown as T;
+    }
+
+    if (path.startsWith('/connectors/')) {
+      const connectionId = path.split('/')[2];
+      const provider = connectionId.split('-')[0] || 'trello';
+      return {
+        id: connectionId,
+        provider: provider as 'trello' | 'notion' | 'github',
+        status: 'active',
+        connected_at: new Date().toISOString(),
+        created_at: new Date().toISOString()
+      } as unknown as T;
+    }
+
+    if (path === '/planning-jobs' && options.method === 'POST') {
+      mockJobStatus = 'pending';
+      if (mockJobTimeout1) window.clearTimeout(mockJobTimeout1);
+      if (mockJobTimeout2) window.clearTimeout(mockJobTimeout2);
+      
+      mockJobTimeout1 = window.setTimeout(() => {
+        mockJobStatus = 'running';
+        mockJobTimeout2 = window.setTimeout(() => {
+          mockJobStatus = 'completed';
+        }, 4000);
+      }, 3000);
+
+      return {
+        job_id: 'mock-job-id',
+        status: 'pending',
+        prompt: 'Mock prompt',
+        connectors: [],
+        result: null,
+        error_code: null,
+        error_message: null,
+        created_at: new Date().toISOString(),
+        started_at: null,
+        finished_at: null
+      } as unknown as T;
+    }
+
+    if (path.startsWith('/planning-jobs/')) {
+      const jobId = path.split('/')[2];
+      const isCompleted = mockJobStatus === 'completed';
+      return {
+        job_id: jobId,
+        status: mockJobStatus,
+        prompt: 'Mock prompt',
+        connectors: [],
+        result: isCompleted ? {
+          suggestions: [
+            "Reformulation : 'Le flux de travail académique moderne bénéficie grandement de la cartographie des connaissances en réseau.'",
+            "Référence trouvée : Kahneman, D. (2011) 'Thinking, Fast and Slow'.",
+            "Suggestion : Essayer d'utiliser le Mode Focus pour rédiger la section suivante."
+          ]
+        } : null,
+        error_code: null,
+        error_message: null,
+        created_at: new Date().toISOString(),
+        started_at: mockJobStatus !== 'pending' ? new Date().toISOString() : null,
+        finished_at: isCompleted ? new Date().toISOString() : null
+      } as unknown as T;
+    }
+  }
+
+  const url = `${API_BASE}${path.startsWith('/') ? '' : '/'}${path}`;
 
   const headers = new Headers(options.headers || {});
   if (token) {
