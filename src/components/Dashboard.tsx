@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import TemplatesPage from './TemplatesPage';
 import WritingSpace from './WritingSpace';
+import ContextCenter from './ContextCenter';
 
 interface DashboardProps {
   userName?: string;
@@ -118,10 +119,12 @@ export default function Dashboard({ userName = 'Mélanie', userEmail, onLogout }
   ];
 
   return (
-    <div className="flex h-screen w-screen overflow-hidden bg-[#F8FAFB] text-[#2F4858] font-sans select-none antialiased">
+    <div className="flex h-screen w-screen overflow-hidden font-sans select-none antialiased transition-all duration-300 bg-[#F8FAFB] text-[#2F4858]">
       
       {/* SIDEBAR */}
-      <aside className={`w-[260px] flex-shrink-0 bg-white border-r border-[#E5E9EB] flex flex-col justify-between p-6 max-lg:hidden shadow-[0_0_15px_rgba(0,0,0,0.02)] transition-all duration-300 ${isFocusMode ? 'w-0 opacity-0 !p-0 border-none overflow-hidden pointer-events-none' : ''}`}>
+      <aside className={`w-[260px] flex-shrink-0 flex flex-col justify-between p-6 max-lg:hidden shadow-[0_0_15px_rgba(0,0,0,0.02)] transition-all duration-300 bg-white border-r border-[#E5E9EB] ${
+        isFocusMode ? 'w-0 opacity-0 !p-0 border-none overflow-hidden pointer-events-none' : ''
+      }`}>
         <div className="flex flex-col gap-8">
           {/* Logo Section */}
           <div className="flex flex-col gap-1">
@@ -134,7 +137,7 @@ export default function Dashboard({ userName = 'Mélanie', userEmail, onLogout }
                   <path d="M2 12l10 5 10-5" />
                 </svg>
               </div>
-            <span className="font-brand text-[1.4rem] font-bold text-[#2F4858] tracking-tight leading-none flex items-center gap-1.5">
+            <span className="font-brand text-[1.4rem] font-bold tracking-tight leading-none flex items-center gap-1.5 transition-colors text-[#2F4858]">
               MemoFlow
             </span>
           </div>
@@ -192,7 +195,7 @@ export default function Dashboard({ userName = 'Mélanie', userEmail, onLogout }
                     <span>{item.name}</span>
                   </div>
                   {isActive && (
-                    <span className="w-1.5 h-1.5 bg-[#518B91] rounded-full shadow-[0_0_6px_rgba(81,139,145,0.4)]"></span>
+                    <span className="w-1.5 h-1.5 rounded-full shadow-[0_0_6px_rgba(81,139,145,0.4)] bg-[#518B91]"></span>
                   )}
                 </button>
               );
@@ -204,7 +207,7 @@ export default function Dashboard({ userName = 'Mélanie', userEmail, onLogout }
         <div className="flex flex-col gap-4">
           <button 
             onClick={() => addToast('assistant', 'Nouveau Workspace', 'Création d\'un espace de travail collaboratif...')}
-            className="w-full bg-[#2F4858] hover:bg-[#3E6976] text-white font-brand text-[0.88rem] font-bold py-2.5 rounded-xl flex items-center justify-center gap-2 transition-all cursor-pointer shadow-lg shadow-slate-200 border-none active:scale-[0.98]"
+            className="w-full font-brand text-[0.88rem] font-bold py-2.5 rounded-xl flex items-center justify-center gap-2 transition-all cursor-pointer border-none active:scale-[0.98] bg-[#2F4858] hover:bg-[#3E6976] text-white shadow-lg shadow-slate-200"
           >
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
               <line x1="12" y1="5" x2="12" y2="19" />
@@ -213,12 +216,12 @@ export default function Dashboard({ userName = 'Mélanie', userEmail, onLogout }
             <span>Nouveau Workspace</span>
           </button>
 
-          <div className="h-[1px] bg-slate-200/70 my-1"></div>
+          <div className="h-[1px] my-1 transition-colors bg-slate-200/70"></div>
 
           <div className="flex flex-col gap-1">
             <button 
               onClick={() => addToast('assistant', 'Paramètres', 'Ouverture de l\'onglet de configuration.')}
-              className="w-full flex items-center gap-3 px-3 py-2 text-slate-500 hover:text-[#2F4858] text-[0.85rem] font-semibold rounded-lg hover:bg-slate-100/50 cursor-pointer border-none bg-transparent text-left"
+              className="w-full flex items-center gap-3 px-3 py-2 text-[0.85rem] font-semibold rounded-lg cursor-pointer border-none bg-transparent text-left transition-all text-slate-500 hover:text-[#2F4858] hover:bg-slate-100/50"
             >
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <circle cx="12" cy="12" r="3" />
@@ -229,7 +232,7 @@ export default function Dashboard({ userName = 'Mélanie', userEmail, onLogout }
             
             <a 
               href="#help" 
-              className="w-full flex items-center gap-3 px-3 py-2 text-slate-500 hover:text-[#2F4858] text-[0.85rem] font-semibold rounded-lg hover:bg-slate-100/50 cursor-pointer text-decoration-none"
+              className="w-full flex items-center gap-3 px-3 py-2 text-[0.85rem] font-semibold rounded-lg text-decoration-none transition-all text-slate-500 hover:text-[#2F4858] hover:bg-slate-100/50"
             >
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <circle cx="12" cy="12" r="10" />
@@ -247,7 +250,7 @@ export default function Dashboard({ userName = 'Mélanie', userEmail, onLogout }
         
         {/* HEADER */}
         {activeMenu !== "Espace d'Écriture" && (
-          <header className="h-[76px] px-8 flex-shrink-0 border-b border-[#E5E9EB] bg-white flex justify-between items-center z-20 max-sm:px-4 shadow-[0_1px_4px_rgba(0,0,0,0.01)]">
+          <header className="h-[76px] px-8 flex-shrink-0 border-b flex justify-between items-center z-20 max-sm:px-4 transition-all duration-350 bg-white border-[#E5E9EB] shadow-[0_1px_4px_rgba(0,0,0,0.01)]">
           {/* Search bar */}
           <div className="relative w-[340px] max-md:w-[200px] max-sm:hidden">
             <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400">
@@ -258,8 +261,8 @@ export default function Dashboard({ userName = 'Mélanie', userEmail, onLogout }
             </span>
             <input
               type="text"
-              placeholder="Rechercher un modèle..."
-              className="w-full pl-10 pr-4 py-2 text-[0.88rem] bg-[#F1F5F7] border border-[#E5E9EB] rounded-xl text-slate-800 placeholder-slate-400 focus:outline-none focus:bg-white focus:border-[#518B91] focus:ring-1 focus:ring-[#518B91]/35 transition-all duration-200"
+              placeholder={activeMenu === 'Centre de Contexte' ? "Rechercher dans l'espace..." : "Rechercher un modèle..."}
+              className="w-full pl-10 pr-4 py-2 text-[0.88rem] rounded-xl focus:outline-none transition-all duration-200 bg-[#F1F5F7] border border-[#E5E9EB] text-slate-800 placeholder-slate-400 focus:bg-white focus:border-[#518B91] focus:ring-1 focus:ring-[#518B91]/35"
             />
           </div>
           <div className="hidden max-sm:flex items-center gap-2">
@@ -276,7 +279,7 @@ export default function Dashboard({ userName = 'Mélanie', userEmail, onLogout }
           <div className="flex items-center gap-4">
             <button 
               onClick={() => addToast('success', 'Document créé', 'Un nouveau document a été généré dans votre espace.')}
-              className="bg-[#2F4858] hover:bg-[#3E6976] text-white font-brand text-[0.82rem] font-bold px-4 py-2 rounded-xl transition-all cursor-pointer border-none shadow-[0_2px_8px_rgba(47,72,88,0.12)] active:scale-[0.97]"
+              className="font-brand text-[0.82rem] font-bold px-4 py-2 rounded-xl transition-all cursor-pointer border-none active:scale-[0.97] bg-[#2F4858] hover:bg-[#3E6976] text-white shadow-[0_2px_8px_rgba(47,72,88,0.12)]"
             >
               Nouveau Document
             </button>
@@ -284,7 +287,7 @@ export default function Dashboard({ userName = 'Mélanie', userEmail, onLogout }
             {/* Notification button */}
             <button 
               onClick={() => addToast('assistant', 'Notification', 'Vous n\'avez pas de nouvelles notifications.')}
-              className="relative p-2 text-slate-500 hover:text-[#2F4858] hover:bg-slate-100 rounded-xl transition-all cursor-pointer border-none bg-transparent"
+              className="relative p-2 rounded-xl transition-all cursor-pointer border-none bg-transparent text-slate-500 hover:text-[#2F4858] hover:bg-slate-100"
             >
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
@@ -293,7 +296,7 @@ export default function Dashboard({ userName = 'Mélanie', userEmail, onLogout }
               <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-[#518B91] rounded-full ring-2 ring-white animate-pulse"></span>
             </button>
 
-            <div className="h-6 w-[1px] bg-slate-200"></div>
+            <div className="h-6 w-[1px] transition-colors bg-slate-200"></div>
 
             {/* Profile widget */}
             <div className="relative">
@@ -302,13 +305,13 @@ export default function Dashboard({ userName = 'Mélanie', userEmail, onLogout }
                   e.stopPropagation();
                   setShowProfileDropdown(!showProfileDropdown);
                 }}
-                className="flex items-center gap-3.5 pl-2 pr-1.5 py-1 rounded-xl bg-slate-50 hover:bg-slate-100 border border-[#E5E9EB] transition-all cursor-pointer"
+                className="flex items-center gap-3.5 pl-2 pr-1.5 py-1 rounded-xl border transition-all cursor-pointer bg-slate-50 hover:bg-slate-100 border-[#E5E9EB]"
               >
                 <div className="w-8 h-8 rounded-full overflow-hidden bg-[#94D2B8]/30 border border-[#94D2B8]/40 flex items-center justify-center text-[#2F4858] font-bold text-sm">
                   {userName.charAt(0)}
                 </div>
                 <div className="text-left max-sm:hidden">
-                  <p className="text-[0.82rem] font-bold text-[#2F4858] leading-tight">{userName}</p>
+                  <p className="text-[0.82rem] font-bold leading-tight text-[#2F4858]">{userName}</p>
                   <p className="text-[0.68rem] text-slate-500 leading-none font-medium">Mélanie (Vous)</p>
                 </div>
                 <span className="text-slate-400 max-sm:hidden">
@@ -320,16 +323,16 @@ export default function Dashboard({ userName = 'Mélanie', userEmail, onLogout }
 
               {/* Profile Dropdown */}
               {showProfileDropdown && (
-                <div className="absolute right-0 mt-2 w-48 bg-white border border-[#E5E9EB] rounded-xl shadow-xl z-50 py-1.5 animate-fade-in">
+                <div className="absolute right-0 mt-2 w-48 bg-white border border-[#E5E9EB] rounded-xl shadow-xl z-50 py-1.5 animate-fade-in text-[#2F4858]">
                   <div className="px-4 py-2 border-b border-slate-100">
                     <p className="text-[0.8rem] text-slate-400 font-medium">Identifiant :</p>
-                    <p className="text-[0.72rem] text-[#518B91] truncate font-semibold">{userEmail || 'melanie@memoflow.edu'}</p>
+                    <p className="text-[0.72rem] truncate font-semibold text-[#518B91]">{userEmail || 'melanie@memoflow.edu'}</p>
                   </div>
                   <button
                     onClick={() => {
                       addToast('assistant', 'Mon Compte', 'Accès aux paramètres du profil...');
                     }}
-                    className="w-full text-left px-4 py-2 text-[0.82rem] text-slate-700 hover:bg-slate-50 hover:text-[#2F4858] transition-all cursor-pointer border-none bg-transparent flex items-center gap-2.5"
+                    className="w-full text-left px-4 py-2 text-[0.82rem] transition-all cursor-pointer border-none bg-transparent flex items-center gap-2.5 text-slate-700 hover:bg-slate-50 hover:text-[#2F4858]"
                   >
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                       <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
@@ -356,7 +359,7 @@ export default function Dashboard({ userName = 'Mélanie', userEmail, onLogout }
         )}
 
         {/* CONTENT SPACE */}
-        <main className={`flex-1 overflow-y-auto custom-scrollbar transition-all duration-300 ${
+        <main className={`flex-1 overflow-y-auto custom-scrollbar transition-all duration-350 ${
           activeMenu === "Espace d'Écriture" ? 'p-0 overflow-hidden bg-white' : 'p-8 max-sm:p-4 max-sm:pb-24'
         }`}>
           {activeMenu === 'Modèles' && (
@@ -377,17 +380,7 @@ export default function Dashboard({ userName = 'Mélanie', userEmail, onLogout }
           )}
 
           {activeMenu === 'Centre de Contexte' && (
-            <div className="flex flex-col items-center justify-center py-20 text-center animate-fade-in bg-white border border-[#E5E9EB] rounded-2xl p-8 shadow-[0_4px_20px_rgba(47,72,88,0.02)] m-8">
-              <div className="bg-[#EAF3DE] p-4 rounded-full mb-4 border border-[#94D2B8]/30 flex items-center justify-center">
-                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#3E6976" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <circle cx="12" cy="12" r="10" />
-                  <line x1="12" y1="16" x2="12" y2="12" />
-                  <line x1="12" y1="8" x2="12.01" y2="8" />
-                </svg>
-              </div>
-              <h3 className="text-lg font-bold text-[#2F4858] font-brand mb-1">Espace en cours de développement</h3>
-              <p className="text-sm text-slate-500 max-w-[400px] leading-relaxed font-medium">Cette section sera disponible très prochainement pour compléter votre flux de travail académique.</p>
-            </div>
+            <ContextCenter onAddToast={addToast} />
           )}
 
           {activeMenu === 'Ma Progression' && (
