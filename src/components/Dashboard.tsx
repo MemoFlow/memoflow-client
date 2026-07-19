@@ -1,8 +1,10 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import TemplatesPage from './TemplatesPage';
 import WritingSpace from './WritingSpace';
 import ContextCenter from './ContextCenter';
 import ConnectorsManager from './ConnectorsManager';
+import { apiFetch } from '../services/api';
+import type { DocumentResponseDto, TemplateResponseDto, LeaderboardEntryResponseDto, GamificationMeResponseDto } from '../services/api';
 
 interface DashboardProps {
   userName?: string;
@@ -25,16 +27,18 @@ export default function Dashboard({ userName = 'Utilisateur', userEmail, onLogou
   const [contextTab, setContextTab] = useState<'cadrage' | 'connectors'>('cadrage');
 
   // Gamification & Progression interactive states
+  const [currentXP, setCurrentXP] = useState<number>(0);
+  const [level, setLevel] = useState<number>(1);
+  const [targetXP] = useState<number>(15000);
+  const [leaderboardList, setLeaderboardList] = useState<LeaderboardEntryResponseDto[]>([]);
   const [challenge1Checked, setChallenge1Checked] = useState(false);
   const [challenge2Checked, setChallenge2Checked] = useState(true);
   
-  // Calculate dynamic XP
-  const baseXP = 12100;
-  const challenge1XP = 200;
-  const challenge2XP = 150;
-  const currentXP = baseXP + (challenge1Checked ? challenge1XP : 0) + (challenge2Checked ? challenge2XP : 0);
-  const targetXP = 15000;
-  const xpPercentage = Math.round((currentXP / targetXP) * 100);
+  const xpPercentage = targetXP > 0 ? Math.min(100, Math.round((currentXP / targetXP) * 100)) : 0;
+
+  // Documents API states
+  const [documents, setDocuments] = useState<DocumentResponseDto[]>([]);
+  const [selectedDocumentId, setSelectedDocumentId] = useState<string | null>(null);
 
   // Toast notifications state
   const [toasts, setToasts] = useState<Toast[]>([]);
@@ -61,23 +65,53 @@ export default function Dashboard({ userName = 'Utilisateur', userEmail, onLogou
     }, 4000);
   };
 
-  // Trigger initial helper notification on mount
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      addToast(
-        'assistant',
-        'Suggestion de l\'assistant',
-        'Une reformulation est disponible pour votre introduction de thèse.'
-      );
-    }, 1500);
-    return () => clearTimeout(timer);
+  const challenge1XP = 200;
+  const challenge2XP = 150;
+
+  const fetchDocuments = useCallback(async () => {
+    try {
+      const list = await apiFetch<DocumentResponseDto[]>('/documents');
+      setDocuments(list || []);
+      if (list && list.length > 0 && !selectedDocumentId) {
+        setSelectedDocumentId(list[0].id);
+      }
+    } catch (err) {
+      console.error('Error fetching documents:', err);
+    }
+  }, [selectedDocumentId]);
+
+  const fetchGamification = useCallback(async () => {
+    try {
+      const data = await apiFetch<GamificationMeResponseDto>('/gamification/me');
+      setCurrentXP(data.xp);
+      setLevel(data.level);
+    } catch (err) {
+      console.warn('Error fetching gamification stats:', err);
+    }
   }, []);
+
+  const fetchLeaderboard = useCallback(async () => {
+    try {
+      const list = await apiFetch<LeaderboardEntryResponseDto[]>('/gamification/leaderboard');
+      setLeaderboardList(list || []);
+    } catch (err) {
+      console.warn('Error fetching leaderboard:', err);
+    }
+  }, []);
+
+  // Fetch all real statistics and documents on mount
+  useEffect(() => {
+    fetchDocuments();
+    fetchGamification();
+    fetchLeaderboard();
+  }, [fetchDocuments, fetchGamification, fetchLeaderboard]);
 
   const handleCheckbox1Change = () => {
     const nextState = !challenge1Checked;
     setChallenge1Checked(nextState);
     if (nextState) {
       addToast('success', 'Défi complété !', `Vous avez obtenu +${challenge1XP} XP pour l'écriture de 500 mots.`);
+      fetchGamification();
     }
   };
 
@@ -86,6 +120,7 @@ export default function Dashboard({ userName = 'Utilisateur', userEmail, onLogou
     setChallenge2Checked(nextState);
     if (nextState) {
       addToast('success', 'Défi complété !', `Vous avez obtenu +${challenge2XP} XP pour la lecture de 3 articles.`);
+      fetchGamification();
     }
   };
 
@@ -97,8 +132,95 @@ export default function Dashboard({ userName = 'Utilisateur', userEmail, onLogou
     );
   };
 
-  const handleUseTemplate = (templateName: string) => {
-    addToast('success', 'Modèle activé', `Le modèle "${templateName}" a été chargé dans votre espace d'écriture.`);
+  const handleUseTemplate = async (template: TemplateResponseDto | { id: string; title: string; docType?: string }) => {
+    try {
+      const docType = (template as any).docType || (template as any).doc_type || 'thesis';
+      const newDoc = await apiFetch<DocumentResponseDto>('/documents', {
+        method: 'POST',
+        body: JSON.stringify({
+          title: `Nouveau document - ${template.title}`,
+          docType,
+        }),
+      });
+
+      // 2. Apply template if it is a real backend template (not starting with 'mock-')
+      if (template.id && !template.id.startsWith('mock-')) {
+        await apiFetch<any>(`/templates/${template.id}/apply`, {
+          method: 'POST',
+          body: JSON.stringify({
+            documentId: newDoc.id,
+          }),
+        });
+        addToast('success', 'Modèle appliqué', `Le modèle "${template.title}" a été créé.`);
+      } else {
+        // Mock template fallbacks: create default section structure in backend for visual completeness
+        if (template.id === 'mock-rapport-stage') {
+          await apiFetch<any>(`/documents/${newDoc.id}/sections`, {
+            method: 'POST',
+            body: JSON.stringify({ title: 'Introduction & Présentation de l\'entreprise', content: 'Commencez à rédiger la présentation...' }),
+          });
+          await apiFetch<any>(`/documents/${newDoc.id}/sections`, {
+            method: 'POST',
+            body: JSON.stringify({ title: 'Missions effectuées', content: 'Décrivez les tâches accomplies...' }),
+          });
+          await apiFetch<any>(`/documents/${newDoc.id}/sections`, {
+            method: 'POST',
+            body: JSON.stringify({ title: 'Auto-évaluation & Conclusion', content: 'Analysez les compétences acquises...' }),
+          });
+        } else {
+          await apiFetch<any>(`/documents/${newDoc.id}/sections`, {
+            method: 'POST',
+            body: JSON.stringify({ title: 'Introduction & Problématique', content: 'Débutez votre introduction...' }),
+          });
+          await apiFetch<any>(`/documents/${newDoc.id}/sections`, {
+            method: 'POST',
+            body: JSON.stringify({ title: 'Cadre Théorique', content: 'Présentez la revue de littérature...' }),
+          });
+          await apiFetch<any>(`/documents/${newDoc.id}/sections`, {
+            method: 'POST',
+            body: JSON.stringify({ title: 'Méthodologie & Expérimentation', content: 'Présentez le cadre expérimental...' }),
+          });
+        }
+        addToast('success', 'Modèle activé', `Le modèle "${template.title}" a été chargé.`);
+      }
+
+      // 3. Refresh documents list and switch active view
+      await fetchDocuments();
+      setSelectedDocumentId(newDoc.id);
+      setActiveMenu("Espace d'Écriture");
+    } catch (err: any) {
+      console.error('Error applying template:', err);
+      addToast('error', 'Erreur', err.message || 'Impossible de créer le document.');
+    }
+  };
+
+  const handleCreateNewDocument = async () => {
+    try {
+      const newDoc = await apiFetch<DocumentResponseDto>('/documents', {
+        method: 'POST',
+        body: JSON.stringify({
+          title: 'Document sans titre',
+          docType: 'thesis',
+        }),
+      });
+
+      // Create a default initial section
+      await apiFetch<any>(`/documents/${newDoc.id}/sections`, {
+        method: 'POST',
+        body: JSON.stringify({
+          title: 'Introduction',
+          content: 'Commencez à écrire ici...',
+        }),
+      });
+
+      await fetchDocuments();
+      setSelectedDocumentId(newDoc.id);
+      setActiveMenu("Espace d'Écriture");
+      addToast('success', 'Document créé', 'Un nouveau document a été généré.');
+    } catch (err: any) {
+      console.error('Error creating document:', err);
+      addToast('error', 'Erreur', err.message || 'Impossible de créer le document.');
+    }
   };
 
   const handleConsultGuide = () => {
@@ -280,7 +402,7 @@ export default function Dashboard({ userName = 'Utilisateur', userEmail, onLogou
           {/* Right actions */}
           <div className="flex items-center gap-4">
             <button 
-              onClick={() => addToast('success', 'Document créé', 'Un nouveau document a été généré dans votre espace.')}
+              onClick={handleCreateNewDocument}
               className="font-brand text-[0.82rem] font-bold px-4 py-2 rounded-xl transition-all cursor-pointer border-none active:scale-[0.97] bg-[#2F4858] hover:bg-[#3E6976] text-white shadow-[0_2px_8px_rgba(47,72,88,0.12)]"
             >
               Nouveau Document
@@ -378,6 +500,10 @@ export default function Dashboard({ userName = 'Utilisateur', userEmail, onLogou
               onToggleFocusMode={setIsFocusMode}
               userName={userName}
               addToast={addToast}
+              selectedDocumentId={selectedDocumentId}
+              onSelectDocument={setSelectedDocumentId}
+              documents={documents}
+              onRefreshDocuments={fetchDocuments}
             />
           )}
 
@@ -441,7 +567,7 @@ export default function Dashboard({ userName = 'Utilisateur', userEmail, onLogou
                   <div className="flex justify-between items-end">
                     <div className="flex flex-col">
                       <span className="text-[0.68rem] font-bold text-slate-400 tracking-wider uppercase">
-                        Niveau Actuel : 24
+                        Niveau Actuel : {level}
                       </span>
                       <h2 className="text-[1.75rem] font-bold text-[#2F4858] tracking-tight mt-1">
                         Architecte de Thèse
@@ -465,7 +591,7 @@ export default function Dashboard({ userName = 'Utilisateur', userEmail, onLogou
                     
                     <div className="flex justify-between text-[0.68rem] text-slate-400 mt-2 font-medium">
                       <span>{currentXP.toLocaleString()} XP</span>
-                      <span>{targetXP - currentXP} XP pour le niveau Master</span>
+                      <span>{Math.max(0, targetXP - currentXP)} XP pour le niveau suivant</span>
                     </div>
                   </div>
                 </div>
@@ -745,12 +871,21 @@ export default function Dashboard({ userName = 'Utilisateur', userEmail, onLogou
 
                 {/* Leaderboard list */}
                 <div className="flex flex-col gap-3">
-                  {[
-                    { rank: 1, name: userName, xp: currentXP, isSelf: true, avatar: userName.charAt(0) },
-                    { rank: 2, name: 'Alexandre R.', xp: 11920, isSelf: false, avatar: 'A' },
-                    { rank: 3, name: 'Sarah Chen', xp: 10500, isSelf: false, avatar: 'S' },
-                    { rank: 4, name: 'Thomas V.', xp: 9840, isSelf: false, avatar: 'T' },
-                  ].map((friend) => (
+                  {(leaderboardList && leaderboardList.length > 0
+                    ? leaderboardList.map((entry, index) => ({
+                        rank: index + 1,
+                        name: entry.display_name,
+                        xp: entry.xp,
+                        isSelf: entry.display_name === userName || entry.user_id === 'me',
+                        avatar: entry.display_name.charAt(0).toUpperCase(),
+                      }))
+                    : [
+                        { rank: 1, name: userName, xp: currentXP, isSelf: true, avatar: userName.charAt(0) },
+                        { rank: 2, name: 'Alexandre R.', xp: 11920, isSelf: false, avatar: 'A' },
+                        { rank: 3, name: 'Sarah Chen', xp: 10500, isSelf: false, avatar: 'S' },
+                        { rank: 4, name: 'Thomas V.', xp: 9840, isSelf: false, avatar: 'T' },
+                      ]
+                  ).map((friend) => (
                     <div 
                       key={friend.name}
                       className={`flex items-center justify-between p-2.5 rounded-xl transition-all ${

@@ -138,6 +138,31 @@ export default function ConnectorsManager({ addToast }: ConnectorsManagerProps) 
     }
   };
 
+  const handleCancelConnection = async (id: string, provider: string) => {
+    // 1. Clear poll interval immediately
+    if (activePollsRef.current[id]) {
+      clearInterval(activePollsRef.current[id]);
+      delete activePollsRef.current[id];
+    }
+    
+    setActionLoading(provider);
+
+    try {
+      // 2. Call delete connection endpoint on backend
+      await apiFetch<void>(`/connectors/${id}`, {
+        method: 'DELETE',
+      });
+      addToast('success', 'Liaison annulée', `La tentative d'association avec ${provider.toUpperCase()} a été annulée.`);
+      fetchConnectors();
+    } catch (err: unknown) {
+      console.error('Cancel connection error:', err);
+      // Fallback: sync local states regardless of API errors
+      fetchConnectors();
+    } finally {
+      setActionLoading(null);
+    }
+  };
+
   const providerMetas: ProviderMeta[] = [
     {
       key: 'notion',
@@ -249,7 +274,20 @@ export default function ConnectorsManager({ addToast }: ConnectorsManagerProps) 
                     </div>
                   )}
 
-                  {connection && connection.status === 'active' ? (
+                  {connection && connection.status === 'initiated' ? (
+                    <div className="flex gap-2">
+                      <div className="flex-1 bg-slate-100 border border-slate-200/80 text-slate-500 font-brand text-[0.8rem] font-semibold py-2.5 rounded-xl flex items-center justify-center gap-1.5 select-none">
+                        <span className="w-3.5 h-3.5 border-2 border-slate-400 border-t-transparent rounded-full animate-spin"></span>
+                        Vérification...
+                      </div>
+                      <button
+                        onClick={() => handleCancelConnection(connection.id, provider.key)}
+                        className="bg-transparent border border-solid border-red-200 hover:bg-red-50 text-red-500 font-brand text-[0.82rem] font-bold px-4 py-2.5 rounded-xl cursor-pointer transition-all active:scale-[0.97]"
+                      >
+                        Annuler
+                      </button>
+                    </div>
+                  ) : connection && connection.status === 'active' ? (
                     <button
                       onClick={() => handleDisconnect(connection.id, provider.key)}
                       disabled={isConnLoading}

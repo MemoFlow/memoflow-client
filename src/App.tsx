@@ -42,6 +42,20 @@ function App() {
     initAuth();
   }, []);
 
+  // Listen for global logout events (triggered by 401 Unauthorized responses)
+  useEffect(() => {
+    const handleLogoutEvent = () => {
+      setView('login');
+      setUserEmail('');
+      setUserName('');
+    };
+
+    window.addEventListener('auth_logout', handleLogoutEvent);
+    return () => {
+      window.removeEventListener('auth_logout', handleLogoutEvent);
+    };
+  }, []);
+
   const handleLoginSuccess = (email: string, displayName: string) => {
     setUserEmail(email);
     setUserName(displayName);

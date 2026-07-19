@@ -30,57 +30,21 @@ interface ContextCenterProps {
 
 export default function ContextCenter({ onAddToast }: ContextCenterProps) {
   // Tags State
-  const [tags, setTags] = useState<Tag[]>([
-    { id: '1', name: '#ETHIQUE_IA' },
-    { id: '2', name: '#NEURO_DIVERSITE' },
-    { id: '3', name: '#ANALYSE_SYSTEMIQUE' },
-  ]);
+  const [tags, setTags] = useState<Tag[]>([]);
   const [newTagInput, setNewTagInput] = useState('');
   const [showTagInput, setShowTagInput] = useState(false);
 
   // Hypothesis State
-  const [hypothesis, setHypothesis] = useState(
-    "Déterminer l'influence de l'interactivité numérique sur l'élasticité cognitive à travers un protocole expérimental basé sur l'usage quotidien d'espaces de travail en réseau."
-  );
+  const [hypothesis, setHypothesis] = useState('');
 
   // Personas State
-  const [personas, setPersonas] = useState<Persona[]>([
-    {
-      id: '1',
-      title: 'Pairs Académiques',
-      description:
-        'Chercheurs en linguistique computationnelle nécessitant des détails techniques profonds.',
-    },
-    {
-      id: '2',
-      title: 'Décideurs Politiques',
-      description:
-        'Synthèses exécutives axées sur les implications éthiques et réglementaires.',
-    },
-  ]);
+  const [personas, setPersonas] = useState<Persona[]>([]);
   const [newPersonaTitle, setNewPersonaTitle] = useState('');
   const [newPersonaDesc, setNewPersonaDesc] = useState('');
   const [showPersonaForm, setShowPersonaForm] = useState(false);
 
   // Source Files State
-  const [files, setFiles] = useState<SourceFile[]>([
-    {
-      id: '1',
-      name: 'Cognitive_Bias_Study_2023.pdf',
-      size: '12.4 MB',
-      progress: 100,
-      relevance: 'Analysé : 92%',
-      status: 'completed',
-    },
-    {
-      id: '2',
-      name: 'Interview_Transcripts_Final.docx',
-      size: '4.8 MB',
-      progress: 100,
-      relevance: 'Analysé : 94%',
-      status: 'completed',
-    },
-  ]);
+  const [files, setFiles] = useState<SourceFile[]>([]);
 
   // Creativity slider
   const [creativity, setCreativity] = useState(2); // 1 = Rigoureux, 2 = Équilibré, 3 = Créatif

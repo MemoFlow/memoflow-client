@@ -13,6 +13,9 @@ export function setToken(token: string): void {
 
 export function clearToken(): void {
   localStorage.removeItem('memoflow_token');
+  if (typeof window !== 'undefined') {
+    window.dispatchEvent(new Event('auth_logout'));
+  }
 }
 
 // Custom API Error class to hold status code and error messages
@@ -34,6 +37,46 @@ export class ApiError extends Error {
 let mockJobStatus: 'pending' | 'running' | 'completed' = 'pending';
 let mockJobTimeout1: number | null = null;
 let mockJobTimeout2: number | null = null;
+
+let mockDocuments: any[] = [
+  {
+    id: 'mock-doc-1',
+    user_id: 'mock-admin-uuid',
+    title: 'Mémoire Master 2 - Linguistique Neurologique',
+    doc_type: 'thesis',
+    status: 'draft',
+    style_config: {},
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString()
+  }
+];
+
+let mockSections: { [docId: string]: any[] } = {
+  'mock-doc-1': [
+    {
+      id: 'mock-sec-1',
+      document_id: 'mock-doc-1',
+      title: 'Introduction & Problématique',
+      content: "La relation entre les stimuli environnementaux et l'état de « flux » dans la recherche académique...",
+      order: 0,
+      status: 'draft',
+      word_count: 50,
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString()
+    },
+    {
+      id: 'mock-sec-2',
+      document_id: 'mock-doc-1',
+      title: 'Cadre Méthodologique',
+      content: "Pour mesurer l'efficacité de ce protocole, nous avons mené une étude sur 12 mois...",
+      order: 1,
+      status: 'draft',
+      word_count: 40,
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString()
+    }
+  ]
+};
 
 // Main fetch wrapper
 export async function apiFetch<T>(path: string, options: RequestInit = {}): Promise<T> {
@@ -148,6 +191,148 @@ export async function apiFetch<T>(path: string, options: RequestInit = {}): Prom
         started_at: mockJobStatus !== 'pending' ? new Date().toISOString() : null,
         finished_at: isCompleted ? new Date().toISOString() : null
       } as unknown as T;
+    }
+
+    if (path === '/templates') {
+      return [
+        {
+          id: 'mock-master-2',
+          title: 'Mémoire Master 2',
+          doc_type: 'thesis',
+          scope: 'public',
+          sections: [{ id: 's1', title: 'Introduction' }, { id: 's2', title: 'Cadre théorique' }]
+        },
+        {
+          id: 'mock-rapport-stage',
+          title: 'Rapport de Stage',
+          doc_type: 'report',
+          scope: 'public',
+          sections: [{ id: 's3', title: 'Présentation' }]
+        },
+        {
+          id: 'mock-these-doctorat',
+          title: 'Thèse de Doctorat',
+          doc_type: 'thesis',
+          scope: 'public',
+          sections: [{ id: 's4', title: 'Introduction' }, { id: 's5', title: 'Revue de Littérature' }]
+        }
+      ] as unknown as T;
+    }
+
+    if (path.startsWith('/templates/') && path.endsWith('/apply') && options.method === 'POST') {
+      const body = JSON.parse(options.body as string);
+      const docId = body.documentId;
+      mockSections[docId] = [
+        {
+          id: `mock-sec-${Date.now()}-1`,
+          document_id: docId,
+          title: 'Introduction & Problématique',
+          content: 'Commencez à rédiger ici...',
+          order: 0,
+          status: 'draft',
+          word_count: 0,
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString()
+        },
+        {
+          id: `mock-sec-${Date.now()}-2`,
+          document_id: docId,
+          title: 'Cadre Méthodologique',
+          content: 'Décrivez vos outils et concepts...',
+          order: 1,
+          status: 'draft',
+          word_count: 0,
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString()
+        }
+      ];
+      return { sections_created: 2 } as unknown as T;
+    }
+
+    if (path === '/gamification/me') {
+      return {
+        xp: 12500,
+        level: 25,
+        milestones: [],
+        today_missions: []
+      } as unknown as T;
+    }
+
+    if (path === '/gamification/leaderboard') {
+      return [
+        { user_id: 'mock-admin-uuid', display_name: 'Administrateur', xp: 12500, level: 25 },
+        { user_id: 'user-2', display_name: 'Alexandre R.', xp: 11920, level: 24 },
+        { user_id: 'user-3', display_name: 'Sarah Chen', xp: 10500, level: 21 },
+        { user_id: 'user-4', display_name: 'Thomas V.', xp: 9840, level: 19 }
+      ] as unknown as T;
+    }
+
+    if (path === '/documents') {
+      if (options.method === 'POST') {
+        const body = JSON.parse(options.body as string);
+        const newDoc = {
+          id: `mock-doc-${Date.now()}`,
+          user_id: 'mock-admin-uuid',
+          title: body.title || 'Document sans titre',
+          doc_type: body.docType || 'thesis',
+          status: 'draft',
+          style_config: {},
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString()
+        };
+        mockDocuments.push(newDoc);
+        mockSections[newDoc.id] = [];
+        return newDoc as unknown as T;
+      }
+      return mockDocuments as unknown as T;
+    }
+
+    if (path.startsWith('/documents/') && !path.includes('/sections') && options.method === 'PATCH') {
+      const docId = path.split('/')[2];
+      const body = JSON.parse(options.body as string);
+      mockDocuments = mockDocuments.map(d => d.id === docId ? { ...d, ...body } : d);
+      return mockDocuments.find(d => d.id === docId) as unknown as T;
+    }
+
+    if (path.startsWith('/documents/') && path.endsWith('/sections')) {
+      const docId = path.split('/')[2];
+      if (options.method === 'POST') {
+        const body = JSON.parse(options.body as string);
+        const newSec = {
+          id: `mock-sec-${Date.now()}`,
+          document_id: docId,
+          title: body.title || 'Nouvelle section',
+          content: body.content || '',
+          order: mockSections[docId] ? mockSections[docId].length : 0,
+          status: 'draft',
+          word_count: 0,
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString()
+        };
+        if (!mockSections[docId]) mockSections[docId] = [];
+        mockSections[docId].push(newSec);
+        return newSec as unknown as T;
+      }
+      return (mockSections[docId] || []) as unknown as T;
+    }
+
+    if (path.startsWith('/documents/') && path.includes('/sections/')) {
+      const parts = path.split('/');
+      const docId = parts[2];
+      const secId = parts[4];
+      if (options.method === 'PATCH') {
+        const body = JSON.parse(options.body as string);
+        if (mockSections[docId]) {
+          mockSections[docId] = mockSections[docId].map(s => s.id === secId ? { ...s, ...body } : s);
+          return mockSections[docId].find(s => s.id === secId) as unknown as T;
+        }
+      }
+      if (options.method === 'DELETE') {
+        if (mockSections[docId]) {
+          mockSections[docId] = mockSections[docId].filter(s => s.id !== secId);
+        }
+        return {} as unknown as T;
+      }
     }
   }
 
@@ -320,4 +505,242 @@ export interface PlanningJobResponseDto {
   created_at: string;
   started_at: string | null;
   finished_at: string | null;
+}
+
+// === AUTH SCHEMAS ===
+export interface RegisterUserDto {
+  email: string;
+  password?: string; // min length 8
+  display_name: string;
+}
+
+export interface LoginUserDto {
+  email: string;
+  password?: string;
+}
+
+export interface LoginResponseDto {
+  accessToken: string;
+}
+
+// === AI SUGGESTION SCHEMAS ===
+export interface CreateSuggestionDto {
+  featureType: string; // e.g. 'suggestion'
+}
+
+export interface SuggestionResponseDto {
+  id: string;
+  section_id: string;
+  user_id: string;
+  feature_type: string;
+  original_text: string;
+  suggested_text: string;
+  status: 'pending' | 'accepted' | 'rejected';
+  prompt_version: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface ReviewSuggestionDto {
+  status: 'accepted' | 'rejected';
+}
+
+// === DOCUMENT SCHEMAS ===
+export interface CreateDocumentDto {
+  title: string;
+  docType: string;
+  status?: string;
+  styleConfig?: Record<string, any>;
+}
+
+export interface DocumentResponseDto {
+  id: string;
+  user_id: string;
+  title: string;
+  doc_type: string;
+  status: string;
+  style_config: Record<string, any>;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface UpdateDocumentDto {
+  title?: string;
+  docType?: string;
+  status?: string;
+  styleConfig?: Record<string, any>;
+}
+
+// === SECTION SCHEMAS ===
+export interface CreateSectionDto {
+  title: string;
+  content: string;
+  status?: string;
+}
+
+export interface SectionResponseDto {
+  id: string;
+  document_id: string;
+  title: string;
+  content: string;
+  order: number;
+  status: string;
+  word_count: number;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface ReorderSectionsDto {
+  sectionIds: string[];
+}
+
+export interface UpdateSectionDto {
+  title?: string;
+  content?: string;
+  status?: string;
+}
+
+// === PLANNING JOB SCHEMAS ===
+export interface SubmitPlanningJobDto {
+  prompt: string;
+  connectors?: string[];
+  documentId?: string;
+  sectionId?: string;
+}
+
+// === DOCUMENT VERSION SCHEMAS ===
+export interface SaveVersionDto {
+  label?: string;
+}
+
+export interface SectionSnapshotResponseDto {
+  title: string;
+  content: string;
+  order: number;
+  status: string;
+  word_count: number;
+}
+
+export interface VersionResponseDto {
+  id: string;
+  document_id: string;
+  user_id: string;
+  version: number;
+  label: string | null;
+  sections_snapshot: SectionSnapshotResponseDto[];
+  saved_at: string;
+}
+
+export interface VersionMetadataResponseDto {
+  id: string;
+  document_id: string;
+  version: number;
+  label: string | null;
+  saved_at: string;
+  section_count: number;
+}
+
+export interface RestoreResultDto {
+  document_id: string;
+  version_id: string;
+  version: number;
+  sections_restored: number;
+}
+
+// === TEMPLATE SCHEMAS ===
+export interface TemplateSectionDto {
+  title: string;
+  order: number;
+  wordCountMin: number;
+  wordCountMax: number;
+  isRequired?: boolean;
+}
+
+export interface CreateTemplateDto {
+  title: string;
+  docType: string;
+  scope: string;
+  styleConfig?: Record<string, any>;
+  isPublished?: boolean;
+  sections: TemplateSectionDto[];
+}
+
+export interface TemplateSectionResponseDto {
+  id: string;
+  title: string;
+  order: number;
+  word_count_min: number;
+  word_count_max: number;
+  is_required: boolean;
+}
+
+export interface TemplateResponseDto {
+  id: string;
+  title: string;
+  doc_type: string;
+  scope: string;
+  created_by: string | null;
+  style_config: Record<string, any> | null;
+  is_published: boolean;
+  sections: TemplateSectionResponseDto[];
+  created_at: string;
+  updated_at: string;
+}
+
+export interface UpdateTemplateDto {
+  title?: string;
+  docType?: string;
+  scope?: string;
+  styleConfig?: Record<string, any>;
+  isPublished?: boolean;
+  sections?: TemplateSectionDto[];
+}
+
+export interface ApplyTemplateDto {
+  documentId: string;
+}
+
+export interface ApplyTemplateResponseDto {
+  document_template_id: string;
+  document_id: string;
+  template_id: string;
+  applied_at: string;
+  sections_created: number;
+}
+
+// === GAMIFICATION SCHEMAS ===
+export interface MilestoneResponseDto {
+  id: string;
+  document_id: string;
+  milestone_type: string;
+  xp_awarded: number;
+  created_at: string;
+}
+
+export interface DailyMissionResponseDto {
+  id: string;
+  code: string;
+  description: string;
+  xp_reward: number;
+  criteria: Record<string, any>;
+}
+
+export interface TodayMissionResponseDto {
+  mission: DailyMissionResponseDto;
+  progress: number;
+  completed: boolean;
+}
+
+export interface GamificationMeResponseDto {
+  xp: number;
+  level: number;
+  milestones: MilestoneResponseDto[];
+  today_missions: TodayMissionResponseDto[];
+}
+
+export interface LeaderboardEntryResponseDto {
+  user_id: string;
+  display_name: string;
+  xp: number;
+  level: number;
 }
