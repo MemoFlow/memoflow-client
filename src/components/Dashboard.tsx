@@ -17,7 +17,7 @@ interface Toast {
   message: string;
 }
 
-export default function Dashboard({ userName = 'Mélanie', userEmail, onLogout }: DashboardProps) {
+export default function Dashboard({ userName = 'Utilisateur', userEmail, onLogout }: DashboardProps) {
   // Navigation states
   const [activeMenu, setActiveMenu] = useState('Modèles');
   const [showProfileDropdown, setShowProfileDropdown] = useState(false);
@@ -314,7 +314,7 @@ export default function Dashboard({ userName = 'Mélanie', userEmail, onLogout }
                 </div>
                 <div className="text-left max-sm:hidden">
                   <p className="text-[0.82rem] font-bold leading-tight text-[#2F4858]">{userName}</p>
-                  <p className="text-[0.68rem] text-slate-500 leading-none font-medium">Mélanie (Vous)</p>
+                  <p className="text-[0.68rem] text-slate-500 leading-none font-medium">Vous</p>
                 </div>
                 <span className="text-slate-400 max-sm:hidden">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
@@ -328,7 +328,7 @@ export default function Dashboard({ userName = 'Mélanie', userEmail, onLogout }
                 <div className="absolute right-0 mt-2 w-48 bg-white border border-[#E5E9EB] rounded-xl shadow-xl z-50 py-1.5 animate-fade-in text-[#2F4858]">
                   <div className="px-4 py-2 border-b border-slate-100">
                     <p className="text-[0.8rem] text-slate-400 font-medium">Identifiant :</p>
-                    <p className="text-[0.72rem] truncate font-semibold text-[#518B91]">{userEmail || 'melanie@memoflow.edu'}</p>
+                    <p className="text-[0.72rem] truncate font-semibold text-[#518B91]">{userEmail || 'utilisateur@memoflow.fr'}</p>
                   </div>
                   <button
                     onClick={() => {

@@ -1,6 +1,6 @@
 import { io, Socket } from 'socket.io-client';
 
-const API_BASE = (import.meta.env.VITE_API_URL || 'http://localhost:3000').replace(/\/$/, '');
+const API_BASE = (import.meta.env.VITE_API_URL || 'https://memoflow-dev-api.onrender.com/').replace(/\/$/, '');
 
 // Token helper functions
 export function getToken(): string | null {
@@ -240,22 +240,22 @@ export function connectSocket(token: string, callbacks: SocketCallbacks): Socket
     if (callbacks.onReady) callbacks.onReady();
   });
 
-  socketInstance.on('planning.status', (data) => {
+  socketInstance.on('planning.status', (data: { jobId: string; status: 'pending' | 'running' }) => {
     console.log('Socket event planning.status:', data);
     if (callbacks.onStatus) callbacks.onStatus(data);
   });
 
-  socketInstance.on('planning.completed', (data) => {
+  socketInstance.on('planning.completed', (data: { jobId: string; status: 'completed'; result: unknown }) => {
     console.log('Socket event planning.completed:', data);
     if (callbacks.onCompleted) callbacks.onCompleted(data);
   });
 
-  socketInstance.on('planning.failed', (data) => {
+  socketInstance.on('planning.failed', (data: { jobId: string; status: 'failed'; errorCode: string | null; errorMessage: string | null }) => {
     console.log('Socket event planning.failed:', data);
     if (callbacks.onFailed) callbacks.onFailed(data);
   });
 
-  socketInstance.on('planning.error', (data) => {
+  socketInstance.on('planning.error', (data: { jobId: string; message: string }) => {
     console.warn('Socket event planning.error:', data);
     if (callbacks.onError) callbacks.onError(data);
   });
