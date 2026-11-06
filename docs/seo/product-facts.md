@@ -17,6 +17,7 @@ Relevé du 06/11/2026 sur `developement` (commit c1e53b1). Source de vérité po
 - Un « planificateur » génère un plan à partir du contexte et l'ajoute comme section (« Le planificateur rassemble le contexte et rédige le plan... »).
 - Modèles de documents, dont certains réservés aux comptes, et modèles personnels (`TemplatesPage.tsx`). Visuels de niveau : master_grade, professional_grade, doctoral_grade (sens exact non vérifié).
 - Connecteurs pour importer du contexte : pages de notes et wikis, cartes de tâches et Kanban, fichiers Markdown et dépôts de code (`ConnectorsManager.tsx`, liaison via Composio).
+- **Connecteurs réellement codés : Notion, Trello, GitHub** (`ConnectorsManager.tsx:11`). Teams, Slack, mails et Drive n'apparaissent que comme réponses de l'onboarding, pas comme connecteurs. Un CTA ou un article ne cite que Notion, Trello, GitHub.
 - Centre de contexte : ajout de fichiers de recherche, personas de lecteurs, option « Imposer le style de citation Harvard » (`ContextCenter.tsx`).
 - Baseline actuelle : « Structurez votre pensée, libérez votre potentiel ».
 
