@@ -1,19 +1,29 @@
 import React, { useState } from 'react';
 import InputField from './InputField';
-import { apiFetch, setToken } from '../services/api';
-import type { UserResponseDto } from '../services/api';
+import { apiFetch } from '../services/api';
+import { rememberSignupConsent } from '../services/onboarding';
+import { markVerificationEmailSent } from '../services/authEmail';
 
 interface SignupFormProps {
   onSwitchToLogin: () => void;
-  onSignupSuccess: (email: string, name: string) => void;
+  onOpenPrivacy?: () => void;
+  onOpenTerms?: () => void;
 }
 
-export default function SignupForm({ onSwitchToLogin, onSignupSuccess }: SignupFormProps) {
+export default function SignupForm({
+  onSwitchToLogin,
+  onOpenPrivacy,
+  onOpenTerms,
+}: SignupFormProps) {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [agreeTerms, setAgreeTerms] = useState(false);
+  // Optional marketing consent, never pre-ticked
+  const [agreeMarketing, setAgreeMarketing] = useState(false);
+  // Address the confirmation email was sent to (registration accepted)
+  const [sentTo, setSentTo] = useState<string | null>(null);
 
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [generalError, setGeneralError] = useState('');
@@ -54,25 +64,27 @@ export default function SignupForm({ onSwitchToLogin, onSignupSuccess }: SignupF
     try {
       const displayName = `${firstName.trim()} ${lastName.trim()}`;
 
-      // 1. Submit registration request
-      await apiFetch<UserResponseDto>('/auth/register', {
+      const cleanEmail = email.trim();
+
+      // The API answers 202 with the same body whether or not the address already has
+      // an account (emails are unique): it sends either a verification email or an
+      // "you already have an account" email. So no automatic login here.
+      await apiFetch<{ message: string }>('/auth/register', {
         method: 'POST',
         body: JSON.stringify({
-          email,
+          email: cleanEmail,
           password,
           display_name: displayName,
         }),
       });
 
-      // 2. Perform login automatically to obtain JWT token
-      const loginRes = await apiFetch<{ accessToken: string }>('/auth/login', {
-        method: 'POST',
-        body: JSON.stringify({ email, password }),
-      });
-      setToken(loginRes.accessToken);
+      // Not accepted by /auth/register: sent later with the questionnaire
+      rememberSignupConsent(cleanEmail, agreeMarketing);
+      // A verification email just went out: a resend in the next 5 minutes sends nothing
+      markVerificationEmailSent(cleanEmail);
 
       setIsLoading(false);
-      onSignupSuccess(email, displayName);
+      setSentTo(cleanEmail);
     } catch (err: unknown) {
       setIsLoading(false);
       const errMsg = err instanceof Error ? err.message : 'L\'inscription a échoué. Veuillez réessayer.';
@@ -90,6 +102,34 @@ export default function SignupForm({ onSwitchToLogin, onSignupSuccess }: SignupF
     }
   };
 
+
+  if (sentTo) {
+    return (
+      <div className="bg-white border border-slate-100 rounded-[20px] p-12 w-full max-w-[520px] shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05),0_10px_15px_-3px_rgba(0,0,0,0.05),0_20px_25px_-5px_rgba(0,0,0,0.02)] text-center my-10 mx-auto max-sm:p-6 max-sm:my-6 max-sm:rounded-2xl animate-fade-in">
+        <h1 className="font-brand text-[1.5rem] font-medium text-slate-800 mb-3 tracking-tight max-sm:text-xl">
+          Vérifiez votre boîte mail
+        </h1>
+        <p className="font-sans text-[0.9rem] text-slate-600 leading-relaxed mb-2">
+          Nous avons envoyé un email à <strong className="text-slate-800 break-all">{sentTo}</strong>.
+        </p>
+        <p className="font-sans text-[0.85rem] text-slate-500 leading-relaxed mb-8">
+          Vous pouvez vous connecter dès maintenant. Pensez à confirmer votre adresse avec le lien reçu (valable
+          24 heures) : les connecteurs et l'assistant IA le demandent. Si cette adresse a déjà un compte MemoFlow,
+          l'email vous l'indique et vous permet de choisir un nouveau mot de passe.
+        </p>
+        <button
+          type="button"
+          onClick={onSwitchToLogin}
+          className="w-full bg-brand-green text-brand-green-dark border-none rounded-xl p-3.5 font-sans text-[0.95rem] font-medium cursor-pointer shadow-sm hover:bg-brand-green-hover transition-all"
+        >
+          Se connecter
+        </button>
+        <p className="mt-6 font-sans text-[0.8rem] text-slate-400">
+          Rien reçu ? Vérifiez vos courriers indésirables.
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div className="bg-white border border-slate-100 rounded-[20px] p-12 w-full max-w-[520px] shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05),0_10px_15px_-3px_rgba(0,0,0,0.05),0_20px_25px_-5px_rgba(0,0,0,0.02)] text-center my-10 mx-auto backdrop-blur-md max-sm:p-6 max-sm:my-6 max-sm:rounded-2xl animate-fade-in">
@@ -193,27 +233,27 @@ export default function SignupForm({ onSwitchToLogin, onSignupSuccess }: SignupF
             />
             <span className="font-sans text-[0.8rem] text-slate-500 leading-normal">
               J'accepte les{' '}
-              <a
-                href="#terms-of-service"
-                className="text-brand-green-dark underline"
+              <button
+                type="button"
+                className="text-brand-green-dark underline bg-transparent border-none p-0 cursor-pointer font-medium"
                 onClick={(e) => {
                   e.preventDefault();
-                  alert('Conditions d\'utilisation à afficher.');
+                  onOpenTerms?.();
                 }}
               >
                 conditions d'utilisation
-              </a>{' '}
+              </button>{' '}
               et la{' '}
-              <a
-                href="#privacy-policy"
-                className="text-brand-green-dark underline"
+              <button
+                type="button"
+                className="text-brand-green-dark underline bg-transparent border-none p-0 cursor-pointer font-medium"
                 onClick={(e) => {
                   e.preventDefault();
-                  alert('Politique de confidentialité à afficher.');
+                  onOpenPrivacy?.();
                 }}
               >
                 politique de confidentialité
-              </a>
+              </button>
               .
             </span>
           </label>
@@ -222,6 +262,19 @@ export default function SignupForm({ onSwitchToLogin, onSignupSuccess }: SignupF
               {errors.terms}
             </span>
           )}
+
+          <label className="flex items-start gap-3 cursor-pointer select-none mt-3">
+            <input
+              type="checkbox"
+              className="accent-brand-green w-[1.1rem] h-[1.1rem] rounded border-slate-200 mt-[0.15rem]"
+              checked={agreeMarketing}
+              onChange={(e) => setAgreeMarketing(e.target.checked)}
+            />
+            <span className="font-sans text-[0.8rem] text-slate-500 leading-normal">
+              J'accepte d'être contacté(e) par email par MemoFlow (conseils de méthodologie, offres). Facultatif,
+              modifiable à tout moment dans les paramètres.
+            </span>
+          </label>
         </div>
 
         <button

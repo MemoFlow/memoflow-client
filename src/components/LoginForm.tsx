@@ -4,11 +4,14 @@ import { apiFetch, setToken } from '../services/api';
 import type { UserResponseDto } from '../services/api';
 
 interface LoginFormProps {
+  /** Information shown above the form (session expired, password changed…) */
+  notice?: string | null;
   onSwitchToSignup: () => void;
+  onForgotPassword: () => void;
   onLoginSuccess: (email: string, displayName: string) => void;
 }
 
-export default function LoginForm({ onSwitchToSignup, onLoginSuccess }: LoginFormProps) {
+export default function LoginForm({ notice, onSwitchToSignup, onForgotPassword, onLoginSuccess }: LoginFormProps) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [emailError, setEmailError] = useState('');
@@ -70,11 +73,11 @@ export default function LoginForm({ onSwitchToSignup, onLoginSuccess }: LoginFor
 
   const forgotPasswordLink = (
     <a
-      href="#forgot-password"
+      href="/forgot-password"
       className="font-mono text-[0.75rem] text-brand-green-dark font-medium hover:underline"
       onClick={(e) => {
         e.preventDefault();
-        alert('Fonctionnalité de réinitialisation de mot de passe à implémenter.');
+        onForgotPassword();
       }}
     >
       Mot de passe oublié ?
@@ -85,6 +88,12 @@ export default function LoginForm({ onSwitchToSignup, onLoginSuccess }: LoginFor
     <div className="bg-white border border-slate-100 rounded-[20px] p-12 w-full max-w-[520px] shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05),0_10px_15px_-3px_rgba(0,0,0,0.05),0_20px_25px_-5px_rgba(0,0,0,0.02)] text-center my-10 mx-auto backdrop-blur-md max-sm:p-6 max-sm:my-6 max-sm:rounded-2xl animate-fade-in">
       <h1 className="font-brand text-[2rem] font-medium text-slate-800 mb-2 tracking-tight max-sm:text-2xl">Bon retour parmi nous</h1>
       <p className="font-sans text-[0.9rem] text-slate-500 mb-10">Continuez votre voyage académique</p>
+
+      {notice && !generalError && (
+        <div role="status" className="mb-6 p-3.5 bg-[#EAF3DE] border border-[#94D2B8]/50 text-[#2F4858] rounded-xl text-[0.8rem] font-sans text-left font-medium animate-fade-in">
+          {notice}
+        </div>
+      )}
 
       {generalError && (
         <div className="mb-6 p-3.5 bg-[#FCEBEB] border border-[#E24B4A]/25 text-[#E24B4A] rounded-xl text-[0.8rem] font-sans text-left font-medium animate-fade-in">

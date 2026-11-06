@@ -1,6 +1,6 @@
 import { io, Socket } from 'socket.io-client';
 
-const API_BASE = (import.meta.env.VITE_API_URL || 'https://memoflow-dev-api.onrender.com/').replace(/\/$/, '');
+const API_BASE = (import.meta.env.VITE_API_URL);
 
 // Token helper functions
 export function getToken(): string | null {
@@ -8,332 +8,214 @@ export function getToken(): string | null {
 }
 
 export function setToken(token: string): void {
+  resetGuestStore();
   localStorage.setItem('memoflow_token', token);
 }
 
-export function clearToken(): void {
+export type LogoutReason = 'logout' | 'expired';
+
+/** Ends the session. 'expired' = the API rejected the token (401), e.g. after a password reset. */
+export function clearToken(reason: LogoutReason = 'logout'): void {
+  resetGuestStore();
   localStorage.removeItem('memoflow_token');
   if (typeof window !== 'undefined') {
-    window.dispatchEvent(new Event('auth_logout'));
+    window.dispatchEvent(new CustomEvent<LogoutReason>('auth_logout', { detail: reason }));
   }
 }
+
+/** Fired when a route answers 403 "Email not verified" */
+export const EMAIL_NOT_VERIFIED_EVENT = 'email_not_verified';
 
 // Custom API Error class to hold status code and error messages
 export class ApiError extends Error {
   statusCode: number;
   error: string;
   path?: string;
+  /** Untranslated backend `message` (string, or string[] for validation errors) */
+  rawMessage?: string | string[];
 
-  constructor(message: string, statusCode: number, error: string, path?: string) {
+  constructor(message: string, statusCode: number, error: string, path?: string, rawMessage?: string | string[]) {
     super(message);
     this.name = 'ApiError';
     this.statusCode = statusCode;
     this.error = error;
     this.path = path;
+    this.rawMessage = rawMessage;
   }
 }
 
-// Mock states for admin@memoflow.fr offline mode
-let mockJobStatus: 'pending' | 'running' | 'completed' = 'pending';
-let mockJobTimeout1: number | null = null;
-let mockJobTimeout2: number | null = null;
+/** Reset or verification link that is unknown, used or expired (the API gives no reason) */
+export const isDeadLinkError = (e: unknown) =>
+  e instanceof ApiError && e.statusCode === 400 && e.rawMessage === 'Invalid or expired token';
 
-let mockDocuments: any[] = [
-  {
-    id: 'mock-doc-1',
-    user_id: 'mock-admin-uuid',
-    title: 'Mémoire Master 2 - Linguistique Neurologique',
-    doc_type: 'thesis',
-    status: 'draft',
-    style_config: {},
-    created_at: new Date().toISOString(),
-    updated_at: new Date().toISOString()
+/** Route that requires a verified email address */
+export const isEmailNotVerifiedError = (e: unknown) =>
+  e instanceof ApiError && e.statusCode === 403 && e.rawMessage === 'Email not verified';
+
+// ─── Guest mode ───────────────────────────────────────────────────────────────
+// Without a session, the app stays usable but data lives only in memory:
+// nothing is sent to the backend and everything is lost on page reload.
+export const GUEST_DISPLAY_NAME = 'Invité';
+export const GUEST_FEATURE_LOCKED_MESSAGE =
+  'Créez un compte ou connectez-vous pour utiliser cette fonctionnalité.';
+
+let guestDocuments: DocumentResponseDto[] = [];
+let guestSections: Record<string, SectionResponseDto[]> = {};
+let guestIdCounter = 0;
+
+export function resetGuestStore(): void {
+  guestDocuments = [];
+  guestSections = {};
+}
+
+function guestId(kind: 'doc' | 'sec'): string {
+  guestIdCounter += 1;
+  return `guest-${kind}-${Date.now()}-${guestIdCounter}`;
+}
+
+function countWords(text: string): number {
+  return text.trim().split(/\s+/).filter(Boolean).length;
+}
+
+interface GuestRequestBody {
+  title?: string;
+  content?: string;
+  docType?: string;
+  status?: string;
+  styleConfig?: Record<string, unknown>;
+}
+
+function parseBody(options: RequestInit): GuestRequestBody {
+  if (typeof options.body !== 'string') return {};
+  try {
+    return JSON.parse(options.body);
+  } catch {
+    return {};
   }
-];
+}
 
-let mockSections: { [docId: string]: any[] } = {
-  'mock-doc-1': [
-    {
-      id: 'mock-sec-1',
-      document_id: 'mock-doc-1',
-      title: 'Introduction & Problématique',
-      content: "La relation entre les stimuli environnementaux et l'état de « flux » dans la recherche académique...",
-      order: 0,
-      status: 'draft',
-      word_count: 50,
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString()
-    },
-    {
-      id: 'mock-sec-2',
-      document_id: 'mock-doc-1',
-      title: 'Cadre Méthodologique',
-      content: "Pour mesurer l'efficacité de ce protocole, nous avons mené une étude sur 12 mois...",
-      order: 1,
-      status: 'draft',
-      word_count: 40,
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString()
+function guestNotFound(path: string): never {
+  throw new ApiError('Ressource introuvable.', 404, 'NotFound', path);
+}
+
+async function guestFetch<T>(path: string, options: RequestInit): Promise<T> {
+  const method = (options.method || 'GET').toUpperCase();
+  const body = parseBody(options);
+  const now = new Date().toISOString();
+  const parts = path.split('?')[0].split('/').filter(Boolean);
+
+  // Gamification: guests have no progression
+  if (path === '/gamification/me') {
+    return { xp: 0, level: 1, milestones: [], today_missions: [] } as unknown as T;
+  }
+  if (path === '/gamification/leaderboard' || (path === '/connectors' && method === 'GET')) {
+    return [] as unknown as T;
+  }
+
+  if (parts[0] === 'documents') {
+    const docId = parts[1];
+
+    // /documents
+    if (!docId) {
+      if (method === 'POST') {
+        const doc: DocumentResponseDto = {
+          id: guestId('doc'),
+          user_id: 'guest',
+          title: body.title || 'Document sans titre',
+          doc_type: body.docType || 'thesis',
+          status: body.status || 'draft',
+          style_config: body.styleConfig || {},
+          created_at: now,
+          updated_at: now,
+        };
+        guestDocuments.push(doc);
+        guestSections[doc.id] = [];
+        return doc as unknown as T;
+      }
+      return [...guestDocuments] as unknown as T;
     }
-  ]
-};
+
+    const doc = guestDocuments.find((d) => d.id === docId);
+    if (!doc) guestNotFound(path);
+
+    // /documents/:id
+    if (parts.length === 2) {
+      if (method === 'PATCH') {
+        Object.assign(doc, {
+          ...(body.title !== undefined && { title: body.title }),
+          ...(body.docType !== undefined && { doc_type: body.docType }),
+          ...(body.status !== undefined && { status: body.status }),
+          ...(body.styleConfig !== undefined && { style_config: body.styleConfig }),
+          updated_at: now,
+        });
+        return { ...doc } as unknown as T;
+      }
+      if (method === 'DELETE') {
+        guestDocuments = guestDocuments.filter((d) => d.id !== docId);
+        delete guestSections[docId];
+        return {} as T;
+      }
+      return { ...doc } as unknown as T;
+    }
+
+    // /documents/:id/sections[/:sectionId]
+    if (parts[2] === 'sections') {
+      const list = (guestSections[docId] ??= []);
+      const sectionId = parts[3];
+
+      if (!sectionId) {
+        if (method === 'POST') {
+          const content = body.content || '';
+          const section: SectionResponseDto = {
+            id: guestId('sec'),
+            document_id: docId,
+            title: body.title || 'Nouvelle section',
+            content,
+            order: list.length,
+            status: body.status || 'draft',
+            word_count: countWords(content),
+            created_at: now,
+            updated_at: now,
+          };
+          list.push(section);
+          return { ...section } as unknown as T;
+        }
+        return list.map((s) => ({ ...s })) as unknown as T;
+      }
+
+      const section = list.find((s) => s.id === sectionId);
+      if (!section) guestNotFound(path);
+
+      if (method === 'PATCH') {
+        Object.assign(section, {
+          ...(body.title !== undefined && { title: body.title }),
+          ...(body.status !== undefined && { status: body.status }),
+          ...(body.content !== undefined && { content: body.content, word_count: countWords(body.content) }),
+          updated_at: now,
+        });
+        return { ...section } as unknown as T;
+      }
+      if (method === 'DELETE') {
+        guestSections[docId] = list
+          .filter((s) => s.id !== sectionId)
+          .map((s, i) => ({ ...s, order: i }));
+        return {} as T;
+      }
+      return { ...section } as unknown as T;
+    }
+  }
+
+  // Everything else (templates, AI, connectors, versions...) requires an account
+  throw new ApiError(GUEST_FEATURE_LOCKED_MESSAGE, 401, 'GuestMode', path);
+}
 
 // Main fetch wrapper
 export async function apiFetch<T>(path: string, options: RequestInit = {}): Promise<T> {
   const token = getToken();
 
-  // Intercept authentication for admin@memoflow.fr
-  if (path === '/auth/login' && options.body) {
-    try {
-      const body = JSON.parse(options.body as string);
-      if (body.email === 'admin@memoflow.fr' && body.password === '12345678') {
-        console.log('[Mock API] Intercepted admin login');
-        return { accessToken: 'mock_admin_token' } as unknown as T;
-      }
-    } catch (e) {
-      // Ignored
-    }
-  }
-
-  // Intercept other endpoints when logged in as mock admin
-  if (token === 'mock_admin_token') {
-    console.log(`[Mock API] Intercepted ${options.method || 'GET'} ${path}`);
-    
-    if (path === '/users/me') {
-      return {
-        id: 'mock-admin-uuid',
-        email: 'admin@memoflow.fr',
-        display_name: 'Administrateur',
-        role: 'admin',
-        xp: 12500,
-        level: 25,
-        last_active_at: new Date().toISOString()
-      } as unknown as T;
-    }
-
-    if (path === '/connectors') {
-      // Returns a default active Notion connector and an initiated Trello connector for visual completeness
-      return [
-        { id: 'notion-id', provider: 'notion', status: 'active', connected_at: new Date().toISOString(), created_at: new Date().toISOString() },
-        { id: 'trello-id', provider: 'trello', status: 'initiated', connected_at: null, created_at: new Date().toISOString() }
-      ] as unknown as T;
-    }
-
-    if (path.startsWith('/connectors/') && path.endsWith('/connect') && options.method === 'POST') {
-      const provider = path.split('/')[2];
-      return {
-        redirect_url: 'https://composio.dev/mock-oauth-redirect',
-        connection_id: `${provider}-mock-id`,
-        status: 'initiated'
-      } as unknown as T;
-    }
-
-    if (path.startsWith('/connectors/') && options.method === 'DELETE') {
-      return {} as unknown as T;
-    }
-
-    if (path.startsWith('/connectors/')) {
-      const connectionId = path.split('/')[2];
-      const provider = connectionId.split('-')[0] || 'trello';
-      return {
-        id: connectionId,
-        provider: provider as 'trello' | 'notion' | 'github',
-        status: 'active',
-        connected_at: new Date().toISOString(),
-        created_at: new Date().toISOString()
-      } as unknown as T;
-    }
-
-    if (path === '/planning-jobs' && options.method === 'POST') {
-      mockJobStatus = 'pending';
-      if (mockJobTimeout1) window.clearTimeout(mockJobTimeout1);
-      if (mockJobTimeout2) window.clearTimeout(mockJobTimeout2);
-      
-      mockJobTimeout1 = window.setTimeout(() => {
-        mockJobStatus = 'running';
-        mockJobTimeout2 = window.setTimeout(() => {
-          mockJobStatus = 'completed';
-        }, 4000);
-      }, 3000);
-
-      return {
-        job_id: 'mock-job-id',
-        status: 'pending',
-        prompt: 'Mock prompt',
-        connectors: [],
-        result: null,
-        error_code: null,
-        error_message: null,
-        created_at: new Date().toISOString(),
-        started_at: null,
-        finished_at: null
-      } as unknown as T;
-    }
-
-    if (path.startsWith('/planning-jobs/')) {
-      const jobId = path.split('/')[2];
-      const isCompleted = mockJobStatus === 'completed';
-      return {
-        job_id: jobId,
-        status: mockJobStatus,
-        prompt: 'Mock prompt',
-        connectors: [],
-        result: isCompleted ? {
-          suggestions: [
-            "Reformulation : 'Le flux de travail académique moderne bénéficie grandement de la cartographie des connaissances en réseau.'",
-            "Référence trouvée : Kahneman, D. (2011) 'Thinking, Fast and Slow'.",
-            "Suggestion : Essayer d'utiliser le Mode Focus pour rédiger la section suivante."
-          ]
-        } : null,
-        error_code: null,
-        error_message: null,
-        created_at: new Date().toISOString(),
-        started_at: mockJobStatus !== 'pending' ? new Date().toISOString() : null,
-        finished_at: isCompleted ? new Date().toISOString() : null
-      } as unknown as T;
-    }
-
-    if (path === '/templates') {
-      return [
-        {
-          id: 'mock-master-2',
-          title: 'Mémoire Master 2',
-          doc_type: 'thesis',
-          scope: 'public',
-          sections: [{ id: 's1', title: 'Introduction' }, { id: 's2', title: 'Cadre théorique' }]
-        },
-        {
-          id: 'mock-rapport-stage',
-          title: 'Rapport de Stage',
-          doc_type: 'report',
-          scope: 'public',
-          sections: [{ id: 's3', title: 'Présentation' }]
-        },
-        {
-          id: 'mock-these-doctorat',
-          title: 'Thèse de Doctorat',
-          doc_type: 'thesis',
-          scope: 'public',
-          sections: [{ id: 's4', title: 'Introduction' }, { id: 's5', title: 'Revue de Littérature' }]
-        }
-      ] as unknown as T;
-    }
-
-    if (path.startsWith('/templates/') && path.endsWith('/apply') && options.method === 'POST') {
-      const body = JSON.parse(options.body as string);
-      const docId = body.documentId;
-      mockSections[docId] = [
-        {
-          id: `mock-sec-${Date.now()}-1`,
-          document_id: docId,
-          title: 'Introduction & Problématique',
-          content: 'Commencez à rédiger ici...',
-          order: 0,
-          status: 'draft',
-          word_count: 0,
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString()
-        },
-        {
-          id: `mock-sec-${Date.now()}-2`,
-          document_id: docId,
-          title: 'Cadre Méthodologique',
-          content: 'Décrivez vos outils et concepts...',
-          order: 1,
-          status: 'draft',
-          word_count: 0,
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString()
-        }
-      ];
-      return { sections_created: 2 } as unknown as T;
-    }
-
-    if (path === '/gamification/me') {
-      return {
-        xp: 12500,
-        level: 25,
-        milestones: [],
-        today_missions: []
-      } as unknown as T;
-    }
-
-    if (path === '/gamification/leaderboard') {
-      return [
-        { user_id: 'mock-admin-uuid', display_name: 'Administrateur', xp: 12500, level: 25 },
-        { user_id: 'user-2', display_name: 'Alexandre R.', xp: 11920, level: 24 },
-        { user_id: 'user-3', display_name: 'Sarah Chen', xp: 10500, level: 21 },
-        { user_id: 'user-4', display_name: 'Thomas V.', xp: 9840, level: 19 }
-      ] as unknown as T;
-    }
-
-    if (path === '/documents') {
-      if (options.method === 'POST') {
-        const body = JSON.parse(options.body as string);
-        const newDoc = {
-          id: `mock-doc-${Date.now()}`,
-          user_id: 'mock-admin-uuid',
-          title: body.title || 'Document sans titre',
-          doc_type: body.docType || 'thesis',
-          status: 'draft',
-          style_config: {},
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString()
-        };
-        mockDocuments.push(newDoc);
-        mockSections[newDoc.id] = [];
-        return newDoc as unknown as T;
-      }
-      return mockDocuments as unknown as T;
-    }
-
-    if (path.startsWith('/documents/') && !path.includes('/sections') && options.method === 'PATCH') {
-      const docId = path.split('/')[2];
-      const body = JSON.parse(options.body as string);
-      mockDocuments = mockDocuments.map(d => d.id === docId ? { ...d, ...body } : d);
-      return mockDocuments.find(d => d.id === docId) as unknown as T;
-    }
-
-    if (path.startsWith('/documents/') && path.endsWith('/sections')) {
-      const docId = path.split('/')[2];
-      if (options.method === 'POST') {
-        const body = JSON.parse(options.body as string);
-        const newSec = {
-          id: `mock-sec-${Date.now()}`,
-          document_id: docId,
-          title: body.title || 'Nouvelle section',
-          content: body.content || '',
-          order: mockSections[docId] ? mockSections[docId].length : 0,
-          status: 'draft',
-          word_count: 0,
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString()
-        };
-        if (!mockSections[docId]) mockSections[docId] = [];
-        mockSections[docId].push(newSec);
-        return newSec as unknown as T;
-      }
-      return (mockSections[docId] || []) as unknown as T;
-    }
-
-    if (path.startsWith('/documents/') && path.includes('/sections/')) {
-      const parts = path.split('/');
-      const docId = parts[2];
-      const secId = parts[4];
-      if (options.method === 'PATCH') {
-        const body = JSON.parse(options.body as string);
-        if (mockSections[docId]) {
-          mockSections[docId] = mockSections[docId].map(s => s.id === secId ? { ...s, ...body } : s);
-          return mockSections[docId].find(s => s.id === secId) as unknown as T;
-        }
-      }
-      if (options.method === 'DELETE') {
-        if (mockSections[docId]) {
-          mockSections[docId] = mockSections[docId].filter(s => s.id !== secId);
-        }
-        return {} as unknown as T;
-      }
-    }
+  // Guest mode: no session -> serve everything from the in-memory store (nothing is persisted)
+  if (!token && !path.startsWith('/auth/')) {
+    return guestFetch<T>(path, options);
   }
 
   const url = `${API_BASE}${path.startsWith('/') ? '' : '/'}${path}`;
@@ -348,47 +230,152 @@ export async function apiFetch<T>(path: string, options: RequestInit = {}): Prom
     headers.set('Content-Type', 'application/json');
   }
 
-  const response = await fetch(url, {
-    ...options,
-    headers,
-  });
+  let response: Response;
+  try {
+    response = await fetch(url, {
+      ...options,
+      headers,
+    });
+  } catch (err) {
+    // Network failure, DNS, CORS, server unreachable... ("Failed to fetch")
+    if (err instanceof DOMException && err.name === 'AbortError') throw err;
+    console.error(`[API] Network error on ${path}:`, err);
+    throw new ApiError(NETWORK_ERROR_MESSAGE, 0, 'NetworkError', path);
+  }
 
   if (response.status === 204) {
     return {} as T;
   }
 
   if (!response.ok) {
-    let errorData: Record<string, unknown>;
+    let errorData: Record<string, unknown> = {};
     try {
       const json = await response.json();
-      errorData = typeof json === 'object' && json !== null ? (json as Record<string, unknown>) : {};
+      if (typeof json === 'object' && json !== null) errorData = json as Record<string, unknown>;
     } catch {
-      // Non-JSON error
-      throw new ApiError(response.statusText, response.status, 'HttpError');
+      // Non-JSON error body (proxy / gateway HTML page...): rely on the status code only
     }
 
-    // Check for standard NestJS / MemoFlow error shape
-    const message = errorData.message;
-    const errMsg = message
-      ? Array.isArray(message)
-        ? message.join(', ')
-        : String(message)
-      : response.statusText;
+    const status = typeof errorData.statusCode === 'number' ? errorData.statusCode : response.status;
 
-    // Handle token expiration / auth failure
-    if (response.status === 401) {
-      clearToken();
+    // Handle token expiration / auth failure (not wrong credentials on /auth/login)
+    if (response.status === 401 && token) {
+      clearToken('expired');
     }
 
+    const rawMessage =
+      typeof errorData.message === 'string' ||
+      (Array.isArray(errorData.message) && errorData.message.every((m) => typeof m === 'string'))
+        ? (errorData.message as string | string[])
+        : undefined;
+
+    if (status === 403 && rawMessage === 'Email not verified') {
+      window.dispatchEvent(new Event(EMAIL_NOT_VERIFIED_EVENT));
+    }
+
+    console.error(`[API] ${status} on ${path}:`, errorData.message ?? response.statusText);
     throw new ApiError(
-      errMsg,
-      typeof errorData.statusCode === 'number' ? errorData.statusCode : response.status,
-      typeof errorData.error === 'string' ? errorData.error : 'ApiError',
-      typeof errorData.path === 'string' ? errorData.path : undefined
+      toFriendlyErrorMessage(status, errorData.message, path),
+      status,
+      typeof errorData.error === 'string' ? errorData.error : 'HttpError',
+      typeof errorData.path === 'string' ? errorData.path : path,
+      rawMessage
     );
   }
 
-  return response.json() as Promise<T>;
+  try {
+    return (await response.json()) as T;
+  } catch (err) {
+    // e.g. an HTML page returned instead of JSON (wrong API URL / proxy misconfiguration)
+    console.error(`[API] Invalid JSON response on ${path}:`, err);
+    throw new ApiError(INVALID_RESPONSE_MESSAGE, response.status, 'InvalidResponse', path);
+  }
+}
+
+// ─── Error messages ───────────────────────────────────────────────────────────
+const NETWORK_ERROR_MESSAGE =
+  'Impossible de joindre le serveur MemoFlow. Vérifiez votre connexion internet puis réessayez.';
+const INVALID_RESPONSE_MESSAGE =
+  'Le serveur a renvoyé une réponse inattendue. Réessayez dans quelques instants.';
+
+const FIELD_LABELS: Record<string, string> = {
+  email: "l'adresse email",
+  password: 'le mot de passe',
+  new_password: 'le nouveau mot de passe',
+  token: 'le lien',
+  display_name: "le nom d'affichage",
+  displayName: "le nom d'affichage",
+  title: 'le titre',
+  content: 'le contenu',
+  prompt: 'la consigne',
+};
+
+function fieldLabel(field: string): string {
+  return FIELD_LABELS[field] ?? `le champ « ${field} »`;
+}
+
+function capitalize(text: string): string {
+  return text.charAt(0).toUpperCase() + text.slice(1);
+}
+
+/** Translates a single backend (NestJS / class-validator) message into French, or null if unknown. */
+function translateBackendMessage(raw: string): string | null {
+  const msg = raw.trim();
+  let m: RegExpMatchArray | null;
+
+  if (/^invalid or expired token$/i.test(msg)) return "Ce lien n'est plus valide.";
+  if (/^email not verified$/i.test(msg)) return 'Confirmez votre adresse email pour utiliser cette fonctionnalité.';
+  if (/invalid (email|credentials)|email or password/i.test(msg)) return 'Email ou mot de passe incorrect.';
+  if (/(email|user|account).*(already|exists)|already (exists|registered|in use|taken)/i.test(msg)) {
+    return 'Un compte existe déjà avec cette adresse email.';
+  }
+  if ((m = msg.match(/^(\w+) must be an email$/i))) return `${capitalize(fieldLabel(m[1]))} n'est pas valide.`;
+  if ((m = msg.match(/^(\w+) must be longer than or equal to (\d+) characters$/i))) {
+    return `${capitalize(fieldLabel(m[1]))} doit contenir au moins ${m[2]} caractères.`;
+  }
+  if ((m = msg.match(/^(\w+) must be shorter than or equal to (\d+) characters$/i))) {
+    return `${capitalize(fieldLabel(m[1]))} doit contenir au maximum ${m[2]} caractères.`;
+  }
+  if ((m = msg.match(/^(\w+) should not be empty$/i))) return `${capitalize(fieldLabel(m[1]))} est requis.`;
+  if ((m = msg.match(/^(\w+) must be a string$/i))) return `${capitalize(fieldLabel(m[1]))} n'est pas valide.`;
+  if ((m = msg.match(/^property (\w+) should not exist$/i))) return `Champ inattendu : ${m[1]}.`;
+  return null;
+}
+
+function toFriendlyErrorMessage(status: number, backendMessage: unknown, path: string): string {
+  const messages = (Array.isArray(backendMessage) ? backendMessage : [backendMessage])
+    .filter((x): x is string => typeof x === 'string' && x.trim() !== '');
+  const translated = messages.map(translateBackendMessage).filter((x): x is string => x !== null);
+  if (translated.length > 0) return [...new Set(translated)].join(' ');
+
+  switch (status) {
+    case 400:
+      return 'Certaines informations saisies sont invalides. Vérifiez le formulaire et réessayez.';
+    case 401:
+      return path.startsWith('/auth/login')
+        ? 'Email ou mot de passe incorrect.'
+        : 'Votre session a expiré. Veuillez vous reconnecter.';
+    case 403:
+      return "Vous n'avez pas les droits nécessaires pour effectuer cette action.";
+    case 404:
+      return 'La ressource demandée est introuvable.';
+    case 409:
+      return path.startsWith('/auth/register')
+        ? 'Un compte existe déjà avec cette adresse email.'
+        : 'Cette action entre en conflit avec des données existantes.';
+    case 413:
+      return 'Le contenu envoyé est trop volumineux.';
+    case 429:
+      return 'Trop de tentatives. Patientez quelques instants avant de réessayer.';
+    case 502:
+    case 503:
+    case 504:
+      return 'Le serveur MemoFlow est momentanément indisponible (il peut être en cours de démarrage). Réessayez dans quelques secondes.';
+    default:
+      return status >= 500
+        ? 'Une erreur est survenue sur le serveur. Réessayez dans quelques instants.'
+        : `Une erreur inattendue est survenue (code ${status}).`;
+  }
 }
 
 // WebSocket client management
@@ -478,6 +465,9 @@ export interface UserResponseDto {
   xp: number;
   level: number;
   last_active_at: string | null;
+  disabled_at?: string | null;
+  /** false until the user clicks the link of the verification email */
+  email_verified?: boolean;
 }
 
 export interface ConnectorResponseDto {
