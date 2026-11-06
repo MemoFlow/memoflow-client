@@ -4,6 +4,7 @@ import { apiFetch } from '../services/api';
 import { rememberSignupConsent } from '../services/onboarding';
 import { markVerificationEmailSent } from '../services/authEmail';
 import BrandLogo from './BrandLogo';
+import { trackSignUp } from '../services/analytics';
 
 interface SignupFormProps {
   onSwitchToLogin: () => void;
@@ -86,6 +87,8 @@ export default function SignupForm({
 
       setIsLoading(false);
       setSentTo(cleanEmail);
+      // The API answers 202 for new and existing addresses alike: this counts accepted forms
+      trackSignUp();
     } catch (err: unknown) {
       setIsLoading(false);
       const errMsg = err instanceof Error ? err.message : 'L\'inscription a échoué. Veuillez réessayer.';

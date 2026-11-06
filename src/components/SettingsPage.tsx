@@ -2,6 +2,9 @@ import { useEffect, useState } from 'react';
 import type { UserResponseDto } from '../services/api';
 import { ApiError, GUEST_DISPLAY_NAME } from '../services/api';
 import { getOnboarding, updateMarketingConsent } from '../services/onboarding';
+import { ANALYTICS_ENABLED, setAnalyticsConsent, useAnalyticsConsent } from '../services/analytics';
+import Link from './Link';
+import { ROUTES } from '../services/router';
 
 interface SettingsPageProps {
   /** null for guests */
@@ -92,6 +95,28 @@ function MarketingConsentCard() {
   );
 }
 
+/** Google Analytics consent (asked by the banner), can be changed at any time */
+function AnalyticsConsentCard() {
+  const consent = useAnalyticsConsent();
+  return (
+    <section className={cardClass}>
+      <h3 className={titleClass}>Mesure d'audience</h3>
+      <label className="flex items-start gap-3 cursor-pointer">
+        <input
+          type="checkbox"
+          checked={consent === 'granted'}
+          onChange={(e) => setAnalyticsConsent(e.target.checked)}
+          className="mt-0.5 w-4 h-4 accent-[#518B91] cursor-pointer flex-shrink-0"
+        />
+        <span className="text-[0.82rem] text-slate-600 leading-relaxed">
+          J'accepte les cookies Google Analytics, qui servent uniquement à mesurer l'audience et l'utilisation de
+          MemoFlow. Si vous les refusez après les avoir acceptés, la page se recharge.
+        </span>
+      </label>
+    </section>
+  );
+}
+
 export default function SettingsPage({
   user,
   onLogout,
@@ -171,14 +196,16 @@ export default function SettingsPage({
             Suivi des leads : statistiques, scores et réponses au questionnaire.
           </p>
           <div>
-            <a href="/admin" className={`${primaryBtn} inline-block no-underline`}>
+            <Link to={ROUTES.admin} className={`${primaryBtn} inline-block no-underline`}>
               Ouvrir l'espace administrateur
-            </a>
+            </Link>
           </div>
         </section>
       )}
 
       {user && user.role !== 'admin' && <MarketingConsentCard />}
+
+      {ANALYTICS_ENABLED && <AnalyticsConsentCard />}
 
       {/* Privacy & data */}
       {(onOpenPrivacy || onOpenTerms) && (
