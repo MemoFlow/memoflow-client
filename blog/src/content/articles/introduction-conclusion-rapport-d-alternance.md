@@ -4,7 +4,7 @@ description: "Ce qu'attendent l'IUT de Grenoble, ICN et d'autres guides dans l'i
 pilier: rapport-d-alternance
 hub: false
 datePublished: 2026-11-06
-dateModified: 2026-11-06
+dateModified: 2026-11-07
 cta: generique
 sources:
   - titre: "IUT 1 de Grenoble, département GMP : rapport d'alternance S3, la forme (2024-2025)"
@@ -30,7 +30,7 @@ sources:
     consulte: 2026-11-06
 ---
 
-L'introduction d'un rapport d'alternance explique pourquoi tu as choisi cette formation, cette entreprise et ce sujet, résume ta mission en quelques lignes et annonce le plan. La conclusion résume la mission et ses résultats, dit ce qu'il reste à faire, puis tire un bilan personnel pour ton projet professionnel. À l'IUT 1 de Grenoble, chacune tient en une page environ.
+L'introduction d'un rapport d'alternance explique pourquoi tu as choisi cette formation, cette entreprise et ce sujet, résume ta mission en quelques lignes et annonce le plan. La conclusion résume la mission et ses résultats, dit ce qu'il reste à faire, puis tire un bilan personnel pour ton projet professionnel. L'IUT 1 de Grenoble limite chacune à deux pages et juge qu'une page environ suffit.
 
 Cet article s'appuie sur les consignes publiques de l'IUT 1 de Grenoble et d'ICN Business School, recoupées avec un guide de rapport de stage de master. Pour le reste du document (plan, longueur, notation), voir le guide du [rapport d'alternance](/blog/rapport-d-alternance/). La consigne de ton école passe avant tout ce qui suit.
 
@@ -46,9 +46,9 @@ Pour le rapport final de troisième année (semestre 5), l'[IUT ajoute un quatri
 
 Côté forme, l'[IUT 1 de Grenoble](https://chamilo.univ-grenoble-alpes.fr/courses/IUTGMPCAMS/document/Rapport_S3_V2_forme.pdf) fixe deux pages au maximum et juge « ¾ page à 1 page » suffisant. L'introduction ne contient en principe que du texte, sans figure, sans schéma et sans numérotation de paragraphe. « C'est la première chose que votre lecteur regarde. Il faut lui donner envie de lire votre rapport. » Le site d'orientation [AuFutur](https://aufutur.fr/etudes-superieures/comment-rediger-rapport-alternance/) le formule à sa façon : « L'introduction, c'est la première chose que va lire ton tuteur ».
 
-Pour le rapport de stage de son master, l'[IEDES (Paris 1 Panthéon-Sorbonne)](https://iedes.pantheonsorbonne.fr/sites/default/files/2023-05/consignes_rapport_de_stage.pdf) demande en plus la méthode de travail adoptée et les questions auxquelles ton rapport répond. Il impose même une phrase précise dans l'introduction. Relis ta consigne avant d'écrire.
+Pour le rapport de stage de son master, l'[IEDES (Paris 1 Panthéon-Sorbonne)](https://iedes.pantheonsorbonne.fr/sites/default/files/2023-05/consignes_rapport_de_stage.pdf) demande en plus la méthode de travail adoptée et les questions auxquelles ton rapport répond. Il impose même une phrase dans l'introduction, « Conformément aux orientations pour la rédaction du rapport de stage… », que tu complètes. Relis ta consigne avant d'écrire.
 
-Traite l'introduction comme une section à part. Écris-en une première version tôt, puis reprends-la quand le reste du rapport est fini.
+Traite l'introduction comme une section à part. Un conseil : écris-en une première version tôt, puis reprends-la quand le reste du rapport est fini.
 
 ## Comment rédiger l'introduction en 4 étapes ?
 
@@ -93,7 +93,7 @@ Cet exemple est inventé pour montrer l'enchaînement. Ni l'entreprise ni la mis
 
 ## Que mettre dans la conclusion d'un rapport d'alternance ?
 
-Le contenu change selon que ton rapport est intermédiaire ou final. L'IUT 1 de Grenoble prévoit trois blocs dans les deux cas (un résumé, des perspectives et une conclusion personnelle), mais il n'y met pas la même chose. Le rapport de 2e année s'écrit après tes premières semaines en entreprise, le rapport final après deux ans d'alternance.
+Le contenu change selon que ton rapport est intermédiaire ou final. L'IUT 1 de Grenoble prévoit trois blocs dans les deux cas (un résumé, des perspectives et une conclusion personnelle), mais il n'y met pas la même chose. À Grenoble, le rapport de 2e année (S3) s'écrit après les premières semaines en entreprise, et le rapport final (S5) porte sur tes deux ans d'alternance.
 
 | Bloc | Rapport de 2e année ([S3](https://chamilo.univ-grenoble-alpes.fr/courses/IUTGMPCAMS/document/Rapport_S3_V2_fond.pdf)) | Rapport final ([S5](https://chamilo.univ-grenoble-alpes.fr/courses/IUT1GMPK/document/Chamilo-BUT3-MA/Rapport_S5-2024-2025_fond.pdf)) |
 |---|---|---|
@@ -101,9 +101,9 @@ Le contenu change selon que ton rapport est intermédiaire ou final. L'IUT 1 de 
 | Perspectives | Conclusion « technique » sur tes premières semaines, ce sur quoi tu travailles, tes prochaines tâches | Le projet a-t-il abouti, ce qu'il reste à faire, les améliorations, ton « regard a posteriori » sur le sujet |
 | Conclusion personnelle | Retour d'expérience et ressenti | Retour d'expérience sur tes deux ans d'alternance, ressenti, bilan pour ton projet professionnel |
 
-[ICN Business School](https://docushare.icn-artem.com/dsweb/Get/Document-167109/Guide%20Rapport%20Alternance%20PGE2%20PGE3%202020-2021%20V4_10%20220607.pdf) consacre une ligne à la conclusion dans son livret de 2022 : une conclusion générale « qui permettra d'apprécier le recul critique de l'apprenant par rapport à sa formation académique et son expérience professionnelle en entreprise ». L'IEDES ajoute de rappeler les attendus de départ, de dire si le stage est une réussite ou un échec, puis d'ouvrir sur des propositions d'action.
+[ICN Business School](https://docushare.icn-artem.com/dsweb/Get/Document-167109/Guide%20Rapport%20Alternance%20PGE2%20PGE3%202020-2021%20V4_10%20220607.pdf) consacre une ligne à la conclusion dans son livret de 2022 : une conclusion générale « qui permettra d'apprécier le recul critique de l'apprenant par rapport à sa formation académique et son expérience professionnelle en entreprise ». L'[IEDES](https://iedes.pantheonsorbonne.fr/sites/default/files/2023-05/consignes_rapport_de_stage.pdf) demande aussi de rappeler les attendus de départ et de dire si le stage est une réussite ou un échec. Il ajoute que la conclusion peut, en option, « ouvrir sur d'éventuelles propositions d'action ».
 
-La forme reste celle de l'introduction. Toujours à Grenoble, une page suffit, sans figure ni numérotation, car « c'est la dernière chose que votre lecteur regarde ». AuFutur conseille aussi de la faire tenir sur une page.
+La forme reste celle de l'introduction. Toujours à Grenoble, elle fait deux pages au plus, sans figure ni numérotation de paragraphe, et une page suffit pour le rapport de 2e année. Grenoble rappelle que « c'est la dernière chose que votre lecteur regarde ». AuFutur conseille aussi de la faire tenir sur une page.
 
 ## Comment rédiger la conclusion en 3 étapes ?
 
@@ -137,7 +137,8 @@ Dis ce que l'alternance t'a appris et ce que ça change pour la suite. AuFutur d
 - **Répondre aux questions une par une.** L'IUT 1 de Grenoble présente ses questions comme des pistes : « Ce ne sont que des conseils, vous pouvez faire autrement ».
 - **Mettre des figures dans l'introduction ou la conclusion.** Pour Grenoble, l'une comme l'autre « ne contient généralement pas de figures, ni de schémas ».
 - **Trop détailler la mission dès l'introduction.** Grenoble demande un aperçu rapide, puisque la suite le développe.
-- **Se contenter de décrire.** Pour AuFutur, ton rapport d'alternance « ne doit pas être une simple présentation de ton stage ». Dans son guide de conclusion de rapport de stage, il demande de porter « un regard critique sur ton propre travail ». Un stage peut déplaire, reconnaît-il, « mais il ne faut pas rendre ça trop négatif ». Présente les difficultés avec ce que tu en as appris.
+- **Se contenter de décrire.** Côté guides non scolaires, le site d'orientation AuFutur rappelle que ton rapport d'alternance « ne doit pas être une simple présentation de ton stage ». Dans son guide de conclusion de rapport de stage, il demande de porter « un regard critique sur ton propre travail ».
+- **Noircir le bilan.** Un stage peut déplaire, reconnaît AuFutur, « mais il ne faut pas rendre ça trop négatif ». Présente les difficultés avec ce que tu en as appris.
 - **Laisser des fautes.** AuFutur prévient qu'un rapport « truffé de fautes » peut faire perdre des points. Grenoble conseille de faire relire le rapport par un proche, pour l'orthographe et pour vérifier qu'il se comprend sans connaître ton domaine.
 
-Pour écrire un bilan concret, il te faut tes résultats et tes dates. Si tu ne les as pas notés, commence par [retrouver tes missions d'alternance](/blog/retrouver-ses-missions-alternance/). Pour voir l'introduction et la conclusion à leur place dans le document complet, regarde l'[exemple de rapport d'alternance](/blog/exemple-rapport-d-alternance/).
+Pour écrire un bilan concret, il te faut tes résultats et tes dates. Si tu ne les as pas notés, commence par [retrouver tes missions d'alternance](/blog/retrouver-ses-missions-alternance/). Pour voir où se placent l'introduction et la conclusion dans un rapport complet, et à quoi ressemble un bilan de compétences, regarde l'[exemple de rapport d'alternance](/blog/exemple-rapport-d-alternance/).

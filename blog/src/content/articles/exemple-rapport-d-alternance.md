@@ -4,7 +4,7 @@ description: "Un rapport d'alternance fictif, du plan au bilan de compétences, 
 pilier: rapport-d-alternance
 hub: false
 datePublished: 2026-11-06
-dateModified: 2026-11-06
+dateModified: 2026-11-07
 cta: connecteurs
 sources:
   - titre: "IUT 1 de Grenoble, département GMP : rapport d'alternance S3, la forme (2024-2025)"
@@ -24,9 +24,9 @@ sources:
     consulte: 2026-11-06
 ---
 
-Voici un exemple de rapport d'alternance entièrement fictif, celui d'Inès, en M1, chargée de réduire le délai de réponse du service client d'une PME qui vend des vélos électriques. Il suit l'ordre que donnent l'IUT 1 de Grenoble, Centrale Méditerranée et ICN Business School dans leurs consignes : l'entreprise, la mission, les actions, les résultats, le bilan. Après chaque extrait, tu trouves ce qui marche et ce que ces écoles disent regarder.
+Voici un exemple de rapport d'alternance entièrement fictif, celui d'Inès, en M1, chargée de réduire le délai de réponse du service client d'une PME qui vend des vélos électriques. Il suit l'ordre du livret d'ICN Business School : l'entreprise, la mission, les actions, les résultats, le bilan. L'IUT 1 de Grenoble propose une progression proche, et Centrale Méditerranée attend, pour le travail mené, les enjeux, les solutions envisagées, la solution retenue et les résultats.
 
-L'entreprise, les personnes et tous les chiffres des extraits sont inventés. Les règles citées dans les commentaires, elles, viennent des guides de ces écoles. Pour comparer les consignes de plusieurs établissements, commence par [ce que les écoles demandent pour un rapport d'alternance](/blog/rapport-d-alternance/). Celles de ton école passent avant cet exemple.
+L'entreprise, les personnes et tous les chiffres des extraits sont inventés. Sous chaque extrait, le bloc « Ce qui marche » donne notre avis, et le bloc « Ce que disent les consignes » cite les guides de ces écoles. Pour comparer les consignes de plusieurs établissements, commence par [ce que les écoles demandent pour un rapport d'alternance](/blog/rapport-d-alternance/). Celles de ton école passent avant cet exemple.
 
 ## Quel plan suit cet exemple de rapport d'alternance ?
 
@@ -41,7 +41,7 @@ Le rapport d'Inès fait 18 pages hors annexes, découpées en deux parties : l'e
    1. le contexte, c'est-à-dire le constat et ses conséquences ;
    2. les actions menées, des exigences de départ à la solution retenue ;
    3. les résultats et les écarts avec l'objectif.
-7. **Conclusion et bilan de compétences** (2 pages).
+7. **Conclusion et bilan de compétences** (1 à 2 pages).
 8. **Bibliographie**, placée avant les annexes comme le demande ICN.
 9. **Annexes** : l'échantillon de demandes analysé, les règles de tri, des captures anonymisées du tableau de suivi.
 
@@ -61,9 +61,9 @@ Les proportions suivent l'IUT de Grenoble, qui prévoit deux pages au maximum po
 - Elle ne garde que ce qui sert la suite. Avec la phrase sur l'atelier, le lecteur voit déjà venir le problème de la partie II.
 - Elle se place elle-même dans un organigramme simplifié.
 
-**Ce que le correcteur regarde**
+**Ce que disent les consignes**
 
-- **Le site de l'entreprise.** [Grenoble](https://chamilo.univ-grenoble-alpes.fr/courses/IUTGMPCAMS/document/Rapport_S3_V2_forme.pdf) permet de s'en inspirer et écarte le « copier/coller intégral ». L'historique mois par mois et l'organigramme illisible vont en annexe.
+- **Le site de l'entreprise.** [Grenoble](https://chamilo.univ-grenoble-alpes.fr/courses/IUTGMPCAMS/document/Rapport_S3_V2_forme.pdf) permet de s'en inspirer et écarte le « copier/coller intégral ». Plutôt qu'un historique mois par mois, Grenoble demande un résumé des dates clés, et un organigramme simplifié où tu te situes (« Simplifiez en vous positionnant »). Si tu tiens au détail, mets-le en annexe.
 - **Ta place dans l'équipe.** Pour ICN, cette partie doit permettre d'« apprécier la capacité de l'apprenant à s'intégrer dans son entreprise d'accueil ».
 
 ## Extrait 2 : comment poser le contexte de ta mission ?
@@ -78,10 +78,10 @@ Les proportions suivent l'IUT de Grenoble, qui prévoit deux pages au maximum po
 
 **Ce qui marche**
 
-- L'ordre est celui que propose l'[IUT 1 de Grenoble](https://chamilo.univ-grenoble-alpes.fr/courses/IUTGMPCAMS/document/Rapport_S3_V2_fond.pdf) : un constat (« l'état actuel des choses n'est pas satisfaisant »), ses conséquences, puis la mission.
+- L'ordre est celui que propose l'[IUT 1 de Grenoble](https://chamilo.univ-grenoble-alpes.fr/courses/IUTGMPCAMS/document/Rapport_S3_V2_fond.pdf) : un constat (« État actuel des choses n'est pas satisfaisant »), ses conséquences, puis la mission.
 - L'objectif est chiffré, daté et assorti d'une contrainte. Inès pourra y mesurer ses résultats.
 
-**Ce que le correcteur regarde**
+**Ce que disent les consignes**
 
 - **Le « pourquoi ».** Pour le rapport final de BUT, l'[IUT de Grenoble](https://chamilo.univ-grenoble-alpes.fr/courses/IUT1GMPK/document/Chamilo-BUT3-MA/Rapport_S5-2024-2025_fond.pdf) veut que le lecteur comprenne « pourquoi on vous a demandé de réaliser votre étude ». Il ajoute que le contexte est « souvent une partie que vous négligez (voire que vous oubliez) ».
 - **L'objectif de départ.** ICN demande de préciser « les résultats attendus (objectifs initiaux) » dès la présentation de la mission.
@@ -100,7 +100,7 @@ Les proportions suivent l'IUT de Grenoble, qui prévoit deux pages au maximum po
 - Avec « j'ai » et « nous avons », Inès sépare ce qu'elle a fait seule de ce qu'elle a décidé avec sa tutrice.
 - Elle renvoie le détail (l'échantillon, les règles) en annexe, comme l'IUT de Grenoble le conseille quand le rapport s'alourdit.
 
-**Ce que le correcteur regarde**
+**Ce que disent les consignes**
 
 - **Les solutions envisagées.** [Centrale Méditerranée](https://syllabus.centrale-med.fr/plugins/odf-web/odf/_content/course-cee-2-rapport-d-alternance-2a-fr-fr/CEE%202%20-%20Rapport%20d'alternance%202A.pdf) attend « les solutions envisagées, la solution retenue, la mise en œuvre et les résultats ».
 - **Les critères du choix.** Grenoble demande, pour le rapport final, quelle solution est retenue « suivant quels critères (quels arbitrages) ». ICN attend la démarche, les moyens et les méthodes employés.
@@ -109,7 +109,7 @@ Les proportions suivent l'IUT de Grenoble, qui prévoit deux pages au maximum po
 
 > *Extrait fictif, partie II.3.*
 >
-> Entre décembre 2025 et février 2026, le délai moyen de première réponse est passé de 38 à 19 heures. L'objectif de 24 heures est atteint pour les questions avant achat et le suivi de livraison. Il ne l'est pas pour les réparations, qui restent à 31 heures en moyenne, parce que la réponse dépend du diagnostic de l'atelier et que le tri ne raccourcit pas cette étape. Selon l'équipe, le tableau partagé a ramené les relances entre le service client et l'atelier d'une trentaine à une dizaine par semaine. Pour aller plus loin, il faudrait réserver chaque jour un créneau de diagnostic à l'atelier, ce qui dépasse le cadre de ma mission.
+> De décembre 2025 à février 2026, le délai moyen de première réponse est tombé à 19 heures, contre 38 en septembre. L'objectif de 24 heures est atteint pour les questions avant achat et le suivi de livraison. Il ne l'est pas pour les réparations, qui restent à 31 heures en moyenne, parce que la réponse dépend du diagnostic de l'atelier et que le tri ne raccourcit pas cette étape. Selon l'équipe, le tableau partagé a ramené les relances entre le service client et l'atelier d'une trentaine à une dizaine par semaine. Pour aller plus loin, il faudrait réserver chaque jour un créneau de diagnostic à l'atelier, ce qui dépasse le cadre de ma mission.
 
 **Ce qui marche**
 
@@ -117,11 +117,11 @@ Les proportions suivent l'IUT de Grenoble, qui prévoit deux pages au maximum po
 - Elle dit pourquoi les réparations restent au-dessus de l'objectif.
 - Elle distingue ce qui est mesuré (le délai) de ce que l'équipe estime (les relances).
 
-**Ce que le correcteur regarde**
+**Ce que disent les consignes**
 
-- **Les écarts.** Le livret d'[ICN](https://docushare.icn-artem.com/dsweb/Get/Document-167109/Guide%20Rapport%20Alternance%20PGE2%20PGE3%202020-2021%20V4_10%20220607.pdf) demande « les résultats obtenus et les écarts éventuels avec les objectifs initiaux », avec une analyse critique des difficultés rencontrées.
-- **L'état du projet.** Grenoble veut une conclusion technique qui dise si le projet est « abouti ou non » et ce qu'il reste à faire.
-- **Les chiffres.** À Grenoble, la note du rapport est la moyenne pondérée de celle du maître d'apprentissage et de celle du tuteur pédagogique. Ton tuteur en entreprise connaît les vrais chiffres, alors fais-lui relire cette partie.
+- **Les écarts.** [ICN](https://docushare.icn-artem.com/dsweb/Get/Document-167109/Guide%20Rapport%20Alternance%20PGE2%20PGE3%202020-2021%20V4_10%20220607.pdf) demande, dans son livret, « les résultats obtenus et les écarts éventuels avec les objectifs initiaux », avec une analyse critique des difficultés rencontrées.
+- **L'état du projet.** [Grenoble](https://chamilo.univ-grenoble-alpes.fr/courses/IUT1GMPK/document/Chamilo-BUT3-MA/Rapport_S5-2024-2025_fond.pdf) veut une conclusion technique qui dise si le projet est « abouti ou non » et ce qu'il reste à faire.
+- **La note de ton maître d'apprentissage.** À [Grenoble](https://chamilo.univ-grenoble-alpes.fr/courses/IUTGMPCAMS/document/Rapport_S3_V2_fond.pdf), la note du rapport est la moyenne pondérée de celle du maître d'apprentissage et de celle du tuteur pédagogique. Ton maître d'apprentissage note donc aussi ton rapport. Fais-lui relire tes résultats, il connaît les vrais chiffres.
 
 ## Extrait 5 : comment rédiger le bilan de compétences ?
 
@@ -135,7 +135,7 @@ Les proportions suivent l'IUT de Grenoble, qui prévoit deux pages au maximum po
 - Elle relie un cours précis à sa mission et dit où ce cours ne suffisait plus.
 - Elle finit sur son projet professionnel.
 
-**Ce que le correcteur regarde**
+**Ce que disent les consignes**
 
 - **Le recul.** ICN attend une conclusion qui montre le « recul critique de l'apprenant par rapport à sa formation académique et son expérience professionnelle en entreprise ».
 - **Le projet professionnel.** Pour le rapport final, l'IUT de Grenoble demande un retour d'expérience, un « regard a posteriori » sur le sujet et un « bilan dans votre projet professionnel ».
@@ -143,9 +143,9 @@ Les proportions suivent l'IUT de Grenoble, qui prévoit deux pages au maximum po
 
 ## Comment adapter cet exemple à ton rapport ?
 
-Garde l'enchaînement constat, actions, résultats, bilan, et remplace tout le reste par ta mission. En BUT GMP, l'IUT 1 de Grenoble appelle la partie II « étude technique » et la découpe en contexte, projet et conclusion du projet. Si ton école demande un mémoire, l'exercice change. Voici [la différence entre rapport et mémoire d'alternance](/blog/rapport-ou-memoire-d-alternance/).
+Garde l'enchaînement constat, actions, résultats, bilan, et remplace tout le reste par ta mission. Pour le rapport final de BUT GMP (S5), l'IUT 1 de Grenoble appelle la partie II « étude technique » et la découpe en contexte, projet et conclusion du projet. Si ton école demande un mémoire, l'exercice change. Voici [la différence entre rapport et mémoire d'alternance](/blog/rapport-ou-memoire-d-alternance/).
 
-L'exemple ne montre ni l'introduction ni la conclusion générale. Grenoble attend une introduction de trois quarts de page à une page, sans figure, qui explique pourquoi cette formation, pourquoi l'alternance, pourquoi cette entreprise et ce sujet. Tu trouveras la méthode dans le guide sur [l'introduction et la conclusion du rapport d'alternance](/blog/introduction-conclusion-rapport-d-alternance/).
+L'exemple ne montre pas l'introduction, et de la conclusion il ne donne que le bilan de compétences. Pour Grenoble, une introduction de trois quarts de page à une page suffit, sans figure, et elle explique pourquoi cette formation, pourquoi l'alternance, pourquoi cette entreprise et ce sujet. Tu trouveras la méthode dans le guide sur [l'introduction et la conclusion du rapport d'alternance](/blog/introduction-conclusion-rapport-d-alternance/).
 
 Avant de rendre ton rapport :
 

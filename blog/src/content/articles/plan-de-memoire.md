@@ -4,7 +4,7 @@ description: "Un plan type, deux exemples complets (mémoire de recherche et mé
 pilier: rediger-un-memoire
 hub: false
 datePublished: 2026-11-06
-dateModified: 2026-11-06
+dateModified: 2026-11-07
 cta: planificateur
 sources:
   - titre: "Université Jean Moulin Lyon 3, Faculté des langues : cahier des charges stage/alternance et mémoire de M2 (2025-2026)"
@@ -22,7 +22,7 @@ sources:
   - titre: "L'Étudiant, Myriam Greuter : « Mémoire, rapport de stage : les dix règles d'or du plan » (2013)"
     url: "https://www.letudiant.fr/jobsstages/nos-conseils/memoire-rapport-de-stage-les-dix-regles-d-or-du-plan.html"
     consulte: 2026-11-06
-  - titre: "L'Étudiant : « Mémoire, rapport de stage : comment construire un plan » (2013)"
+  - titre: "L'Étudiant, Myriam Greuter : « Mémoire, rapport de stage : comment construire un plan » (2013)"
     url: "https://www.letudiant.fr/jobsstages/nos-conseils/memoire-rapport-de-stage-comment-construire-un-plan.html"
     consulte: 2026-11-06
 ---
@@ -94,7 +94,7 @@ Dans ce plan :
 
 Fictif lui aussi, ce deuxième exemple vise un M2 en ressources humaines, préparé en alternance dans une PME industrielle.
 
-Un mémoire professionnel part de ton expérience en entreprise et la traite avec les outils d'un travail universitaire. À Lyon 3, la faculté des langues écrit que le mémoire de M2 « rend compte d'un vécu professionnel en respectant les exigences conceptuelles et méthodologiques d'un travail universitaire ». Sa problématique est « issue de l'expérience de stage/d'alternance », et la réponse passe par des « préconisations discutées avec des acteurs de la structure d'accueil ». Le plan ci-dessous suit cette logique.
+Un mémoire professionnel part de ton expérience en entreprise et la traite avec les outils d'un travail universitaire. À Lyon 3, la faculté des langues écrit que le mémoire de M2 « rend compte d'un vécu professionnel en respectant les exigences conceptuelles et méthodologiques d'un travail universitaire ». Sa problématique est « issue de l'expérience de stage/d'alternance » (le cahier des charges le précise pour le parcours LDC), et la réponse passe par des « préconisations discutées avec des acteurs de la structure d'accueil ». Le plan ci-dessous suit cette logique.
 
 **Mission en entreprise** : refaire le parcours d'intégration des nouveaux salariés.
 
@@ -118,19 +118,19 @@ Un mémoire professionnel part de ton expérience en entreprise et la traite ave
 
 Face à l'exemple de recherche :
 
-- **Tes missions entrent dans le plan comme terrain et comme preuve.** Elles apparaissent en II.A, là où elles servent l'argument. Un rapport les aurait déroulées une par une. Si tu hésites entre les deux exercices, la différence est détaillée dans [rapport ou mémoire d'alternance](/blog/rapport-ou-memoire-d-alternance/).
+- **Tes missions entrent dans le plan comme terrain et comme preuve.** Elles apparaissent en II.A, là où elles servent l'argument. Si tu hésites entre les deux exercices, la différence est détaillée dans [rapport ou mémoire d'alternance](/blog/rapport-ou-memoire-d-alternance/).
 - **Le plan tient en deux parties**, du diagnostic aux préconisations. Lyon 3 accepte deux ou trois parties.
-- **La présentation de l'entreprise reste courte.** Dans ses conseils pour le rapport, L'Étudiant le dit déjà : « Ne vous attardez pas sur l'historique de l'entreprise. » Dans un mémoire, elle sert seulement à comprendre la problématique.
+- **La présentation de l'entreprise sert la problématique.** Pour le rapport, L'Étudiant conseille déjà : « Ne vous attardez pas sur l'historique de l'entreprise. » Lyon 3 fait partir le mémoire de « l'environnement et [des] caractéristiques de l'entreprise d'accueil », et l'ENSMAC en demande un chapitre. Garde ce qui éclaire ta question, et vérifie la place que ta consigne lui donne.
 - **Les pages d'ouverture peuvent s'allonger.** À Lyon 3, la structure demandée ajoute une déclaration de confidentialité visée par l'organisme d'accueil, et le mémoire se termine par un résumé.
 
-Si ta question de départ n'est pas encore claire, commence par ta [problématique de mémoire d'alternance](/blog/problematique-memoire-alternance/). Certaines formations demandent aussi un plan détaillé en cours d'année. À l'ENSMAC (Bordeaux INP), l'apprenti remet à son tuteur pédagogique « un plan détaillé du mémoire de 5-6 pages avec un échéancier », accompagné des chapitres déjà rédigés sur l'entreprise, sur le projet (contexte, enjeux, objectifs) et sur la méthodologie. Le document est validé ou non validé, et en cas d'échec, le plan détaillé est à refaire en session 2.
+Si ta question de départ n'est pas encore claire, commence par ta problématique (étape 1 ci-dessous). Certaines formations demandent aussi un plan détaillé en cours d'année. À l'ENSMAC (Bordeaux INP), l'apprenti remet à son tuteur pédagogique « un plan détaillé du mémoire de 5-6 pages avec un échéancier », accompagné des chapitres déjà rédigés sur l'entreprise, sur le projet (contexte, enjeux, objectifs) et sur la méthodologie. Le document est validé ou non validé, et en cas d'échec, le plan détaillé est à refaire en session 2.
 
 ## Comment faire un plan de mémoire, étape par étape
 
 1. **Pose ta problématique d'abord.** Le plan y répond partie par partie, donc sans question claire, tu n'as rien pour trier tes idées. La méthode et des exemples sont dans l'article sur la [problématique de mémoire](/blog/problematique-de-memoire/). Lyon 3 place d'ailleurs la proposition de problématique en tête des rendus intermédiaires qu'elle recommande, avant le plan détaillé.
 2. **Liste tout en vrac.** L'Étudiant conseille de « lister les idées et documents, à l'aide de simples tirets », une feuille par grand thème. À ce stade, tu n'organises encore rien.
 3. **Repère les idées qui commandent les autres.** Le même article ajoute : « Soulignez les réflexions majeures, celles qui vont dominer et organiser les autres. » Range ensuite les éléments secondaires sous chacune d'elles. Tes deux ou trois groupes deviennent tes parties.
-4. **Donne un titre à chaque partie et sous-partie**, en écrivant ce qu'elle défend.
+4. **Donne un titre à chaque partie et sous-partie**, en écrivant ce qu'elle défend. Si tu veux t'aider d'un outil d'IA, vérifie d'abord ce qu'accepte ta charte ([utiliser l'IA pour son mémoire](/blog/ia-memoire/) en compare cinq).
 5. **Teste les transitions.** « Prévoyez les transitions dès le plan », écrit Myriam Greuter. Son article cite Fériel : « si l'on n'est pas capable de concevoir une transition logique, naturelle, nécessaire, entre deux parties, c'est que le plan n'est pas bon ».
 6. **Fais-le lire.** L'Étudiant propose un test simple : « Faites un test auprès d'un proche qui ne connaît rien au sujet. » Si cette personne n'est perdue à aucun moment, ton plan tient.
 7. **Détaille-le si ta formation le demande.** Sous chaque sous-partie, note les idées, les sources et les données que tu comptes y mettre.
@@ -143,16 +143,16 @@ Le plan en deux parties va d'un constat à une réponse, le plan en trois partie
 | Structure | Se prête à | Ce qu'en dit la source |
 |---|---|---|
 | Deux parties | Un mémoire qui va d'un constat à une réponse, comme un diagnostic suivi de préconisations | Lyon 3 accepte un plan détaillé « en deux ou trois parties » |
-| Trois parties | Une question examinée sous plusieurs angles avant de trancher | Pour Myriam Greuter (L'Étudiant), le « mouvement dialectique créé par les trois parties » est « le meilleur moyen de pousser plus loin la réflexion » |
+| Trois parties | Une question examinée sous plusieurs angles avant de trancher | Quand le plan en trois parties est imposé, Myriam Greuter (L'Étudiant) conseille de te convaincre que « le mouvement dialectique créé par les trois parties imposées n'est pas un carcan, mais le meilleur moyen de pousser plus loin la réflexion » |
 | IMRaD : introduction, méthode, résultats, discussion | Un mémoire de recherche avec enquête ou expérimentation | L'Université de Liège impose pour le mémoire de logopédie « la structure générale d'un article scientifique », adaptable « en concertation avec le directeur/promoteur du mémoire » |
 
 Liège donne l'ordre complet de cette structure : introduction générale, introduction théorique (la revue de la littérature), objectifs et hypothèses, méthodologie, résultats, discussion, conclusions et perspectives. Lyon 3, à l'inverse, laisse le choix entre deux et trois parties. Aucune de ces structures ne vaut partout, et L'Étudiant le rappelle : « Pour un sujet donné, il n'existe pas un plan unique. »
 
 ## Quelles erreurs rendent un plan de mémoire bancal ?
 
-- **Le plan chronologique.** « Évitez surtout le plan chronologique », recommande un enseignant cité par L'Étudiant à propos du rapport de stage. Dans un mémoire d'alternance, raconter l'année mois par mois pose le même problème, parce que tes parties suivent alors les dates et non plus ta problématique.
-- **Le plan du rapport recopié.** L'Étudiant cite les plans imposés des rapports de stage, comme « entreprise – travail effectué – bilan ». Ces plans rendent compte d'un stage. Ton mémoire répond à ta problématique, donc ses parties suivent ta réponse.
-- **La description sans analyse.** Pour le rapport, L'Étudiant cite un professeur de BTS : « Ne vous contentez pas de décrire, passez à l'analyse, à la réflexion et à l'implication personnelle. » Dans un mémoire, chaque partie descriptive doit déboucher sur une analyse.
+- **Le plan chronologique.** « Évitez surtout le plan chronologique », recommande Jean-Philippe, professeur en DUT génie civil cité par L'Étudiant, à propos du rapport de stage (il excepte le cas d'une progression d'un poste d'ouvrier à un poste d'encadrement). Dans un mémoire d'alternance, raconter l'année mois par mois pose le même problème, parce que tes parties suivent alors les dates au lieu de ta problématique.
+- **Le plan du rapport recopié.** L'Étudiant cite les plans imposés des rapports de stage, comme « entreprise – travail effectué – bilan » pour un stage de découverte. Ces plans rendent compte d'un stage. Ton mémoire répond à ta problématique, donc ses parties suivent ta réponse.
+- **La description sans analyse.** Pour le rapport, L'Étudiant cite Patrice, professeur en BTS management des unités commerciales : « Ne vous contentez pas de décrire, passez à l'analyse, à la réflexion et à l'implication personnelle. » Dans un mémoire, chaque partie descriptive doit déboucher sur une analyse.
 - **Des parties de poids très différent**, par exemple une partie I de vingt pages et une partie II de cinq.
 - **Des titres qui nomment un thème** (« Le contexte », « L'analyse ») sans dire ce que la partie avance.
 
@@ -160,7 +160,7 @@ Liège donne l'ordre complet de cette structure : introduction générale, intro
 
 ### Plan, sommaire et table des matières : quelle différence ?
 
-Le plan est ton outil de travail, et il finit dans le document sous forme de sommaire ou de table des matières. Paris Nanterre distingue les deux dans son memento. Le sommaire, placé au début, ne montre que les parties importantes, « à la différence d'une table des matières », qui donne la page de chaque rubrique. Le même memento conseille de demander à ton directeur de mémoire où il veut la table, au début ou à la fin.
+Le plan est ton outil de travail, et il finit dans le document sous forme de sommaire ou de table des matières. Paris Nanterre réserve plutôt le sommaire aux ouvrages longs : placé au début, il ne montre que les parties importantes, « à la différence d'une table des matières », qui donne la page de chaque rubrique. Le même memento conseille de demander à ton directeur de mémoire où il veut la table, au début ou à la fin.
 
 ### Quand faire son plan de mémoire ?
 

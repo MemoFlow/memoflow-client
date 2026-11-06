@@ -4,7 +4,7 @@ description: "Trouve ta problématique de mémoire en 5 étapes, avec des exempl
 pilier: rediger-un-memoire
 hub: false
 datePublished: 2026-11-06
-dateModified: 2026-11-06
+dateModified: 2026-11-07
 cta: generique
 sources:
   - titre: "Université Paris 8, IEE : guide de rédaction du mémoire de Master 1 CIME (2019-2020)"
@@ -22,18 +22,18 @@ sources:
   - titre: "L'Etudiant : comment poser une problématique de mémoire de master 1 (mise à jour le 6 février 2025)"
     url: "https://www.letudiant.fr/etudes/3es-cycles-et-masters/comment-poser-une-problematique-de-memoire-de-master-1.html"
     consulte: 2026-11-06
-  - titre: "L'Etudiant et Superprof : la checklist pour rédiger une problématique de mémoire pertinente (22 juin 2022)"
+  - titre: "Superprof, en partenariat avec L'Etudiant : la checklist pour rédiger une problématique de mémoire pertinente (22 juin 2022)"
     url: "https://www.letudiant.fr/etudes/3es-cycles-et-masters/la-checklist-pour-rediger-une-problematique-de-memoire-pertinente.html"
     consulte: 2026-11-06
 ---
 
 La problématique de mémoire, c'est la question précise à laquelle ton mémoire répond. Ton plan, tes parties et ta conclusion en découlent. Pour la trouver, tu pars d'un thème, tu le resserres en sujet, tu lis, puis tu écris plusieurs questions et tu gardes celle que ton directeur valide.
 
-Cette page fait partie du guide pour [rédiger un mémoire](/blog/rediger-un-memoire/). Tu y trouves la méthode en 5 étapes, des exemples avant/après dans huit filières et une checklist pour tester ta formulation.
+Cette page fait partie du guide pour [rédiger un mémoire](/blog/rediger-un-memoire/).
 
 ## Qu'est-ce qu'une problématique de mémoire ?
 
-Le guide du mémoire de M1 CIME de l'Université Paris 8 la définit comme la partie « la plus difficile de l'introduction » : elle « pose LA question à laquelle votre mémoire se propose de répondre ». Il prévient aussitôt que « toutes les questions ne sont pas des problématiques », et donne trois questions qu'il juge « trop larges, trop vagues », avec leur version corrigée :
+Le guide du mémoire de M1 CIME de l'Université Paris 8 la définit comme la partie « la plus difficile de l'introduction » : elle « pose LA question à laquelle votre mémoire se propose de répondre ». Paris 8 prévient aussitôt que « toutes les questions ne sont pas des problématiques », et donne trois questions qu'il juge « trop larges, trop vagues », avec leur version corrigée :
 
 - « Quel est l'avenir des relations entre la Russie et l'Union européenne ? » devient « A quelles conditions l'Union européenne pourrait-elle élaborer une stratégie commune face à la Russie ? »
 - « La Banque centrale européenne doit-elle mettre fin à sa politique accommodante ? » devient « Quelles seraient les conséquences pour l'économie européenne d'une sortie par la BCE de sa politique accommodante ? »
@@ -45,7 +45,7 @@ La problématique s'écrit en toutes lettres dans l'introduction. Paris 8 consei
 
 ## Quelle différence entre problématique, question de recherche et hypothèses ?
 
-La problématique est le raisonnement qui mène à ta question, la question de recherche est la phrase à laquelle tu réponds, et l'hypothèse est la réponse que tu attends. Beaucoup de guides, comme celui de Paris 8, réservent pourtant le mot « problématique » à la question finale. Le guide du mémoire du master MEEF de l'Université Grenoble Alpes (novembre 2023) sépare bien les trois. Pour lui, la problématique « découle de la revue de la littérature », tient en une demi-page à une page, et part de la synthèse de tes lectures pour « formuler ensuite une question ou un problème ». Puis « une hypothèse (ou un petit nombre d'hypothèses) est formulée comme réponse attendue à la question posée ».
+La problématique est le raisonnement qui mène à ta question, la question de recherche est la phrase à laquelle tu réponds, et l'hypothèse est la réponse que tu attends. L'Etudiant note pourtant que « bien souvent la problématique et la question centrale se confondent », et Paris 8 appelle problématique la question elle-même. Le guide du mémoire du master MEEF de l'Université Grenoble Alpes (novembre 2023) distingue le raisonnement, la question et l'hypothèse. Pour lui, la problématique « découle de la revue de la littérature », tient en une demi-page à une page, et part de la synthèse de tes lectures pour « formuler ensuite une question ou un problème ». Puis « une hypothèse (ou un petit nombre d'hypothèses) est formulée comme réponse attendue à la question posée ».
 
 | | Ce que c'est | Exemple (fictif) |
 |---|---|---|
@@ -75,11 +75,11 @@ Si tu bloques à l'étape 2, ton thème est sans doute encore trop vaste. Si tu 
 Les deux formes passent pour une problématique de mémoire, et les sources se contredisent sur ce point, parfois sur un même site :
 
 - L'article de L'Etudiant sur la problématique de master 1 (mis à jour le 6 février 2025) demande « une question ouverte, ni trop généraliste, ni trop restrictive ».
-- La checklist publiée par L'Etudiant avec Superprof (22 juin 2022) dit l'inverse : il faut « trouver une question fermée : on doit pouvoir répondre par oui ou non ».
+- Une checklist de Superprof, plateforme de cours particuliers, publiée en partenariat sur le site de L'Etudiant le 22 juin 2022, dit l'inverse : il faut « trouver une question fermée : on doit pouvoir répondre par oui ou non ». Elle ajoute aussitôt que tu n'auras pas « seulement » à répondre par oui ou non, mais à « apporter des nuances ».
 - Le guide de L3 droit de Paris-Saclay écrit qu'une bonne problématique « peut être rédigée sous forme de question fermée ».
 - Parmi les trois reformulations de Paris 8, deux sont ouvertes (« A quelles conditions… », « Quelles seraient les conséquences… ») et une est fermée (« … renforce-t-elle l'influence des Etats-Unis ? »).
 
-Aucun guide d'université lu ici n'interdit l'une ou l'autre. La question fermée t'oblige à trancher par oui ou par non, ce qui colle à la logique d'hypothèse : la checklist de L'Etudiant précise que le but est de « confirmer ou d'infirmer des hypothèses de départ ». Une question en « comment » ou « dans quelle mesure » laisse plus de place pour expliquer un mécanisme ou mesurer un degré. Paris 8 corrige des questions trop vagues, quelle que soit leur forme. Si ton directeur ou ta consigne impose une forme, suis-la.
+Aucun guide d'université lu ici n'interdit l'une ou l'autre. La question fermée t'oblige à trancher par oui ou par non, ce qui colle à la logique d'hypothèse : la checklist de Superprof précise que le but est de « confirmer ou d'infirmer des hypothèses de départ ». Une question en « comment » ou « dans quelle mesure » laisse plus de place pour expliquer un mécanisme ou mesurer un degré. Paris 8 corrige des questions trop vagues, quelle que soit leur forme. Si ton directeur ou ta consigne impose une forme, suis-la.
 
 ## Exemples de problématique de mémoire par filière
 
@@ -129,7 +129,7 @@ Chaque version reformulée nomme un acteur, un terrain et ce que tu vas observer
 
 ## Et si tu es en alternance ?
 
-Certaines formations demandent une question tirée du terrain. Le guide de Paris 8, par exemple, exige une problématique « à caractère professionnel ». En alternance, tu peux la tirer de tes missions, à condition qu'elle convienne à ton école comme à ton entreprise. La méthode et des exemples pour ce cas sont dans le guide sur la [problématique de mémoire d'alternance](/blog/problematique-memoire-alternance/). Si ta formation te demande un mémoire et un rapport, vérifie d'abord ce qui distingue un [rapport d'un mémoire d'alternance](/blog/rapport-ou-memoire-d-alternance/).
+Certaines formations demandent une question tirée du terrain. Le guide de Paris 8, par exemple, exige une problématique « à caractère professionnel ». En alternance, tu peux la tirer de tes missions, à condition qu'elle convienne à ton école comme à ton entreprise. La méthode et des exemples pour ce cas sont dans le guide sur la [problématique de mémoire d'alternance](/blog/problematique-memoire-alternance/).
 
 ## Checklist : ta problématique tient-elle la route ?
 
@@ -143,7 +143,7 @@ Coche chaque ligne avant de l'envoyer à ton directeur.
 - [ ] Elle découle de tes lectures (UGA).
 - [ ] Tu sais quelles données recueillir pour y répondre. L'UGA demande que le recueil de données permette de tester l'hypothèse.
 - [ ] Elle est écrite telle quelle dans ton introduction, et ton plan y répond partie par partie (Paris 8).
-- [ ] Ton directeur l'a validée (Paris-Saclay, Paris 8).
+- [ ] Ton directeur l'a validée (Paris 8 ; Paris-Saclay pour le sujet).
 
 ## Quelles erreurs font renvoyer une problématique ?
 

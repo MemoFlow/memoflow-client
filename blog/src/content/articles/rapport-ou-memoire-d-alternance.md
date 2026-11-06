@@ -4,7 +4,7 @@ description: "Problématique, bibliographie, pages, notation : les consignes de 
 pilier: rapport-d-alternance
 hub: false
 datePublished: 2026-11-06
-dateModified: 2026-11-06
+dateModified: 2026-11-07
 cta: generique
 sources:
   - titre: "Université Paris-Panthéon-Assas, master Ingénierie statistique et financière : cahier des charges du mémoire d'alternance"
@@ -42,7 +42,7 @@ sources:
     consulte: 2026-11-06
 ---
 
-Un rapport d'alternance rend compte de tes missions en entreprise et de ce que tu en retiens. Un mémoire d'alternance part de ces missions pour répondre à une question, avec une problématique, des lectures et une méthode. Dans les consignes publiques relevées, un rapport fait 15 à 26 pages, un mémoire 30 pages ou plus. Les noms changent d'une école à l'autre, donc lis ta propre consigne avant tout.
+Un rapport d'alternance rend compte de tes missions en entreprise et de ce que tu en retiens. Un mémoire d'alternance part de ces missions pour répondre à une question, avec une problématique, des lectures et une méthode. Dans les consignes publiques relevées, un rapport fait 15 à 26 pages, un mémoire une trentaine de pages ou plus. Les noms changent d'une école à l'autre, donc lis ta propre consigne avant tout.
 
 Ce comparatif s'appuie sur les consignes de 11 formations, lues le 6 novembre 2026. Pour le plan, la notation et la soutenance du rapport lui-même, va voir le guide du [rapport d'alternance](/blog/rapport-d-alternance/).
 
@@ -56,11 +56,11 @@ Le mémoire d'alternance se sert de tes missions pour traiter une question. Les 
 - **Université de La Réunion**, M2 d'économie : le mémoire professionnel « n'est pas à confondre avec un "rapport de stage" qui est descriptif ».
 - **Lyon 3**, Faculté des langues, M2 : « Il ne s'agit ni d'un rapport de stage, ni d'une réponse purement théorique ».
 - **Cnam**, licence pro Métiers de l'entrepreneuriat : le mémoire « doit dépasser le cadre factuel d'une narration de stage ».
-- **Aix-Marseille Université**, master Management du sport : le cours de méthode du mémoire consacre un point à « ce que le mémoire n'est pas (rapport de stage, consulting, description) ».
+- **Aix-Marseille Université**, master Management du sport : le cours de méthode du mémoire, suivi en M1 par les alternants comme par les stagiaires, consacre un point à « ce que le mémoire n'est pas (rapport de stage, consulting, description) ».
 
 [Assas](https://isf.assas-universite.fr/sites/default/files/master_isf/cahier_des_charges_memoire_masterisf_0.pdf) demande à l'apprenti de « mettre en perspective » la façon dont il a mené ses missions, au regard de son expérience et des cours reçus à l'université.
 
-L'[université de La Réunion](https://ufr-de.univ-reunion.fr/fileadmin/Fichiers/FDE/Formations/Economie-AES/Ressources_p%C3%A9dagogiques/Guide_Memoire_Professionnel_-_M2_Economie.pdf) veut que le mémoire avance « dès la première semaine de présence » en entreprise. Rapport ou mémoire, tu écris sur une année entière, alors commence par les parties que tu connais déjà, comme la présentation de l'entreprise et tes premières missions.
+L'[université de La Réunion](https://ufr-de.univ-reunion.fr/fileadmin/Fichiers/FDE/Formations/Economie-AES/Ressources_p%C3%A9dagogiques/Guide_Memoire_Professionnel_-_M2_Economie.pdf) veut que le mémoire avance « dès la première semaine de présence » en entreprise. Rapport ou mémoire, tu écris souvent sur une année entière, alors commence par les parties que tu connais déjà, comme la présentation de l'entreprise et tes premières missions.
 
 ## Rapport ou mémoire d'alternance : le tableau comparatif
 
@@ -69,30 +69,30 @@ Chaque case vient des documents publics cités plus bas, lus le 6 novembre 2026.
 | Critère | Rapport d'alternance | Mémoire d'alternance |
 |---|---|---|
 | Finalité | Rendre compte de l'entreprise, des missions, des résultats, et prendre du recul (ICN, Grenoble) | Répondre à une question tirée des missions, en mobilisant les cours et des lectures (Assas, La Réunion, Lyon 3) |
-| Problématique | Parfois. Poitiers demande un rapport « problématisé », ICN n'en parle pas | Demandée dans toutes les consignes relevées |
-| Lectures | Bibliographie demandée par ICN et par Poitiers (normes APA) | Bibliographie obligatoire et revue de la littérature (Assas, La Réunion, AMU) |
+| Problématique | Parfois. Poitiers demande un rapport « problématisé », ICN n'en parle pas | Demandée par Assas, La Réunion, Gustave Eiffel, Lyon 3 et le Cnam (licence pro). Paris 1 (AGEC) et le Cnam (Droit) n'en parlent pas dans leurs fiches |
+| Lectures | Bibliographie demandée par ICN et par Poitiers (normes APA) | Bibliographie obligatoire et revue de la littérature (Assas, La Réunion) |
 | Longueur | 15 à 20 pages (Grenoble), une vingtaine (ICN), 20 à 26 (Poitiers) | Environ 30 pages (La Réunion), 30 à 50 (Assas), au moins 35 à 40 (Gustave Eiffel), 10 000 mots minimum (Lyon 3) |
 | Plan | Entreprise, missions, démarche et résultats, bilan (Grenoble, ICN) | Problématique, contexte et revue de littérature, méthode, résultats, analyse critique, limites (Assas) |
 | Qui note | École et entreprise, souvent ensemble (Grenoble, ICN) | École et entreprise : à Assas, 30 % pour l'entreprise, 50 % pour le tuteur universitaire, 20 % pour l'oral |
 | Soutenance | Pas toujours. Aucune soutenance publique en PGE2 chez ICN, un oral à Poitiers | Prévue dans toutes les consignes de mémoire relevées qui abordent l'oral |
 
-Les sources : [Assas](https://isf.assas-universite.fr/sites/default/files/master_isf/cahier_des_charges_memoire_masterisf_0.pdf), [La Réunion](https://ufr-de.univ-reunion.fr/fileadmin/Fichiers/FDE/Formations/Economie-AES/Ressources_p%C3%A9dagogiques/Guide_Memoire_Professionnel_-_M2_Economie.pdf), [Gustave Eiffel](https://lcs.univ-gustave-eiffel.fr/fileadmin/redaction/LCS/Formations/M1CIT-Livret-Mem-Entrepr-21-22.pdf), [Lyon 3](https://www.univ-lyon3.fr/medias/fichier/faculte-des-langues-cahier-des-charges-25-26-memoire-et-stage-alt-m2_1759331784177-pdf), [AMU](https://fss.univ-amu.fr/sites/default/files/media-ressource/MASTER%201%20MS%20-%20S2%20-%20BCC3%20-%20MEMOIRE%20ALTERNANCE.pdf), [Poitiers](https://inspe.univ-poitiers.fr/wp-content/uploads/sites/513/2023/08/Guide-M2-2023-2024_VF.pdf), [ICN](https://docushare.icn-artem.com/dsweb/Get/Document-167109/Guide%20Rapport%20Alternance%20PGE2%20PGE3%202020-2021%20V4_10%20220607.pdf), [IUT 1 de Grenoble](https://chamilo.univ-grenoble-alpes.fr/courses/IUTGMPCAMS/document/Rapport_S3_V2_forme.pdf). Le livret d'ICN date de 2022, celui de Gustave Eiffel de 2021-2022.
+Les sources : [Assas](https://isf.assas-universite.fr/sites/default/files/master_isf/cahier_des_charges_memoire_masterisf_0.pdf), [La Réunion](https://ufr-de.univ-reunion.fr/fileadmin/Fichiers/FDE/Formations/Economie-AES/Ressources_p%C3%A9dagogiques/Guide_Memoire_Professionnel_-_M2_Economie.pdf), [Gustave Eiffel](https://lcs.univ-gustave-eiffel.fr/fileadmin/redaction/LCS/Formations/M1CIT-Livret-Mem-Entrepr-21-22.pdf), [Lyon 3](https://www.univ-lyon3.fr/medias/fichier/faculte-des-langues-cahier-des-charges-25-26-memoire-et-stage-alt-m2_1759331784177-pdf), [Cnam](https://www.cnam.fr/formation/memoire-professionnel-3), [Poitiers](https://inspe.univ-poitiers.fr/wp-content/uploads/sites/513/2023/08/Guide-M2-2023-2024_VF.pdf), [ICN](https://docushare.icn-artem.com/dsweb/Get/Document-167109/Guide%20Rapport%20Alternance%20PGE2%20PGE3%202020-2021%20V4_10%20220607.pdf), [IUT 1 de Grenoble](https://chamilo.univ-grenoble-alpes.fr/courses/IUTGMPCAMS/document/Rapport_S3_V2_forme.pdf). Le livret d'ICN date de 2022, celui de Gustave Eiffel de 2021-2022.
 
 ## Faut-il une problématique dans un rapport d'alternance ?
 
-Pour un mémoire d'alternance, oui, dans toutes les consignes relevées. [Gustave Eiffel](https://lcs.univ-gustave-eiffel.fr/fileadmin/redaction/LCS/Formations/M1CIT-Livret-Mem-Entrepr-21-22.pdf) l'écrit pour son M1 Commerce international trilingue : le travail « relève du mémoire, ce qui inclut obligatoirement une problématique ». L'université précise que ce n'est pas « une simple description de l'entreprise » suivie d'« une énumération de tâches ». Assas, La Réunion et Lyon 3 demandent une problématique liée aux missions.
+Ça dépend de ta formation. Le rapport d'alternance n'en demande une que dans certaines consignes. Au master IPHD de l'[université de Poitiers](https://inspe.univ-poitiers.fr/wp-content/uploads/sites/513/2023/08/Guide-M2-2023-2024_VF.pdf), l'alternance « débouche sur un rapport d'alternance problématisé », avec un questionnement professionnel qui sert de « fil directeur ». À l'IUT 1 de Grenoble, la partie mission du rapport de S3 s'ouvre sur « le contexte et/ou la problématique ». ICN ne parle pas de problématique dans son livret pour le rapport de PGE2.
 
-Le rapport d'alternance, lui, en demande une dans certaines formations seulement. Au master IPHD de l'[université de Poitiers](https://inspe.univ-poitiers.fr/wp-content/uploads/sites/513/2023/08/Guide-M2-2023-2024_VF.pdf), l'alternance « débouche sur un rapport d'alternance problématisé », avec un questionnement professionnel qui sert de « fil directeur ». À l'IUT 1 de Grenoble, la partie mission du rapport de S3 s'ouvre sur « le contexte et/ou la problématique ». ICN ne parle pas de problématique dans son livret pour le rapport de PGE2.
+Pour un mémoire d'alternance, la plupart des consignes relevées en exigent une. [Gustave Eiffel](https://lcs.univ-gustave-eiffel.fr/fileadmin/redaction/LCS/Formations/M1CIT-Livret-Mem-Entrepr-21-22.pdf) l'écrit pour son M1 Commerce international trilingue : le travail « relève du mémoire, ce qui inclut obligatoirement une problématique ». L'université précise que ce n'est pas « une simple description de l'entreprise » suivie d'« une énumération de tâches ». Assas, La Réunion, Lyon 3 et la licence pro du Cnam demandent une problématique liée aux missions ou à l'entreprise. Paris 1, pour son master AGEC, et le Cnam, pour son master Droit, n'en parlent pas dans leurs fiches.
 
 Si ta consigne en demande une, tu peux [trouver la problématique de ton mémoire d'alternance](/blog/problematique-memoire-alternance/) à partir de tes missions.
 
 ## Quelle place pour les lectures et la bibliographie ?
 
-Dans un mémoire d'alternance, tu appuies ton raisonnement sur tes lectures. Assas exige des références « à l'appui de vos arguments » et tranche : « Un mémoire sans références bibliographiques n'a pas sa place parmi les documents universitaires. » La Réunion parle de « revue de la littérature » ou d'« état de l'art ». Le cours d'AMU prévoit un cadre théorique, une revue de littérature et des fiches de lecture.
+Dans un mémoire d'alternance, tu appuies ton raisonnement sur tes lectures. Assas exige des références « à l'appui de vos arguments » et tranche : « Un mémoire sans références bibliographiques n'a pas sa place parmi les documents universitaires. » La Réunion parle de « revue de la littérature » ou d'« état de l'art ». Le cours de méthode d'AMU prévoit un cadre théorique, une revue de littérature et des fiches de lecture.
 
 Le rapport d'alternance n'en est pas toujours dispensé. ICN demande une bibliographie avant les annexes dans tous les rapports rendus, avec les références citées dans le corps du texte. Poitiers veut une bibliographie aux normes APA et demande de « mettre en perspective l'expérience de stage avec des savoirs extérieurs ».
 
-La différence est dans l'usage. Dans un rapport, tu cites des lectures pour éclairer ce que tu as fait. Dans un mémoire, tu t'en sers pour construire ta réponse et la défendre devant le jury.
+Dans un rapport, tu cites des lectures pour éclairer ce que tu as fait. Dans un mémoire, tu t'en sers pour construire ta réponse et la défendre devant le jury.
 
 ## Combien de pages, qui note, quelle soutenance ?
 
@@ -115,10 +115,10 @@ La soutenance est la règle pour le mémoire d'alternance : 20 minutes de prése
 
 ## Mémoire professionnel, rapport d'activité, dossier : les noms varient selon l'école
 
-L'intitulé ne suffit pas à savoir ce qu'on attend de toi. Plusieurs cas du relevé :
+L'intitulé ne dit pas toujours ce qu'on attend de toi :
 
 - **Cnam**, master Droit de l'entreprise en alternance : l'unité s'appelle « [Expérience professionnelle et rapport d'activité](https://www.cnam.fr/formation/experience-professionnelle-et-rapport-dactivite-6) ». Elle prépare pourtant un « mémoire professionnel », soutenu devant un jury de professionnels et d'enseignants-chercheurs.
-- **ICN Business School** : l'apprenti rend un « rapport de projet en entreprise » en PGE2, puis un mémoire de fin d'études en PGE3.
+- **ICN Business School** : l'apprenti rend un « rapport de projet en entreprise » chaque année, en PGE2 comme en PGE3, et écrit en plus un mémoire de fin d'études en PGE3.
 - **AMU**, M1 Management du sport : l'évaluation envisagée est un oral avec poster et un « dossier personnel d'alternance » pour les alternants, un oral et un mémoire pour les stagiaires.
 - **Poitiers**, M2 IPHD : tu rends les deux la même année. Un rapport d'alternance pour l'unité Pratiques professionnelles, et un mémoire de recherche « comportant une revue de littérature » pour l'unité Initiation à la recherche.
 - **Paris 1 Panthéon-Sorbonne**, M2 AGEC : le « [mémoire professionnel (alternance ou stage)](https://formations.pantheonsorbonne.fr/fr/catalogue-des-formations/master-M/master-administration-economique-et-sociale-KBTIJF6F/master-parcours-anticipation-et-gestion-de-l-emploi-et-des-competences-KBTIJFIT/ue-2-M9QE9RRR/memoire-professionnel-alternance-ou-stage-memoire-de-fin-d-KJ08YHER.html) » s'appuie sur les savoirs du cursus et sur des éléments empiriques qui « peuvent être issus de leur propre expérience professionnelle ».

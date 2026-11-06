@@ -1,10 +1,10 @@
 ---
-title: "Utiliser l'IA pour son mémoire de fin d'études : les règles"
-description: "Recherche, plan, reformulation, relecture, rédaction : ce que 5 chartes universitaires acceptent, ce qu'il faut déclarer et où l'IA invente des sources."
+title: "Utiliser l'IA pour son mémoire de fin d'études : les usages"
+description: "Recherche, plan, reformulation, rédaction : ce que l'IA peut faire à chaque étape du mémoire selon 5 chartes, et où elle invente des sources."
 pilier: ia-memoire
 hub: true
 datePublished: 2026-11-06
-dateModified: 2026-11-06
+dateModified: 2026-11-07
 cta: planificateur
 sources:
   - titre: "Université Clermont Auvergne, Charte du bon usage de l'IA générative (délibération du CA du 27 juin 2025)"
@@ -41,14 +41,14 @@ La règle de départ change d'une fac à l'autre. À l'Université Clermont Auve
 
 Dans les chartes lues, l'IA est admise pour chercher des informations, aider à structurer, corriger la langue et traduire. Elle est interdite pour rédiger, fabriquer des données ou traiter des données confidentielles de l'entreprise.
 
-Les cinq textes retenus sont des chartes françaises publiées en ligne et datées de 2025-2026 : l'Université Clermont Auvergne (UCA), l'Université Paris-Est Créteil (UPEC), l'Université d'Angers, l'UFR LLASIC de l'Université Grenoble Alpes et le master Urbanisme et Aménagement de l'Université de Lorraine à Metz. Elles ne valent que pour leurs étudiants, et ta charte peut dire autre chose.
+Les cinq textes retenus sont des chartes françaises adoptées ou mises en ligne en 2025-2026 : l'Université Clermont Auvergne (UCA), l'Université Paris-Est Créteil (UPEC), l'Université d'Angers, l'UFR LLASIC de l'Université Grenoble Alpes et le master Urbanisme et Aménagement de l'Université de Lorraine à Metz. La sixième charte du comparatif lié plus haut, celle de l'Université de Picardie Jules Verne, n'est pas reprise ici : elle ne détaille pas les usages permis et range la déclaration parmi ses recommandations. Ces cinq chartes ne valent que pour leurs étudiants, et ta charte peut dire autre chose.
 
 | Étape du mémoire | Ce qu'écrivent les chartes | Chartes |
 |---|---|---|
 | Recherche documentaire, exploration d'un sujet | Admise comme aide, à condition de vérifier et de citer les sources | UCA, Angers, LLASIC, Lorraine |
-| Problématique et plan | Aide à la structuration admise à l'UPEC et en Lorraine. La Lorraine range « Propose-moi une problématique et des hypothèses » parmi les mauvais usages, LLASIC veut une structure entièrement de l'étudiant | UPEC, Lorraine, LLASIC |
-| Correction de la langue | Admise comme tâche de soutien ou aide linguistique | UPEC, LLASIC, Lorraine |
-| Reformulation | Admise comme aide linguistique, à déclarer passage par passage | LLASIC, Lorraine, UPEC |
+| Problématique et plan | Aide à la structuration admise à l'UPEC. La Lorraine autorise la « génération d'idées ou de plans de travail », mais range « Propose-moi une problématique et des hypothèses » parmi les mauvais usages. LLASIC veut une structure entièrement de l'étudiant | UPEC, Lorraine, LLASIC |
+| Correction de la langue | Admise comme tâche de soutien ou aide linguistique | UPEC, LLASIC, Lorraine, Angers |
+| Reformulation | Admise comme aide linguistique, à déclarer avec les passages concernés (paragraphe par paragraphe en Lorraine) | LLASIC, Lorraine, UPEC |
 | Traduction | Admise | UPEC, LLASIC |
 | Rédaction de paragraphes ou d'une section | Interdite | LLASIC, UPEC, Angers |
 | Données d'enquête | Interdit de les fabriquer ou de les falsifier | Angers, UPEC, Lorraine |
@@ -56,16 +56,16 @@ Les cinq textes retenus sont des chartes françaises publiées en ligne et daté
 
 « Admise » suppose que ta formation autorise l'IA. L'UPEC exige une « autorisation expresse et préalable » de l'enseignant, Angers l'accord de l'encadrant.
 
-L'aide au plan divise le plus les chartes. Si ta charte et ton directeur de mémoire l'acceptent, garde la problématique pour toi et déclare l'outil comme aide à la structuration, l'une des finalités que l'UPEC cite en exemple.
+L'aide au plan divise le plus les chartes. Si ta charte et ton directeur de mémoire l'acceptent, garde la problématique pour toi, retravaille ce que l'outil propose et déclare cet usage comme aide à la structuration, l'une des finalités que l'UPEC cite en exemple.
 
 ## L'IA peut-elle t'aider dans ta recherche documentaire ?
 
-Pour défricher un sujet, oui, à condition de tout vérifier. L'UCA admet qu'une IA « agissant comme moteur de recherche peut aider à la rédaction d'un état de l'art », puis ajoute qu'il « faut toujours vérifier et citer les sources qui ont été utilisées ». Le master de Lorraine autorise la « synthèse bibliographique », mais classe en mauvais usage le prompt « Donne-moi une bibliographie sur la territorialisation de la transition énergétique ». Avec ChatGPT, écrit-elle, ce prompt « renverra une part non négligeable de références erronées (souvent appelées hallucinations) ».
+Pour défricher un sujet, oui, à condition de tout vérifier. Dans ses recommandations aux étudiants, l'UCA range la « recherche d'informations » parmi ce que l'IA facilite, avec une consigne : « Vérifiez et citez les sources utilisées par l'IAG. » Le master de Lorraine autorise la « synthèse bibliographique », mais classe en mauvais usage le prompt « Donne-moi une bibliographie sur la territorialisation de la transition énergétique ». Avec ChatGPT, écrit la charte, ce prompt « renverra une part non négligeable de références erronées (souvent appelées hallucinations) ».
 
 Deux études ont mesuré ces références inventées :
 
 - **Walters et Wilder, *Scientific Reports*, septembre 2023.** Sur 636 références tirées de 84 textes générés par GPT-3.5 et GPT-4, 55 % des références de GPT-3.5 étaient inventées, contre 18 % pour GPT-4. Parmi les références qui existaient bien, 43 % (GPT-3.5) et 24 % (GPT-4) contenaient des erreurs importantes.
-- **Cabezas-Clavijo et Sidorenko-Bautista, prépublication de mai 2025.** Les auteurs ont évalué 400 références fournies par huit chatbots (ChatGPT, Claude, Copilot, DeepSeek, Gemini, Grok, Le Chat et Perplexity). 26,5 % étaient entièrement correctes, 33,8 % partiellement, et 39,8 % erronées ou inventées.
+- **Cabezas-Clavijo et Sidorenko-Bautista, prépublication de mai 2025.** Les auteurs ont évalué 400 références fournies par huit chatbots dans leurs versions gratuites (ChatGPT, Claude, Copilot, DeepSeek, Gemini, Grok, Le Chat et Perplexity). 26,5 % étaient entièrement correctes, 33,8 % partiellement, et 39,8 % erronées ou inventées.
 
 Ces taux valent pour les versions testées à ces dates. Les modèles ont changé depuis, et les chartes de 2025-2026 demandent toujours de vérifier chaque référence. Avant de noter une référence proposée par un outil :
 
@@ -85,34 +85,27 @@ La réflexion reste à toi dans les trois textes. L'UPEC interdit de substituer 
 
 La correction d'orthographe, de grammaire et de style est l'usage le plus largement admis. L'UPEC la compte parmi les tâches de soutien, l'UFR LLASIC parmi les aides linguistiques (« formulation, mise en forme, traduction »), et le master de Lorraine l'autorise « tout en conservant le style de l'auteur ». Elle se déclare quand même dans les trois.
 
-Pour la reformulation, la charte lorraine donne la mention à placer dans le texte : « Ce paragraphe a été reformulé à l'aide d'un outil d'IA, cf. prompt n°1 en annexe ». Si l'outil a corrigé tout le document, elle propose : « L'ensemble du dossier a été vérifié avec un correcteur orthographique d'IA, cf. prompt n°2 en annexe ». Le tableau de l'UFR LLASIC prévoit lui aussi des lignes « Reformuler » et « Résumer ».
+Pour la reformulation, la charte lorraine demande une mention au passage concerné, qui renvoie au prompt numéroté en annexe, et le tableau de l'UFR LLASIC prévoit des lignes « Reformuler » et « Résumer ». Les formules exactes sont dans [déclarer l'usage de l'IA dans son mémoire](/blog/declarer-ia-memoire/).
 
 Reformuler l'idée d'un auteur ne te dispense jamais de le citer. L'UFR LLASIC l'écrit pour le mémoire : « les sources quelles qu'elles soient doivent être intégralement citées ». Angers demande de citer les sources de toute information obtenue par l'IA « pour ne pas réaliser un plagiat ».
 
 ## L'IA peut-elle rédiger une partie de ton mémoire ?
 
-Aucune des cinq chartes lues ne l'accepte. L'UFR LLASIC proscrit « la rédaction automatique de paragraphes » et précise qu'« en aucun cas » l'étudiant ne doit utiliser l'IA « pour rédiger l'ensemble ou même une partie de son travail universitaire ». L'UPEC interdit de « rédiger intégralement ou substantiellement un chapitre ou une section scientifique ». À Angers, « sauf indication contraire », les travaux des étudiants « ne peuvent pas être produits par de tels outils ».
+Aucune des cinq chartes lues ne l'accepte. L'UFR LLASIC l'interdit dès le paragraphe, l'UPEC pour un chapitre ou une section (les formulations exactes sont dans [l'IA est-elle autorisée pour le mémoire ?](/blog/ia-autorisee-memoire/)). À Angers, « sauf indication contraire », les travaux des étudiants « ne peuvent pas être produits par de tels outils ».
 
 Les deux chartes les plus ouvertes posent la même limite. L'UCA cite « générer du contenu » parmi ce que permet l'IA, mais demande de ne pas remplacer par un outil « la mise en œuvre des compétences mobilisées dans un exercice donné ». La charte lorraine précise que l'IA « ne doit pas remplacer la réflexion personnelle, l'analyse critique ou la production originale ».
 
 Le contrôle passe aussi par l'oral. À l'UFR LLASIC, l'étudiant y revient sur « son cheminement, ses lectures, ses prises de positions ». D'après l'UPEC, en cas d'usage non déclaré ou non autorisé, ne pas savoir expliquer son raisonnement ou le contenu de son travail peut suffire à caractériser une fraude.
 
-Deux autres interdits reviennent :
+Angers pose aussi deux interdits que d'autres chartes partagent :
 
 - **Fabriquer des données.** Angers interdit d'utiliser l'IA « pour fabriquer des données de recherche, pour une enquête ». L'UPEC interdit de « produire des données fictives ou falsifiées ».
-- **Envoyer des données de l'entreprise.** Angers interdit de transmettre des « données internes à une entreprise d'accueil de stage ». L'UCA interdit de fournir à l'IA des données non publiques pour un rapport de stage, et rappelle que dans l'entreprise, c'est son règlement qui s'applique. Si tu rédiges aussi un [rapport d'alternance](/blog/rapport-d-alternance/), la règle vaut pour lui.
+- **Envoyer des données de l'entreprise.** Angers interdit de transmettre des « données internes à une entreprise d'accueil de stage », l'UCA de fournir des données non publiques pour un rapport de stage. Pour savoir quoi anonymiser avant d'écrire, voir [données confidentielles dans un mémoire d'alternance](/blog/donnees-entreprise-memoire-alternance/).
 
 ## Que faut-il déclarer quand tu utilises l'IA ?
 
-Toutes les chartes lues exigent une déclaration. L'UCA prévient que « le fait d'utiliser l'IAG sans le dire pourra être considéré comme une fraude ». Le code européen de conduite pour l'intégrité scientifique, révisé par ALLEA en 2023 et cité par la charte d'Angers, range parmi les pratiques inacceptables le fait de cacher l'usage d'outils d'IA ou automatisés dans la création de contenu ou la rédaction de publications.
+Les cinq chartes lues ici exigent une déclaration. L'UCA prévient que « le fait d'utiliser l'IAG sans le dire pourra être considéré comme une fraude ». Dans le code européen de conduite pour l'intégrité scientifique (ALLEA, 2023), cité par la charte d'Angers, cacher l'usage d'outils d'IA ou automatisés dans la création de contenu ou la rédaction de publications figure parmi les pratiques inacceptables.
 
-Le contenu demandé se ressemble d'une charte à l'autre :
-
-- **l'outil** utilisé ;
-- **la finalité** : l'UPEC donne en exemple la reformulation linguistique, la traduction et l'aide à la structuration ;
-- **les passages concernés** (UPEC, LLASIC) ;
-- **les prompts** numérotés en annexe, avec l'IA, son développeur et la date, dans le master de Lorraine.
-
-L'UPEC recommande aussi de tenir un « journal d'IA » qui retrace les prompts, les réponses et tes corrections, et qui pourra être mis à disposition en cas de vérification. Le modèle à remplir et des exemples de formulation sont dans [déclarer l'usage de l'IA dans son mémoire](/blog/declarer-ia-memoire/).
+Ce qu'il faut indiquer change d'une charte à l'autre : l'outil et ce que tu en as fait presque partout, les passages concernés à l'UPEC, à l'UFR LLASIC et en Lorraine, les prompts numérotés en annexe en Lorraine. L'UPEC recommande aussi un « journal d'IA », qui pourra être mis à disposition en cas de vérification. Le tableau charte par charte, un modèle à adapter et un exemple de journal sont dans [déclarer l'usage de l'IA dans son mémoire](/blog/declarer-ia-memoire/).
 
 Avant ta première requête, trouve la charte de ta fac et celle de ta formation, demande la consigne écrite à ton directeur de mémoire, puis ouvre ton journal d'IA. Chaque référence qu'un outil te propose passe par le catalogue avant d'entrer dans ta bibliographie.

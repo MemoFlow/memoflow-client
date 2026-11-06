@@ -4,7 +4,7 @@ description: "Ce que 6 textes d'universités françaises demandent de déclarer 
 pilier: ia-memoire
 hub: false
 datePublished: 2026-11-06
-dateModified: 2026-11-06
+dateModified: 2026-11-07
 cta: generique
 sources:
   - titre: "Université Clermont Auvergne, Charte du bon usage de l'IA générative (délibération du CA du 27 juin 2025)"
@@ -27,24 +27,24 @@ sources:
     consulte: 2026-11-06
 ---
 
-Pour déclarer l'usage de l'IA dans ton mémoire, tu indiques l'outil, ce que tu lui as demandé et les parties du texte concernées, plus tes prompts si ta formation les exige. L'endroit change selon l'établissement : annexe, section dédiée, introduction ou note de bas de page.
+Pour déclarer l'usage de l'IA dans ton mémoire, tu indiques l'outil et ce que tu lui as demandé, plus les parties du texte concernées et tes prompts si ta formation les exige. L'endroit change selon l'établissement : annexe, section dédiée, introduction ou note de bas de page.
 
 Avant de déclarer, vérifie que l'usage est permis chez toi. On a comparé les règles dans [l'IA est-elle autorisée pour un mémoire](/blog/ia-autorisee-memoire/). Pour la vue d'ensemble, de l'exploration du sujet à la relecture, voir notre guide pour [utiliser l'IA pour son mémoire](/blog/ia-memoire/).
 
 ## Que faut-il déclarer, et où, selon les chartes ?
 
-Six établissements français précisent ce qu'une déclaration doit contenir, dans des textes de 2025-2026 lus en entier pour cet article. Cinq sont des chartes. Le sixième est le formulaire d'une école doctorale de Paris 1, pensé pour les thèses, qui passe en revue les outils un par un et chaque étape du travail.
+Six établissements français précisent ce qu'une déclaration doit contenir, dans des textes adoptés ou mis en ligne en 2025-2026 et lus en entier pour cet article. Cinq sont des chartes, les mêmes que dans l'article sur l'IA autorisée, moins celle de la Picardie. Le sixième est le formulaire d'une école doctorale de Paris 1, pensé pour les thèses, qui passe en revue les outils un par un et chaque étape du travail.
 
 | Établissement et texte | Ce qu'il faut indiquer | Où |
 |---|---|---|
 | Université Clermont Auvergne, charte du 27 juin 2025 | Quels outils, pour quelles tâches, y compris pour des schémas, images ou vidéos | Selon la consigne de l'enseignant, qui doit formaliser la façon de signaler l'IA |
 | Université Paris-Est Créteil, charte du 13 mars 2026 | L'outil, la finalité (reformulation, traduction, aide à la structuration) et les passages concernés | « Dans le manuscrit » |
 | Université d'Angers, charte publiée par Polytech Angers | L'usage précis et la façon dont tu as procédé | Section dédiée, annexe, note de bas de page ou introduction |
-| UFR LLASIC de l'Université Grenoble Alpes, mars 2026 | Tous les outils d'IA et les sources mobilisées, avec le type d'usage, l'outil, les parties et un commentaire | Références aux normes bibliographiques ou tableau récapitulatif |
+| UFR LLASIC de l'Université Grenoble Alpes, mars 2026 | Tous les outils d'IA et les sources mobilisées, avec le type d'usage, l'outil, les parties et un commentaire | Normes bibliographiques, tableau récapitulatif, ou les deux |
 | Master Urbanisme et Aménagement de l'Université de Lorraine à Metz, 12 mars 2026 | Les passages générés ou modifiés, puis chaque prompt numéroté avec l'IA, son développeur et la date | Mention dans le corps du texte et déclaration en annexe |
 | École doctorale d'histoire de l'art de Paris 1 (formulaire de déclaration) | Les outils et leur version, et l'aide reçue à chaque étape (préparation, rédaction, annexes) | Déclaration sur l'honneur signée |
 
-D'un texte à l'autre, on retrouve les mêmes informations : l'outil, ce que tu en as fait, les parties touchées. Seul l'emplacement varie. Angers te laisse le choix entre quatre endroits, Lorraine en impose deux à la fois. Si tu te demandes où écrire que tu as utilisé ChatGPT, la réponse dépend donc de ta formation.
+Les six établissements te font dire ce que tu as fait avec l'IA. Cinq demandent aussi le nom de l'outil (Angers parle seulement de l'usage précis), et trois les parties concernées : l'UPEC, l'UFR LLASIC et Lorraine. L'emplacement varie encore plus. Angers te laisse le choix entre quatre endroits, Lorraine en impose deux à la fois. Pour ChatGPT comme pour un correcteur, l'endroit dépend donc de ta formation.
 
 Ta formation peut aussi avoir son propre format. La charte de Clermont demande à l'enseignant, pour chaque travail à la maison, de « formaliser la façon de signaler le recours à l'IAG ». Si ton directeur de mémoire a fixé un format, c'est celui-là qui compte.
 
@@ -63,6 +63,7 @@ Le modèle ci-dessous n'est le formulaire officiel d'aucun établissement. On l'
 | Contenu | Explorer un sujet pour mieux le comprendre | | | |
 | Contenu | Recherche bibliographique | | | |
 | Forme et structuration | Corriger la grammaire et l'orthographe | | | |
+| Forme et structuration | Reformuler un passage | | | |
 | Forme et structuration | Aider à structurer ses idées | | | |
 | Autres | Traduction | | | |
 
@@ -76,7 +77,7 @@ Le modèle ci-dessous n'est le formulaire officiel d'aucun établissement. On l'
 >
 > Fait à [lieu], le [date]. Signature.
 
-On a repris pour le tableau les trois blocs de la charte de l'UFR LLASIC (contenu, forme et structuration, autres usages) et sa colonne de commentaire, et pour les engagements ceux du formulaire de Paris 1. Supprime les lignes qui ne te concernent pas et ajoute les tiennes, par exemple la génération d'un schéma, que Clermont demande aussi de déclarer.
+On a repris l'en-tête de l'annexe de Lorraine. Pour le tableau, on a suivi les trois blocs de la charte de l'UFR LLASIC (contenu, forme et structuration, autres usages) et sa colonne de commentaire, et pour les engagements et la version des outils, le formulaire de Paris 1. Supprime les lignes qui ne te concernent pas et ajoute les tiennes, par exemple la génération d'un schéma, que Clermont demande aussi de déclarer.
 
 Si tu n'as utilisé aucune IA, dis-le aussi. Le formulaire de Paris 1 fait barrer la mention inutile : « J'ai utilisé / je n'ai pas utilisé ».
 
@@ -110,6 +111,6 @@ Si tu es alternant, ne colle pas dans tes prompts des documents de ton entrepris
 
 Demande le format à ton directeur ou ta directrice de mémoire, par écrit. Dans le formulaire de Paris 1, l'étudiant déclare s'être adressé à la personne qui l'encadre en cas de doute sur un outil à indiquer. L'UFR LLASIC conseille aussi de se rapprocher de son directeur de mémoire.
 
-Ne saute pas l'étape pour autant. À Angers, l'« absence de mention et explication » de l'usage de l'IA compte parmi les usages frauduleux et peut entraîner un refus du mémoire.
+Ne saute pas l'étape pour autant. À Angers, l'« absence de mention et explication » de l'usage de l'IA compte parmi les usages frauduleux et peut entraîner un refus du mémoire. L'Université d'Angers met aussi à disposition un questionnaire de déclaration.
 
 Ouvre ton journal d'IA dès ton premier prompt, demande le format à ton encadrant et remplis la déclaration avant de relire la version finale.
