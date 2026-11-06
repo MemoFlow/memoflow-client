@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import masterGradeImg from '../assets/master_grade.png';
-import professionalGradeImg from '../assets/professional_grade.png';
-import doctoralGradeImg from '../assets/doctoral_grade.png';
+import masterDegreeImg from '../assets/1_master_degree.jpg';
+import collegeDegreeImg from '../assets/2_college_degree.jpg';
 import { apiFetch } from '../services/api';
 import type { TemplateResponseDto } from '../services/api';
 import type { TemplateChoice } from './Dashboard';
@@ -30,10 +30,10 @@ function toCard(t: TemplateResponseDto): TemplateCard {
   let badge = 'Recherche';
 
   if (lowTitle.includes('stage') || t.doc_type === 'report') {
-    image = professionalGradeImg;
+    image = masterDegreeImg;
     badge = 'Professionnel';
   } else if (lowTitle.includes('thèse') || t.doc_type === 'doctoral') {
-    image = doctoralGradeImg;
+    image = collegeDegreeImg;
     badge = 'Doctorat';
   }
 

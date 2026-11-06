@@ -8,6 +8,7 @@ import Dashboard from './components/Dashboard';
 import PrivacyDataModal from './components/PrivacyDataModal';
 import OnboardingFlow from './components/OnboardingFlow';
 import AdminPage from './components/AdminPage';
+import BrandLogo from './components/BrandLogo';
 import { ForgotPasswordPage, ResetPasswordPage, VerifyEmailPage } from './components/AuthPages';
 import type { PrivacyModalTab } from './components/PrivacyDataModal';
 import {
@@ -219,13 +220,7 @@ function App() {
   if (isInitializing) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen bg-[#F8FAFB]">
-        <div className="bg-[#EAF3DE] p-4 rounded-xl border border-[#94D2B8]/30 flex items-center justify-center animate-pulse-slow mb-4">
-          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" className="stroke-[#3E6976]" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M12 2L2 7l10 5 10-5-10-5z" />
-            <path d="M2 17l10 5 10-5" />
-            <path d="M2 12l10 5 10-5" />
-          </svg>
-        </div>
+        <BrandLogo size={72} className="animate-pulse-slow mb-4" />
         <span className="font-brand font-bold text-xl text-[#2F4858]">Chargement de MemoFlow...</span>
         <div className="w-12 h-1 bg-[#94D2B8]/30 rounded-full mt-4 overflow-hidden relative">
           <div className="absolute inset-0 bg-[#3E6976] animate-infinite-scroll w-1/2 rounded-full"></div>

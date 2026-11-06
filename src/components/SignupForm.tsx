@@ -3,6 +3,7 @@ import InputField from './InputField';
 import { apiFetch } from '../services/api';
 import { rememberSignupConsent } from '../services/onboarding';
 import { markVerificationEmailSent } from '../services/authEmail';
+import BrandLogo from './BrandLogo';
 
 interface SignupFormProps {
   onSwitchToLogin: () => void;
@@ -135,20 +136,7 @@ export default function SignupForm({
     <div className="bg-white border border-slate-100 rounded-[20px] p-12 w-full max-w-[520px] shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05),0_10px_15px_-3px_rgba(0,0,0,0.05),0_20px_25px_-5px_rgba(0,0,0,0.02)] text-center my-10 mx-auto backdrop-blur-md max-sm:p-6 max-sm:my-6 max-sm:rounded-2xl animate-fade-in">
       {/* Brand Logo inside the card */}
       <div className="inline-flex items-center gap-2 mb-6 text-brand-green-dark">
-        <svg
-          className="stroke-brand-green-dark"
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.8"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        >
-          <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
-          <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
-        </svg>
+        <BrandLogo size={32} />
         <span className="font-brand text-[1.15rem] font-medium tracking-tight">MemoFlow</span>
       </div>
 
