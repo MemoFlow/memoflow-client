@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { apiFetch } from '../services/api';
+import { trackToolConnected } from '../services/analytics';
 import type { ConnectorResponseDto, InitiateConnectionResponseDto } from '../services/api';
 
 interface ConnectorsManagerProps {
@@ -36,6 +37,7 @@ export default function ConnectorsManager({ addToast, onOpenPrivacy }: Connector
           clearInterval(intervalId);
           delete activePollsRef.current[connectionId];
           setActionLoading(null);
+          trackToolConnected(provider);
           addToast('success', 'Connexion établie !', `Votre compte ${provider.toUpperCase()} est désormais connecté.`);
           // Refresh list of connectors
           const data = await apiFetch<ConnectorResponseDto[]>('/connectors');

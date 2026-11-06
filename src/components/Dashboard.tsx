@@ -7,10 +7,14 @@ import ProgressionPage from './ProgressionPage';
 import SettingsPage from './SettingsPage';
 import EmailVerificationBanner from './EmailVerificationBanner';
 import BrandLogo from './BrandLogo';
+import Link from './Link';
+import { ROUTES, navigate as goTo } from '../services/router';
 import { apiFetch } from '../services/api';
 import type { DocumentResponseDto, UserResponseDto } from '../services/api';
 
 interface DashboardProps {
+  /** Current URL: decides the page shown (see ROUTES) */
+  path: string;
   /** null when browsing as a guest (nothing is saved) */
   user: UserResponseDto | null;
   userName: string;
@@ -81,7 +85,22 @@ const NAV_ITEMS = [
 
 const MOBILE_NAV_ITEMS = [...NAV_ITEMS, { name: MENU_SETTINGS, short: 'Paramètres', icon: settingsIcon(18) }];
 
+// Each page has its own URL
+const MENU_PATHS: Record<string, string> = {
+  [MENU_PROGRESS]: ROUTES.progression,
+  [MENU_TEMPLATES]: ROUTES.templates,
+  [MENU_WRITING]: ROUTES.writing,
+  [MENU_CONTEXT]: ROUTES.context,
+  [MENU_SETTINGS]: ROUTES.settings,
+};
+
+function menuForPath(path: string): string {
+  if (path === ROUTES.connectors) return MENU_CONTEXT;
+  return Object.keys(MENU_PATHS).find((menu) => MENU_PATHS[menu] === path) ?? MENU_WRITING;
+}
+
 export default function Dashboard({
+  path,
   user,
   userName,
   onLogout,
@@ -93,10 +112,10 @@ export default function Dashboard({
   const isGuest = user === null;
 
   // Navigation states
-  const [activeMenu, setActiveMenu] = useState(isGuest ? MENU_WRITING : MENU_TEMPLATES);
+  const activeMenu = menuForPath(path);
   const [showProfileDropdown, setShowProfileDropdown] = useState(false);
   const [isFocusMode, setIsFocusMode] = useState(false);
-  const [contextTab, setContextTab] = useState<'cadrage' | 'connectors'>('cadrage');
+  const contextTab: 'cadrage' | 'connectors' = path === ROUTES.connectors ? 'connectors' : 'cadrage';
 
   // Documents API states
   const [documents, setDocuments] = useState<DocumentResponseDto[]>([]);
@@ -138,7 +157,7 @@ export default function Dashboard({
   }, [fetchDocuments]);
 
   const navigate = (menu: string) => {
-    setActiveMenu(menu);
+    goTo(MENU_PATHS[menu]);
     setShowProfileDropdown(false);
   };
 
@@ -160,7 +179,7 @@ export default function Dashboard({
 
       await fetchDocuments();
       setSelectedDocumentId(newDoc.id);
-      setActiveMenu(MENU_WRITING);
+      goTo(ROUTES.writing);
     } catch (err: unknown) {
       console.error('Error applying template:', err);
       addToast('error', 'Erreur', err instanceof Error ? err.message : 'Impossible de créer le document.');
@@ -181,7 +200,7 @@ export default function Dashboard({
 
       await fetchDocuments();
       setSelectedDocumentId(newDoc.id);
-      setActiveMenu(MENU_WRITING);
+      goTo(ROUTES.writing);
       addToast(
         'success',
         'Document créé',
@@ -208,12 +227,12 @@ export default function Dashboard({
         <div className="flex flex-col gap-8">
           {/* Logo Section */}
           <div className="flex flex-col gap-1">
-            <div className="flex items-center gap-2.5">
+            <Link to={ROUTES.home} className="flex items-center gap-2.5 no-underline" aria-label="MemoFlow, accueil">
               <BrandLogo size={40} />
               <span className="font-brand text-[1.4rem] font-bold tracking-tight leading-none flex items-center gap-1.5 transition-colors text-[#2F4858]">
                 MemoFlow
               </span>
-            </div>
+            </Link>
             <span className="text-[0.68rem] uppercase tracking-wider text-slate-500 font-bold font-brand pl-0.5">
               Espace Académique
             </span>
@@ -224,10 +243,11 @@ export default function Dashboard({
             {NAV_ITEMS.map((item) => {
               const isActive = activeMenu === item.name;
               return (
-                <button
+                <Link
                   key={item.name}
-                  onClick={() => navigate(item.name)}
-                  className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl font-brand text-[0.88rem] font-semibold transition-all duration-200 cursor-pointer border-none ${
+                  to={MENU_PATHS[item.name]}
+                  aria-current={isActive ? 'page' : undefined}
+                  className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl font-brand text-[0.88rem] font-semibold transition-all duration-200 cursor-pointer border-none no-underline ${
                     isActive
                       ? 'bg-[#EAF3DE]/70 text-[#2F4858] border border-solid border-[#94D2B8]/20 shadow-[0_2px_8px_rgba(148,210,184,0.08)]'
                       : 'bg-transparent text-slate-500 hover:text-[#2F4858] hover:bg-[#F8FAFB]'
@@ -240,7 +260,7 @@ export default function Dashboard({
                   {isActive && (
                     <span className="w-1.5 h-1.5 rounded-full shadow-[0_0_6px_rgba(81,139,145,0.4)] bg-[#518B91]"></span>
                   )}
-                </button>
+                </Link>
               );
             })}
           </nav>
@@ -260,13 +280,14 @@ export default function Dashboard({
           <div className="h-[1px] my-1 transition-colors bg-slate-200/70"></div>
 
           <div className="flex flex-col gap-1">
-            <button
-              onClick={() => navigate(MENU_SETTINGS)}
-              className={`${sidebarLinkClass} ${activeMenu === MENU_SETTINGS ? '!bg-[#EAF3DE]/70 !text-[#2F4858]' : ''}`}
+            <Link
+              to={ROUTES.settings}
+              aria-current={activeMenu === MENU_SETTINGS ? 'page' : undefined}
+              className={`${sidebarLinkClass} no-underline ${activeMenu === MENU_SETTINGS ? '!bg-[#EAF3DE]/70 !text-[#2F4858]' : ''}`}
             >
               {settingsIcon(16)}
               <span>Paramètres & Données</span>
-            </button>
+            </Link>
 
             {onOpenPrivacy && (
               <button onClick={onOpenPrivacy} className={sidebarLinkClass}>
@@ -313,7 +334,9 @@ export default function Dashboard({
         {activeMenu !== MENU_WRITING && (
           <header className="h-[76px] px-8 flex-shrink-0 border-b flex justify-between items-center z-20 max-sm:px-4 transition-all duration-350 bg-white border-[#E5E9EB] shadow-[0_1px_4px_rgba(0,0,0,0.01)]">
             <div className="flex items-center gap-2">
-              <BrandLogo size={32} className="lg:hidden" />
+              <Link to={ROUTES.home} className="lg:hidden flex" aria-label="MemoFlow, accueil">
+                <BrandLogo size={32} />
+              </Link>
               <span className="font-brand font-bold text-[#2F4858] tracking-tight text-[1.05rem]">
                 <span className="lg:hidden">MemoFlow · </span>{activeMenu}
               </span>
@@ -451,7 +474,7 @@ export default function Dashboard({
                 ] as const).map(([key, label]) => (
                   <button
                     key={key}
-                    onClick={() => setContextTab(key)}
+                    onClick={() => goTo(key === 'connectors' ? ROUTES.connectors : ROUTES.context)}
                     className={`font-brand text-sm font-bold pb-2 transition-all border-none bg-transparent cursor-pointer relative ${
                       contextTab === key ? 'text-[#2F4858]' : 'text-slate-400 hover:text-[#2F4858]'
                     }`}
@@ -512,16 +535,17 @@ export default function Dashboard({
           {MOBILE_NAV_ITEMS.map((item) => {
             const isActive = activeMenu === item.name;
             return (
-              <button
+              <Link
                 key={item.name}
-                onClick={() => navigate(item.name)}
-                className={`flex-1 flex flex-col items-center gap-0.5 py-1.5 rounded-lg border-none bg-transparent cursor-pointer text-[0.65rem] font-bold transition-colors ${
+                to={MENU_PATHS[item.name]}
+                aria-current={isActive ? 'page' : undefined}
+                className={`flex-1 flex flex-col items-center gap-0.5 py-1.5 rounded-lg border-none bg-transparent cursor-pointer text-[0.65rem] font-bold transition-colors no-underline ${
                   isActive ? 'text-[#3E6976]' : 'text-slate-400 hover:text-[#2F4858]'
                 }`}
               >
                 {item.icon}
                 <span>{item.short}</span>
-              </button>
+              </Link>
             );
           })}
         </nav>

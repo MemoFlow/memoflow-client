@@ -31,6 +31,8 @@ import {
 import type { LeadDetail, LeadFilters, LeadTier, SuggestedAction } from '../services/admin';
 import { exportLeadsToExcel } from '../services/leadExport';
 import BrandLogo from './BrandLogo';
+import Link from './Link';
+import { ROUTES } from '../services/router';
 
 // ─── Shared styles ───────────────────────────────────────────────────────────
 const cardClass = 'bg-white border border-[#E5E9EB] rounded-2xl p-5 shadow-[0_4px_20px_rgba(47,72,88,0.03)]';
@@ -680,8 +682,10 @@ function AdminShell({ user, onBackToApp, onLogout, actions, children }: AdminShe
     <div className="min-h-screen w-full bg-[#F8FAFB] flex flex-col">
       <header className="h-16 px-8 max-sm:px-4 flex items-center justify-between gap-4 border-b border-[#E5E9EB] bg-white sticky top-0 z-40">
         <div className="flex items-center gap-3">
-          <BrandLogo size={34} />
-          <span className="font-brand text-[1.2rem] font-bold text-[#2F4858] tracking-tight">MemoFlow</span>
+          <Link to={ROUTES.home} className="flex items-center gap-3 no-underline" aria-label="MemoFlow, accueil">
+            <BrandLogo size={34} />
+            <span className="font-brand text-[1.2rem] font-bold text-[#2F4858] tracking-tight">MemoFlow</span>
+          </Link>
           <span className="px-2 py-0.5 rounded-md bg-[#EAF3DE] text-[#3E6976] text-[0.7rem] font-bold uppercase tracking-wider">
             Administration
           </span>
