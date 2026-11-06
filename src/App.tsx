@@ -29,7 +29,7 @@ type View = 'app' | 'login' | 'signup';
  * /reset-password and /verify-email are fixed by the API (links in emails) and must
  * load directly, so the host has to serve index.html for every path.
  */
-const ROUTES = ['/admin', '/forgot-password', '/reset-password', '/verify-email'] as const;
+const ROUTES = ['/admin', '/forgot-password', '/reset-password', '/verify-email', '/inscription'] as const;
 type Route = (typeof ROUTES)[number] | '/';
 
 const currentRoute = (): Route => {
@@ -41,7 +41,8 @@ const SESSION_EXPIRED_NOTICE = 'Votre session a expiré. Reconnectez-vous pour c
 const PASSWORD_CHANGED_NOTICE = 'Mot de passe modifié. Connectez-vous avec votre nouveau mot de passe.';
 
 function App() {
-  const [view, setView] = useState<View>('app');
+  // /inscription (CTA du blog) ouvre le formulaire d'inscription ; un compte restauré repasse sur l'app
+  const [view, setView] = useState<View>(() => (currentRoute() === '/inscription' ? 'signup' : 'app'));
   const [route, setRoute] = useState<Route>(currentRoute);
   // Message shown above the login form (session expired, password changed…)
   const [loginNotice, setLoginNotice] = useState<string | null>(null);
