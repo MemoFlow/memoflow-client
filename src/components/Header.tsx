@@ -1,3 +1,5 @@
+import BrandLogo from './BrandLogo';
+
 interface HeaderProps {
   onLogoClick?: () => void;
 }
@@ -6,7 +8,8 @@ export default function Header({ onLogoClick }: HeaderProps) {
   return (
     <header className="w-full h-20 flex items-center bg-transparent border-b border-black/[0.03] px-8 z-10 max-sm:px-4 max-sm:h-16">
       <div className="max-w-6xl w-full mx-auto flex justify-between items-center">
-        <button className="bg-none border-none p-0 cursor-pointer flex items-center" onClick={onLogoClick} aria-label="MemoFlow Accueil">
+        <button className="bg-none border-none p-0 cursor-pointer flex items-center gap-2.5" onClick={onLogoClick} aria-label="MemoFlow Accueil">
+          <BrandLogo size={36} />
           <span className="font-brand text-[1.35rem] font-medium text-brand-green-dark tracking-tight">MemoFlow</span>
         </button>
         
