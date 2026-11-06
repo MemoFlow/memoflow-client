@@ -47,6 +47,14 @@ const DATA_CATEGORIES = [
     storage: 'Backend MemoFlow — lead scoring',
   },
   {
+    title: 'Mesure d’audience (si vous l’acceptez)',
+    fields:
+      'pages consultées, durée et date des visites, source de la visite (site, réseau social, campagne), type d’appareil et de navigateur, pays, événements anonymes (inscription, connexion, outil connecté, plan généré), identifiant de cookie Google Analytics',
+    purpose:
+      'Comprendre comment MemoFlow est utilisé pour l’améliorer. Aucun cookie n’est déposé sans votre accord, aucune donnée publicitaire n’est activée, et aucun email, nom ou contenu de document n’est transmis. Choix modifiable dans Paramètres.',
+    storage: 'Google Analytics 4 — cookies _ga (13 mois au plus)',
+  },
+  {
     title: 'Activité et progression',
     fields: 'last_active_at, xp, level',
     purpose: 'Suivi de la régularité, calcul du niveau et classement.',
@@ -132,6 +140,11 @@ const THIRD_PARTIES = [
     name: 'Annuaire de l’enseignement supérieur (data.gouv)',
     role: 'Suggestions d’écoles',
     data: 'Le texte saisi dans le champ « Ton école » du questionnaire, pour proposer des noms d’établissements.',
+  },
+  {
+    name: 'Google (Tag Manager et Analytics 4)',
+    role: 'Mesure d’audience, seulement avec votre accord',
+    data: 'Pages vues, événements d’usage, source de la visite, appareil et identifiant de cookie. Google LLC peut traiter ces données aux États-Unis (Data Privacy Framework).',
   },
   {
     name: 'Sentry',

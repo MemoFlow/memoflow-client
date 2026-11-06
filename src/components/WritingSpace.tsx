@@ -7,6 +7,7 @@ import {
   apiFetch
 } from '../services/api';
 import type { ConnectorResponseDto, PlanningJobResponseDto, DocumentResponseDto, SectionResponseDto } from '../services/api';
+import { trackPlanGenerated } from '../services/analytics';
 
 type SaveState = 'idle' | 'saving' | 'saved' | 'error';
 
@@ -170,6 +171,7 @@ export default function WritingSpace({
         if (job.status === 'completed') {
           setJobStatus('completed');
           setJobResult(job.result);
+          trackPlanGenerated(jobId);
           clearPollInterval();
         } else if (job.status === 'failed') {
           setJobStatus('failed');
@@ -240,6 +242,7 @@ export default function WritingSpace({
         if (jobId === activeJobIdRef.current) {
           setJobStatus(status);
           setJobResult(result);
+          if (status === 'completed') trackPlanGenerated(jobId);
           clearPollInterval();
         }
       },

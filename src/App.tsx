@@ -5,6 +5,8 @@ import Footer from './components/Footer';
 import LoginForm from './components/LoginForm';
 import SignupForm from './components/SignupForm';
 import Dashboard from './components/Dashboard';
+import LandingPage from './components/LandingPage';
+import ConsentBanner from './components/ConsentBanner';
 import PrivacyDataModal from './components/PrivacyDataModal';
 import OnboardingFlow from './components/OnboardingFlow';
 import AdminPage from './components/AdminPage';
@@ -21,55 +23,33 @@ import {
 } from './services/api';
 import type { LogoutReason, UserResponseDto } from './services/api';
 import { needsOnboarding } from './services/onboarding';
+import { ROUTES, isAppPath, matchRoute, navigate, usePath } from './services/router';
 import './App.css';
-
-type View = 'app' | 'login' | 'signup';
-
-/**
- * No router: a few pages are addressed by path, read on load and on back/forward.
- * /reset-password and /verify-email are fixed by the API (links in emails) and must
- * load directly, so the host has to serve index.html for every path.
- */
-const ROUTES = ['/admin', '/forgot-password', '/reset-password', '/verify-email', '/inscription'] as const;
-type Route = (typeof ROUTES)[number] | '/';
-
-const currentRoute = (): Route => {
-  const path = window.location.pathname.replace(/\/+$/, '');
-  return (ROUTES as readonly string[]).includes(path) ? (path as Route) : '/';
-};
 
 const SESSION_EXPIRED_NOTICE = 'Votre session a expiré. Reconnectez-vous pour continuer.';
 const PASSWORD_CHANGED_NOTICE = 'Mot de passe modifié. Connectez-vous avec votre nouveau mot de passe.';
 
+/** First app page after login (or when a logged-in user opens /connexion) */
+const defaultAppPath = (user: UserResponseDto | null) => (user ? ROUTES.templates : ROUTES.writing);
+
 function App() {
-  // /inscription (CTA du blog) ouvre le formulaire d'inscription ; un compte restauré repasse sur l'app
-  const [view, setView] = useState<View>(() => (currentRoute() === '/inscription' ? 'signup' : 'app'));
-  const [route, setRoute] = useState<Route>(currentRoute);
+  const path = usePath();
   // Message shown above the login form (session expired, password changed…)
   const [loginNotice, setLoginNotice] = useState<string | null>(null);
+  // Page to come back to after logging in (e.g. /admin, or the page where the session expired)
+  const [returnTo, setReturnTo] = useState<string | null>(null);
   // null = guest (no account, nothing is saved)
   const [user, setUser] = useState<UserResponseDto | null>(null);
   const [isInitializing, setIsInitializing] = useState(true);
   // First connection: 'Personnalise ton espace' questionnaire
   const [showOnboarding, setShowOnboarding] = useState(false);
 
-  useEffect(() => {
-    const onPopState = () => setRoute(currentRoute());
-    window.addEventListener('popstate', onPopState);
-    return () => window.removeEventListener('popstate', onPopState);
-  }, []);
-
-  const navigate = (path: Route) => {
-    window.history.pushState(null, '', path);
-    setRoute(currentRoute());
-  };
-
-  /** Leaves any path-based page and shows the given view */
-  const goTo = (target: View, notice: string | null = null) => {
-    if (route !== '/' && route !== '/admin') navigate('/');
+  /** Opens the login page, coming back to `from` afterwards */
+  const goToLogin = useCallback((from: string | null = null, notice: string | null = null) => {
+    setReturnTo(from);
     setLoginNotice(notice);
-    setView(target);
-  };
+    navigate(ROUTES.login);
+  }, []);
 
   // Privacy & Data Inventory Modal state
   const [isPrivacyModalOpen, setIsPrivacyModalOpen] = useState(false);
@@ -87,8 +67,6 @@ function App() {
     const showQuestionnaire = me.role === 'admin' ? false : await needsOnboarding(me.id);
     setUser(me);
     setShowOnboarding(showQuestionnaire);
-    setLoginNotice(null);
-    setView('app');
   }, []);
 
   /** Refreshes the user (e.g. email_verified) without touching the rest of the state */
@@ -101,7 +79,7 @@ function App() {
     }
   }, []);
 
-  // Restore session on mount; without a token the visitor lands on the app as a guest
+  // Restore session on mount; without a token the visitor browses as a guest
   useEffect(() => {
     const initAuth = async () => {
       if (!getToken()) {
@@ -121,7 +99,7 @@ function App() {
     initAuth();
   }, [loadCurrentUser]);
 
-  // Global logout: explicit logout -> guest app; token rejected (401) -> login page
+  // Global logout: explicit logout -> home page; token rejected (401) -> login page
   useEffect(() => {
     const handleLogoutEvent = (event: Event) => {
       const reason = (event as CustomEvent<LogoutReason>).detail;
@@ -129,16 +107,28 @@ function App() {
       setUser(null);
       setShowOnboarding(false);
       if (reason === 'expired') {
-        setLoginNotice(SESSION_EXPIRED_NOTICE);
-        setView('login');
+        const here = window.location.pathname;
+        goToLogin(isAppPath(here) || here === ROUTES.admin ? here : null, SESSION_EXPIRED_NOTICE);
       } else {
-        setView('app');
+        navigate(ROUTES.home);
       }
     };
 
     window.addEventListener('auth_logout', handleLogoutEvent);
     return () => window.removeEventListener('auth_logout', handleLogoutEvent);
-  }, []);
+  }, [goToLogin]);
+
+  // Logged in on /connexion or /inscription: go to the requested page or the app
+  useEffect(() => {
+    if (!user || (path !== ROUTES.login && path !== ROUTES.signup)) return;
+    navigate(returnTo ?? defaultAppPath(user), { replace: true });
+  }, [user, path, returnTo]);
+
+  // Unknown URL: back to the home page
+  const isUnknownPath = matchRoute(path) === null;
+  useEffect(() => {
+    if (isUnknownPath) navigate(ROUTES.home, { replace: true });
+  }, [isUnknownPath]);
 
   // A route answered 403 "Email not verified": make sure the verification banner shows
   useEffect(() => {
@@ -164,7 +154,8 @@ function App() {
 
   const handleAuthSuccess = async () => {
     try {
-      await loadCurrentUser();
+      await loadCurrentUser(); // the effect above then leaves /connexion
+      setLoginNotice(null);
     } catch (err) {
       console.error('Failed to load user after authentication:', err);
     }
@@ -177,7 +168,7 @@ function App() {
   // Password reset: every JWT is now rejected and nothing logs the user in
   const handlePasswordChanged = () => {
     if (getToken()) clearToken();
-    goTo('login', PASSWORD_CHANGED_NOTICE);
+    goToLogin(null, PASSWORD_CHANGED_NOTICE);
   };
 
   const privacyModal = (
@@ -189,33 +180,41 @@ function App() {
     />
   );
 
-  /** Header + centered card + footer, shared by login, signup and the email-link pages */
-  const authLayout = (content: ReactNode, showGuestLink = false) => (
-    <div className="flex flex-col min-h-screen w-full">
-      <Header onLogoClick={() => goTo('app')} />
-
-      <main className="flex-1 flex flex-col items-center justify-center px-4 w-full">
-        {content}
-
-        {showGuestLink && (
-          <button
-            type="button"
-            onClick={() => goTo('app')}
-            className="mb-10 -mt-4 bg-transparent border-none cursor-pointer font-sans text-[0.85rem] text-slate-500 hover:text-brand-green-dark hover:underline"
-          >
-            Continuer en tant qu'invité (sans sauvegarde)
-          </button>
-        )}
-      </main>
-
-      <Footer
-        onOpenPrivacy={() => handleOpenPrivacy('overview')}
-        onOpenTerms={() => handleOpenPrivacy('terms')}
-      />
-
+  // Shared by every page: privacy modal + analytics consent banner
+  const withOverlays = (page: ReactNode) => (
+    <>
+      {page}
       {privacyModal}
-    </div>
+      <ConsentBanner onOpenPrivacy={() => handleOpenPrivacy('third-parties')} />
+    </>
   );
+
+  /** Header + centered card + footer, shared by login, signup and the email-link pages */
+  const authLayout = (content: ReactNode, showGuestLink = false) =>
+    withOverlays(
+      <div className="flex flex-col min-h-screen w-full">
+        <Header />
+
+        <main className="flex-1 flex flex-col items-center justify-center px-4 w-full">
+          {content}
+
+          {showGuestLink && (
+            <button
+              type="button"
+              onClick={() => navigate(ROUTES.writing)}
+              className="mb-10 -mt-4 bg-transparent border-none cursor-pointer font-sans text-[0.85rem] text-slate-500 hover:text-brand-green-dark hover:underline"
+            >
+              Continuer en tant qu'invité (sans sauvegarde)
+            </button>
+          )}
+        </main>
+
+        <Footer
+          onOpenPrivacy={() => handleOpenPrivacy('overview')}
+          onOpenTerms={() => handleOpenPrivacy('terms')}
+        />
+      </div>
+    );
 
   if (isInitializing) {
     return (
@@ -230,87 +229,104 @@ function App() {
   }
 
   // ─── Pages opened from an email link (work logged in or out) ───────────────
-  if (route === '/verify-email') {
+  if (path === ROUTES.verifyEmail) {
     return authLayout(
       <VerifyEmailPage
         user={user}
         onVerified={() => void refreshUser()}
-        onContinue={() => goTo('app')}
-        onLogin={() => goTo('login')}
+        onContinue={() => navigate(defaultAppPath(user))}
+        onLogin={() => goToLogin()}
       />
     );
   }
 
-  if (route === '/reset-password') {
+  if (path === ROUTES.resetPassword) {
     return authLayout(
-      <ResetPasswordPage onDone={handlePasswordChanged} onRequestNewLink={() => navigate('/forgot-password')} />
+      <ResetPasswordPage onDone={handlePasswordChanged} onRequestNewLink={() => navigate(ROUTES.forgotPassword)} />
     );
   }
 
-  if (route === '/forgot-password') {
-    return authLayout(<ForgotPasswordPage onBackToLogin={() => goTo('login')} />);
+  if (path === ROUTES.forgotPassword) {
+    return authLayout(<ForgotPasswordPage onBackToLogin={() => goToLogin()} />);
   }
 
-  // ─── App ───────────────────────────────────────────────────────────────────
-  if (view === 'app' && route === '/admin') {
-    return (
+  // ─── Login / signup ────────────────────────────────────────────────────────
+  if (path === ROUTES.login) {
+    return authLayout(
+      <LoginForm
+        notice={loginNotice}
+        onSwitchToSignup={() => navigate(ROUTES.signup)}
+        onForgotPassword={() => navigate(ROUTES.forgotPassword)}
+        onLoginSuccess={handleAuthSuccess}
+      />,
+      true
+    );
+  }
+
+  if (path === ROUTES.signup) {
+    return authLayout(
+      <SignupForm
+        onSwitchToLogin={() => goToLogin(returnTo)}
+        onOpenPrivacy={() => handleOpenPrivacy('overview')}
+        onOpenTerms={() => handleOpenPrivacy('terms')}
+      />,
+      true
+    );
+  }
+
+  // ─── Admin ─────────────────────────────────────────────────────────────────
+  if (path === ROUTES.admin) {
+    return withOverlays(
       <AdminPage
         key={user?.id ?? 'guest'}
         user={user}
-        onRequestLogin={() => setView('login')}
-        onBackToApp={() => navigate('/')}
+        onRequestLogin={() => goToLogin(ROUTES.admin)}
+        onBackToApp={() => navigate(defaultAppPath(user))}
         onLogout={handleLogout}
       />
     );
   }
 
-  if (view === 'app' && user && showOnboarding) {
-    return (
-      <OnboardingFlow
-        userId={user.id}
-        userName={user.display_name}
-        userEmail={user.email}
-        onComplete={() => setShowOnboarding(false)}
-        onPostpone={() => setShowOnboarding(false)}
-      />
-    );
-  }
-
-  if (view === 'app') {
-    return (
-      <>
-        <Dashboard
-          // Remount on identity change so every page refetches its data
-          key={user?.id ?? 'guest'}
-          user={user}
-          userName={user?.display_name || GUEST_DISPLAY_NAME}
-          onLogout={handleLogout}
-          onRequestLogin={() => goTo('login')}
-          onRequestSignup={() => goTo('signup')}
-          onOpenPrivacy={() => handleOpenPrivacy('overview')}
-          onOpenTerms={() => handleOpenPrivacy('terms')}
+  // ─── App pages ─────────────────────────────────────────────────────────────
+  if (isAppPath(path)) {
+    if (user && showOnboarding) {
+      return (
+        <OnboardingFlow
+          userId={user.id}
+          userName={user.display_name}
+          userEmail={user.email}
+          onComplete={() => setShowOnboarding(false)}
+          onPostpone={() => setShowOnboarding(false)}
         />
-        {privacyModal}
-      </>
-    );
-  }
+      );
+    }
 
-  return authLayout(
-    view === 'login' ? (
-      <LoginForm
-        notice={loginNotice}
-        onSwitchToSignup={() => goTo('signup')}
-        onForgotPassword={() => navigate('/forgot-password')}
-        onLoginSuccess={handleAuthSuccess}
-      />
-    ) : (
-      <SignupForm
-        onSwitchToLogin={() => goTo('login')}
+    return withOverlays(
+      <Dashboard
+        // Remount on identity change so every page refetches its data
+        key={user?.id ?? 'guest'}
+        path={path}
+        user={user}
+        userName={user?.display_name || GUEST_DISPLAY_NAME}
+        onLogout={handleLogout}
+        onRequestLogin={() => goToLogin(path)}
+        onRequestSignup={() => {
+          setReturnTo(path);
+          navigate(ROUTES.signup);
+        }}
         onOpenPrivacy={() => handleOpenPrivacy('overview')}
         onOpenTerms={() => handleOpenPrivacy('terms')}
       />
-    ),
-    true
+    );
+  }
+
+  // ─── Home (landing page) ───────────────────────────────────────────────────
+  return withOverlays(
+    <LandingPage
+      isLoggedIn={user !== null}
+      onOpenPrivacy={() => handleOpenPrivacy('overview')}
+      onOpenTerms={() => handleOpenPrivacy('terms')}
+    />
   );
 }
 
