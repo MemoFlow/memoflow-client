@@ -21,7 +21,7 @@ Relevé du 06/11/2026 sur `developement` (commit c1e53b1). Source de vérité po
 - Baseline actuelle : « Structurez votre pensée, libérez votre potentiel ».
 
 ## Non vérifié, ne pas affirmer
-Prix, gratuité, essai, nombre d'utilisateurs, écoles partenaires, détection anti-plagiat, normes autres que Harvard (APA, ISO 690…), export Word/PDF, conformité RGPD, modèle d'IA utilisé.
+Prix et limites du plan gratuit, essai, nombre d'utilisateurs, écoles partenaires, détection anti-plagiat, normes autres que Harvard (APA, ISO 690…), export Word/PDF, conformité RGPD, modèle d'IA utilisé.
 
 ## Site
 - Pas de landing : `/` affiche la connexion. L'inscription est un état React (`view = 'signup'`), pas une URL.
