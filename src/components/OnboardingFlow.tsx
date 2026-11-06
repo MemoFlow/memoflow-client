@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft, faCheck } from '@fortawesome/free-solid-svg-icons';
+import BrandLogo from './BrandLogo';
 import {
   PERSONA_CHOICES,
   DELIVERABLE_CHOICES,
@@ -328,7 +329,10 @@ export default function OnboardingFlow({ userId, userName, userEmail, onComplete
     <div className="min-h-screen w-full bg-[#F8FAFB] flex flex-col">
       {/* Top bar */}
       <header className="h-16 px-8 max-sm:px-4 flex items-center justify-between border-b border-[#E5E9EB] bg-white">
-        <span className="font-brand text-[1.2rem] font-bold text-[#2F4858] tracking-tight">MemoFlow</span>
+        <span className="flex items-center gap-2.5">
+          <BrandLogo size={34} />
+          <span className="font-brand text-[1.2rem] font-bold text-[#2F4858] tracking-tight">MemoFlow</span>
+        </span>
         <button
           type="button"
           onClick={onPostpone}

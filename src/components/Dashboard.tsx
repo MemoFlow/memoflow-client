@@ -6,6 +6,7 @@ import ConnectorsManager from './ConnectorsManager';
 import ProgressionPage from './ProgressionPage';
 import SettingsPage from './SettingsPage';
 import EmailVerificationBanner from './EmailVerificationBanner';
+import BrandLogo from './BrandLogo';
 import { apiFetch } from '../services/api';
 import type { DocumentResponseDto, UserResponseDto } from '../services/api';
 
@@ -208,13 +209,7 @@ export default function Dashboard({
           {/* Logo Section */}
           <div className="flex flex-col gap-1">
             <div className="flex items-center gap-2.5">
-              <div className="bg-[#EAF3DE] p-2 rounded-lg border border-[#94D2B8]/30 flex items-center justify-center">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" className="stroke-[#3E6976]" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M12 2L2 7l10 5 10-5-10-5z" />
-                  <path d="M2 17l10 5 10-5" />
-                  <path d="M2 12l10 5 10-5" />
-                </svg>
-              </div>
+              <BrandLogo size={40} />
               <span className="font-brand text-[1.4rem] font-bold tracking-tight leading-none flex items-center gap-1.5 transition-colors text-[#2F4858]">
                 MemoFlow
               </span>
@@ -318,11 +313,7 @@ export default function Dashboard({
         {activeMenu !== MENU_WRITING && (
           <header className="h-[76px] px-8 flex-shrink-0 border-b flex justify-between items-center z-20 max-sm:px-4 transition-all duration-350 bg-white border-[#E5E9EB] shadow-[0_1px_4px_rgba(0,0,0,0.01)]">
             <div className="flex items-center gap-2">
-              <div className="bg-[#EAF3DE] p-1.5 rounded-lg border border-[#94D2B8]/30 lg:hidden">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" className="stroke-[#3E6976]" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M12 2L2 7l10 5 10-5-10-5z" />
-                </svg>
-              </div>
+              <BrandLogo size={32} className="lg:hidden" />
               <span className="font-brand font-bold text-[#2F4858] tracking-tight text-[1.05rem]">
                 <span className="lg:hidden">MemoFlow · </span>{activeMenu}
               </span>
