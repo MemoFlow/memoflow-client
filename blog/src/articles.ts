@@ -16,7 +16,7 @@ export const listed = (all: Article[]) => all.filter((a) => !a.data.noindex);
 
 /** Le hub d'un pilier ; deux hubs sur le même pilier font échouer le build */
 export function hubOf(all: Article[], pilier: Pilier): Article | undefined {
-  const hubs = all.filter((a) => a.data.hub && a.data.pilier === pilier);
+  const hubs = all.filter((a) => a.data.hub && !a.data.noindex && a.data.pilier === pilier);
   if (hubs.length > 1) {
     throw new Error(`Plusieurs hubs pour le pilier ${pilier} : ${hubs.map((h) => h.id).join(', ')}`);
   }

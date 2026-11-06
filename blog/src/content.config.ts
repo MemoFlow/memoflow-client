@@ -14,7 +14,7 @@ const articles = defineCollection({
       hub: z.boolean().default(false),
       datePublished: z.coerce.date(),
       dateModified: z.coerce.date(),
-      sources: z.array(z.strictObject({ titre: z.string().min(1), url: z.url() })).min(2),
+      sources: z.array(z.strictObject({ titre: z.string().min(1), url: z.url(), consulte: z.coerce.date() })).min(2),
       cta: z.enum(CTA_TYPES),
       noindex: z.boolean().default(false),
     })

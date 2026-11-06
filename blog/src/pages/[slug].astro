@@ -95,7 +95,7 @@ const graph = [organization, person, blogPosting, ...(itemList ? [itemList] : []
     <section class="sources">
       <h2>Sources</h2>
       <ol>
-        {d.sources.map((s) => <li><a href={s.url} rel="noopener">{s.titre}</a></li>)}
+        {d.sources.map((s) => <li><a href={s.url} rel="noopener">{s.titre}</a>, consulté le {formatDate(s.consulte)}</li>)}
       </ol>
     </section>
 

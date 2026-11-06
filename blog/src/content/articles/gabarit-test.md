@@ -9,8 +9,10 @@ noindex: true
 sources:
   - titre: "Centrale Méditerranée, syllabus 2024-2025 : CEE 2, rapport d'alternance 2A"
     url: "https://syllabus.centrale-med.fr/plugins/odf-web/odf/_content/course-cee-2-rapport-d-alternance-2a-fr-fr/CEE%202%20-%20Rapport%20d'alternance%202A.pdf"
+    consulte: 2026-11-06
   - titre: "IUT 1 de Grenoble, département GMP : rapport d'alternance S5 (2024-2025)"
     url: "https://chamilo.univ-grenoble-alpes.fr/courses/IUT1GMPK/document/Chamilo-BUT3-MA/Rapport_S5-2024-2025_fond.pdf"
+    consulte: 2026-11-06
 ---
 
 Phrase témoin du gabarit MemoFlow. Un rapport d'alternance présente le travail que tu as mené en entreprise pendant ta formation. Chaque école fixe ses propres consignes : vérifie toujours celles de ta formation avant de commencer.
