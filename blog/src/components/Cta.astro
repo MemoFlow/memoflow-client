@@ -1,0 +1,38 @@
+---
+import { CTA_TYPES } from '../site';
+
+interface Props {
+  type: (typeof CTA_TYPES)[number];
+  slug: string;
+}
+
+const { type, slug } = Astro.props;
+
+// Chaque promesse vient de docs/seo/product-facts.md : ne rien ajouter qui n'y figure pas.
+const TEXTES = {
+  connecteurs: {
+    titre: 'Tes missions sont déjà dans tes outils',
+    texte: 'Connecte Notion, Trello ou GitHub à MemoFlow et retrouve au même endroit ce que tu as fait.',
+  },
+  planificateur: {
+    titre: 'Génère un plan à partir de ton contexte',
+    texte: 'Le planificateur de MemoFlow rassemble ton contexte et rédige un plan, ajouté comme section de ton document.',
+  },
+  harvard: {
+    titre: 'Impose le style Harvard dans ton espace',
+    texte: 'Dans MemoFlow, une option du centre de contexte impose le style de citation Harvard.',
+  },
+  generique: {
+    titre: 'Rédige dans un espace organisé en sections',
+    texte: 'Dans MemoFlow, ton document est découpé en sections et sauvegardé automatiquement.',
+  },
+} satisfies Record<Props['type'], { titre: string; texte: string }>;
+
+const { titre, texte } = TEXTES[type];
+const href = `/inscription?from=${encodeURIComponent(slug)}`;
+---
+<aside class="cta" aria-label="Essayer MemoFlow">
+  <p class="cta-titre">{titre}</p>
+  <p>{texte}</p>
+  <a class="btn" href={href}>Commence gratuitement</a>
+</aside>

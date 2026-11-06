@@ -1,0 +1,36 @@
+---
+import Base from '../../../layouts/Base.astro';
+import { articlePath, getArticles, listed } from '../../../articles';
+import { AUTHOR, SITE } from '../../../site';
+import { PERSON_ID, organization, person } from '../../../schema';
+
+const articles = listed(await getArticles());
+const path = AUTHOR.path;
+const graph = [
+  organization,
+  person,
+  { '@type': 'ProfilePage', '@id': `${SITE}${path}#page`, url: `${SITE}${path}`, inLanguage: 'fr-FR', mainEntity: { '@id': PERSON_ID } },
+];
+// noindex tant que la bio est un emplacement vide : retirer quand François l'a fournie
+const BIO_FOURNIE = false;
+---
+<Base
+  title={`${AUTHOR.name}, auteur du blog MemoFlow`}
+  description={`Qui écrit les guides du blog MemoFlow : ${AUTHOR.name}.`}
+  path={path}
+  noindex={!BIO_FOURNIE}
+  crumbs={[{ name: 'Blog', path: '/blog/' }, { name: AUTHOR.name, path }]}
+  graph={graph}
+>
+  <h1>{AUTHOR.name}</h1>
+  <p>[BIO À FOURNIR]</p>
+
+  {articles.length > 0 && (
+    <>
+      <h2>Ses articles</h2>
+      <ul class="liste">
+        {articles.map((a) => <li><a href={articlePath(a)}>{a.data.title}</a></li>)}
+      </ul>
+    </>
+  )}
+</Base>

@@ -1,0 +1,108 @@
+---
+import Base from '../layouts/Base.astro';
+import Cta from '../components/Cta.astro';
+import { articlePath, formatDate, getArticles, hubOf, isoDate, listed, type Article } from '../articles';
+import { PILIERS, SITE } from '../site';
+import { ORG_ID, PERSON_ID, organization, person, type Crumb } from '../schema';
+
+export async function getStaticPaths() {
+  const all = await getArticles();
+  return all.map((article) => ({ params: { slug: article.id }, props: { article, all } }));
+}
+
+interface Props {
+  article: Article;
+  all: Article[];
+}
+
+const { article, all } = Astro.props;
+const d = article.data;
+const path = articlePath(article);
+const url = `${SITE}${path}`;
+
+const hub = hubOf(all, d.pilier);
+const parentHub = hub && hub.id !== article.id ? hub : undefined;
+const satellites = d.hub ? listed(all).filter((a) => a.data.pilier === d.pilier && a.id !== article.id) : [];
+
+// ponytail: pas de hub publié pour le pilier = le fil d'Ariane saute ce niveau (aucun lien mort)
+const crumbs: Crumb[] = [
+  { name: 'Blog', path: '/blog/' },
+  ...(parentHub ? [{ name: PILIERS[d.pilier], path: articlePath(parentHub) }] : []),
+  { name: d.title, path },
+];
+
+// CTA après la première section utile : juste avant le 2e H2, sinon en fin d'article.
+// ponytail: découpe du HTML rendu ; les images Markdown locales n'y seraient pas optimisées (passer par <Content /> le jour où il y en a)
+const html = article.rendered?.html ?? '';
+const cut = html.indexOf('<h2', html.indexOf('<h2') + 1);
+const [before, after] = cut === -1 ? [html, ''] : [html.slice(0, cut), html.slice(cut)];
+
+const blogPosting = {
+  '@type': 'BlogPosting',
+  '@id': `${url}#article`,
+  headline: d.title,
+  description: d.description,
+  datePublished: isoDate(d.datePublished),
+  dateModified: isoDate(d.dateModified),
+  inLanguage: 'fr-FR',
+  url,
+  mainEntityOfPage: url,
+  author: { '@id': PERSON_ID },
+  publisher: { '@id': ORG_ID },
+  citation: d.sources.map((s) => ({ '@type': 'CreativeWork', name: s.titre, url: s.url })),
+};
+const itemList = satellites.length > 0 && {
+  '@type': 'ItemList',
+  name: `Articles du pilier ${PILIERS[d.pilier]}`,
+  itemListElement: satellites.map((a, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    url: `${SITE}${articlePath(a)}`,
+    name: a.data.title,
+  })),
+};
+const graph = [organization, person, blogPosting, ...(itemList ? [itemList] : [])];
+---
+<Base title={d.title} description={d.description} path={path} noindex={d.noindex} ogType="article" crumbs={crumbs} graph={graph}>
+  <article>
+    <header>
+      <p class="kicker">{PILIERS[d.pilier]}</p>
+      <h1>{d.title}</h1>
+      <p class="meta">
+        Par <a href="/blog/auteur/francois-hatem/">François Hatem</a> · publié le{' '}
+        <time datetime={isoDate(d.datePublished)}>{formatDate(d.datePublished)}</time>
+        {d.dateModified > d.datePublished && (
+          <> · mis à jour le{' '}<time datetime={isoDate(d.dateModified)}>{formatDate(d.dateModified)}</time></>
+        )}
+      </p>
+    </header>
+
+    <div class="prose">
+      <Fragment set:html={before} />
+      <Cta type={d.cta} slug={article.id} />
+      <Fragment set:html={after} />
+    </div>
+
+    {satellites.length > 0 && (
+      <section>
+        <h2>Tous les articles : {PILIERS[d.pilier]}</h2>
+        <ul class="liste">
+          {satellites.map((a) => <li><a href={articlePath(a)}>{a.data.title}</a></li>)}
+        </ul>
+      </section>
+    )}
+
+    <section class="sources">
+      <h2>Sources</h2>
+      <ol>
+        {d.sources.map((s) => <li><a href={s.url} rel="noopener">{s.titre}</a></li>)}
+      </ol>
+    </section>
+
+    {parentHub && (
+      <p class="article-foot">
+        <a href={articlePath(parentHub)}>← Tous les guides : {PILIERS[d.pilier]}</a>
+      </p>
+    )}
+  </article>
+</Base>

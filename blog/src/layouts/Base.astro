@@ -1,0 +1,67 @@
+---
+import { SITE } from '../site';
+import { breadcrumbList, type Crumb } from '../schema';
+import '../blog.css';
+
+interface Props {
+  title: string;
+  description: string;
+  path: string;
+  noindex?: boolean;
+  ogType?: 'website' | 'article';
+  crumbs?: Crumb[];
+  /** Nœuds JSON-LD de la page ; le BreadcrumbList est ajouté depuis crumbs */
+  graph?: object[];
+}
+
+const { title, description, path, noindex = false, ogType = 'website', crumbs = [], graph = [] } = Astro.props;
+const canonical = `${SITE}${path}`;
+const nodes = crumbs.length > 1 ? [...graph, breadcrumbList(crumbs)] : graph;
+// < : empêche une chaîne du contenu de fermer la balise script
+const jsonLd = JSON.stringify({ '@context': 'https://schema.org', '@graph': nodes }).replace(/</g, '\\u003c');
+---
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex" />}
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta property="og:type" content={ogType} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:site_name" content="MemoFlow" />
+    <meta property="og:locale" content="fr_FR" />
+    {nodes.length > 0 && <script type="application/ld+json" set:html={jsonLd} />}
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="wrap">
+        <a class="brand" href="/blog/">MemoFlow <span>Blog</span></a>
+      </div>
+    </header>
+    <main class="wrap">
+      {crumbs.length > 1 && (
+        <nav class="crumbs" aria-label="Fil d'Ariane">
+          <ol>
+            {crumbs.map((c, i) =>
+              i < crumbs.length - 1 ? <li><a href={c.path}>{c.name}</a></li> : <li aria-current="page">{c.name}</li>
+            )}
+          </ol>
+        </nav>
+      )}
+      <slot />
+    </main>
+    <footer class="site-footer">
+      <div class="wrap">
+        <a href="/blog/">Accueil du blog</a>
+        <a href="/blog/auteur/francois-hatem/">L'auteur</a>
+        <span>© MemoFlow</span>
+      </div>
+    </footer>
+  </body>
+</html>

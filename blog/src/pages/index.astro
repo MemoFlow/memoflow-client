@@ -1,0 +1,52 @@
+---
+import Base from '../layouts/Base.astro';
+import { articlePath, formatDate, getArticles, hubOf, isoDate, listed } from '../articles';
+import { PILIERS, SITE, type Pilier } from '../site';
+import { ORG_ID, organization } from '../schema';
+
+const all = await getArticles();
+const visibles = listed(all);
+const piliers = (Object.keys(PILIERS) as Pilier[]).map((id) => ({
+  id,
+  label: PILIERS[id],
+  hub: hubOf(all, id),
+  total: visibles.filter((a) => a.data.pilier === id).length,
+}));
+const derniers = visibles.slice(0, 10);
+
+const title = 'Blog MemoFlow : rapport d’alternance, stage et mémoire';
+const description =
+  "Guides pour rédiger ton rapport d'alternance, ton rapport de stage ou ton mémoire, à partir de ce que demandent les écoles.";
+const graph = [
+  organization,
+  { '@type': 'Blog', '@id': `${SITE}/blog/#blog`, name: 'Blog MemoFlow', url: `${SITE}/blog/`, inLanguage: 'fr-FR', publisher: { '@id': ORG_ID } },
+];
+---
+<Base title={title} description={description} path="/blog/" graph={graph}>
+  <h1>Le blog MemoFlow</h1>
+  <p>{description}</p>
+
+  <h2>Les guides par sujet</h2>
+  <ul class="piliers">
+    {piliers.map((p) => (
+      <li>
+        {p.hub ? <a href={articlePath(p.hub)}><strong>{p.label}</strong></a> : <strong>{p.label}</strong>}
+        <br /><span class="meta">{p.total} article{p.total > 1 ? 's' : ''}</span>
+      </li>
+    ))}
+  </ul>
+
+  <h2>Derniers articles</h2>
+  {derniers.length === 0 ? (
+    <p>Aucun article publié pour l'instant.</p>
+  ) : (
+    <ul class="liste">
+      {derniers.map((a) => (
+        <li>
+          <a href={articlePath(a)}>{a.data.title}</a>
+          <span class="meta"> · <time datetime={isoDate(a.data.datePublished)}>{formatDate(a.data.datePublished)}</time></span>
+        </li>
+      ))}
+    </ul>
+  )}
+</Base>
