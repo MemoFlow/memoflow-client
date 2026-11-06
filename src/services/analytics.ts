@@ -13,7 +13,8 @@ import { useSyncExternalStore } from 'react';
  * setup steps given with this file).
  */
 
-const GTM_ID: string = import.meta.env.VITE_GTM_ID || 'GTM-PVXGKTT5';
+// Container "memoflow-client.vercel.app" of the "PIE Memoflow" Tag Manager account
+const GTM_ID: string = import.meta.env.VITE_GTM_ID || 'GTM-KJR96BWV';
 /** Production builds only, unless VITE_ANALYTICS_DEBUG=true (to test GTM preview locally) */
 export const ANALYTICS_ENABLED = import.meta.env.PROD || import.meta.env.VITE_ANALYTICS_DEBUG === 'true';
 
@@ -128,10 +129,16 @@ export function trackPlanGenerated(jobId: string): void {
 // Call these from those features when they are built.
 export const trackViewPricing = () => track('view_pricing');
 export const trackExportBlocked = () => track('export_blocked');
-export const trackPurchase = (p: { transactionId: string; value: number; currency: string; plan: string }) =>
+/** GA4 e-commerce format read by GTM ("Envoyer les données d'e-commerce", source: couche de données) */
+export function trackPurchase(p: { transactionId: string; value: number; currency: string; plan: string }): void {
+  if (!gtmLoaded) return;
+  window.dataLayer.push({ ecommerce: null }); // clears the previous e-commerce object
   track('purchase', {
-    transaction_id: p.transactionId,
-    value: p.value,
-    currency: p.currency,
-    items: [{ item_id: p.plan, item_name: p.plan, price: p.value, quantity: 1 }],
+    ecommerce: {
+      transaction_id: p.transactionId,
+      value: p.value,
+      currency: p.currency,
+      items: [{ item_id: p.plan, item_name: p.plan, price: p.value, quantity: 1 }],
+    },
   });
+}
