@@ -26,3 +26,9 @@ Prix, gratuité, essai, nombre d'utilisateurs, écoles partenaires, détection a
 ## Site
 - Pas de landing : `/` affiche la connexion. L'inscription est un état React (`view = 'signup'`), pas une URL.
 - Domaine et hébergeur de prod inconnus. Placeholder unique : `https://memoflow.example`.
+
+## Décisions de François (06/11/2026)
+- Cible du blog : L3-M2, alternants, stagiaires. Pas de doctorants.
+- Modèle : freemium (plan gratuit avec limites). Les CTA peuvent dire « commence gratuitement ». Les limites du plan gratuit ne sont pas connues : ne rien affirmer à leur sujet.
+- Auteur des articles : François Hatem, nommé, avec une bio. Le contenu de la bio est à fournir par François (`[BIO À FOURNIR]`) : ne rien inventer de son parcours.
+- Architecture : blog Astro dans `blog/`, sortie dans `dist/blog/`.
