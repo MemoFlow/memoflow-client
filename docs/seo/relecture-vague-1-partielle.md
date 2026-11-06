@@ -76,28 +76,113 @@ Aucun.
 ### Faits MemoFlow
 - Corps : aucune mention de MemoFlow. Conforme.
 - CTA `generique`, affiché « Écris ton document section par section. L'espace d'écriture de MemoFlow organise ton texte en sections et le sauvegarde automatiquement. Commence gratuitement » (`blog/src/components/Cta.astro:27`) : conforme à `product-facts.md` (espace d'écriture en sections, sauvegarde automatique, freemium).
-# Brief commun : relecture à froid, vague 1 du blog MemoFlow
+# Relecture 04 : A6 `donnees-entreprise-memoire-alternance` et D2 `declarer-ia-memoire`
 
-Tu relis des articles que tu n'as pas écrits. Repo /Users/francoishatem/Projects/memoflow-client, branche seo-geo. Site servi en local : http://localhost:4173/blog/<slug>/ (vite preview déjà lancé, NE LE COUPE PAS, ne lance aucun build). Source : blog/src/content/articles/<slug>.md. Brief du rédacteur : docs/seo/briefs/<slug>.md.
+Relecture du 06/11/2026, branche `seo-geo`. J'ai relu les sources Markdown et le HTML servi par `vite preview` (les deux pages répondent en 200). Skills passées : `seo-content` (avec `content_humanize.py`) et `seo-page` (avec `metadata_template.py`). Les 11 sources de A6, les 6 sources de D2 et le guide Paris 1 cité par `rediger-un-memoire` ont tous été téléchargés et lus en texte intégral : `pdftotext -layout` pour les PDF (l'URL `.kjsp` de LLASIC sert elle aussi un PDF), `textutil` pour le DOCX de Paris 1. Les pages HTML de la CNIL et de Paris Cité ont en plus été recoupées avec WebFetch. Les scores sont des repères internes, pas des signaux Google.
 
-NE MODIFIE AUCUN article ni brief. Ne commite rien. Zéro outil payant.
+Vérifié sans problème sur les deux pages : aucun caractère Unicode invisible (source et HTML), aucune tournure relevée par `content_humanize.py` (0 changement), metas non templatées, un seul H1, Hn sans saut, canonical auto-référent, `lang="fr"`, fil d'Ariane à 3 niveaux vers le hub du pilier, `BlogPosting` avec `citation` (11 et 6 entrées) et `BreadcrumbList`. Tous les liens internes répondent en 200 : `/blog/rapport-d-alternance/`, `/blog/ia-autorisee-memoire/`, `/blog/retrouver-ses-missions-alternance/`, `/blog/ia-memoire/`, `/inscription?from=…`, page auteur.
 
-## À lire d'abord
-- docs/seo/product-facts.md : seule source de faits MemoFlow. Connecteurs réels = Notion, Trello, GitHub, toujours avec « si ton entreprise t'y autorise ». Freemium, limites du plan gratuit inconnues (rien ne doit les affirmer). Rien sur prix, export, anti-plagiat, RGPD, modèle d'IA, normes autres que Harvard.
-- docs/seo/briefs/_consignes-vague.md : règles des rédacteurs.
-- docs/seo/relecture-pilote.md : MÊME GRILLE et même format de rendu que toi. Imite sa structure et son niveau d'exigence par article.
-- Connus, NE PAS compter : domaine memoflow.example, pas d'image OG, pas de twitter:card, bio auteur absente.
+---
 
-## Pour chaque article
-1. Skill `seo-content` (via le tool Skill) : E-E-A-T, contenu mince, citabilité IA, tournures d'IA, caractères Unicode invisibles. Script utile : ~/.claude/skills/seo/scripts/content_humanize.py. Si un script échoue avec « requires Python 3.10 », préfixe `CLAUDE_SEO_PYTHON=$HOME/.local/bin/python3.11` (ou lance-le directement avec $HOME/.local/bin/python3.11).
-2. Skill `seo-page` sur l'URL locale : un passage rapide, ne signale QUE ce qui est faux ou manquant (title ≤ 60, description ≤ 160, H1 unique, Hn, liens internes : lien vers le hub du pilier tôt, liens vers pages existantes — vérifie les 200 avec curl —, schema, canonical).
-3. Anti-hallucination : choisis les 3 affirmations factuelles les plus fortes de l'article (chiffres, citations, règles attribuées à une école). Vérifie-les UNE PAR UNE avec WebFetch sur la source citée (charge le tool avec ToolSearch "select:WebFetch"). Si WebFetch ne lit pas un PDF : `curl -sL <url> -o /chemin/scratch/x.pdf && pdftotext -layout x.pdf -` (dans ton dossier scratch). Verdict : confirmée / déformée / introuvable, avec l'extrait exact de la source. Puis contrôle TOUTE phrase sur MemoFlow (corps + champ `cta` du frontmatter : regarde ce que le CTA affiche dans le HTML) contre product-facts.md.
-4. Règles de _consignes-vague.md : exemple fictif annoncé comme fictif, aucune règle/chiffre/citation sans source nommée, pas de première personne inventée, ouvertures de section qui recopient le H2, « X, pas Y », deux-points de révélation, objets qui agissent, métadiscours, « mémoire » qualifié dans le title, 1re section utile seule avant le CTA, liens internes.
+## 5. donnees-entreprise-memoire-alternance : à corriger
 
-## Rendu
-Écris ta section dans le fichier indiqué dans ta mission (Markdown, français, tutoiement inutile : c'est un rapport). Format par article, comme relecture-pilote.md :
-`## <n>. <slug> : <verdict>` (verdict = publiable / à corriger / à réécrire), puis scores contenu et citabilité, nb de mots, puis « Contrôle anti-hallucination : x confirmées / y déformées / z introuvables » avec un tableau (affirmation | source | verdict + extrait), puis ### Bloquant, ### À corriger, ### Mineur. CHAQUE problème = la phrase exacte concernée (citée, avec n° de ligne du .md) + le correctif précis (phrase de remplacement prête à coller). Puis ### Faits MemoFlow. Pas de remplissage : si rien à signaler dans une rubrique, écris « Aucun ».
+Contenu : 78/100. Citabilité IA : 82/100. Environ 1 880 mots de corps. La méthode d'anonymisation (nom, chiffres, personnes) et le tableau sourcé des écoles apportent une vraie information. Le point faible est la section « huis clos », dont la réponse est contredite par une source publique déjà citée dans la même vague.
 
-Bloquant = faux, risque juridique/éthique, promesse produit non vérifiée, source qui ne dit pas ce qu'on lui fait dire sur un point central. À corriger = déformation secondaire, règle des consignes violée, ton. Mineur = le reste.
+Title 52 car. (« mémoire » qualifié), description 150 car., lien vers le hub dans le chapô (l. 45), 2 liens latéraux (l. 123).
 
-Ta réponse finale (150 mots max) : par article, verdict + bloquants en une ligne, bilan anti-hallucination (lesquelles déformées/introuvables), et toute affirmation de ton article qui pourrait contredire un autre article de la vague (cite-la mot pour mot avec la ligne).
+### Contrôle anti-hallucination : 1 confirmée / 2 déformées / 0 introuvable
+| Affirmation | Source | Verdict + extrait |
+|---|---|---|
+| l. 49 : le stagiaire « s'engage à ne rien communiquer ni publier sans l'accord préalable de son organisme d'accueil », et l'organisme « peut éventuellement restreindre la diffusion du rapport de stage » | Sorbonne Université, fiche droits et obligations du stagiaire (PDF) | **Confirmée**, mot pour mot : « Il s'engage à ne rien communiquer ni publier sans l'accord préalable de son organisme d'accueil. L'organisme d'accueil peut éventuellement restreindre la diffusion du rapport de stage. » |
+| l. 79-81 : définitions CNIL de l'anonymisation et de la pseudonymisation, puis « La CNIL retient trois critères » (individualisation, corrélation, inférence) | CNIL, page « L'anonymisation de données personnelles » (19 mai 2020) | **Déformée sur l'attribution.** Les définitions sont exactes (« rendre impossible, en pratique, toute identification… de manière irréversible », « les données concernées conservent donc un caractère personnel », « également réversible »). En revanche, les critères ne sont pas ceux de la CNIL : « Les autorités de protection des données européennes définissent trois critères ». |
+| l. 107 : « Aucune des consignes de mémoire de master consultées ici ne prévoit de soutenance à huis clos. Dans les documents publics trouvés, cette procédure relève de la thèse. » Paris Cité : demande au moins 3 mois avant, accord de la présidence | Paris Cité, « Confidentialité de thèse » ; Paris 1 UFR de géographie, « Écrire et soutenir un mémoire de master » V9 (source de `rediger-un-memoire`) | **Déformée.** Les faits sur Paris Cité sont exacts (« au minimum 3 mois avant la soutenance par le doctorant et son directeur de thèse », « argumentaire sur le caractère confidentiel », « soumise à l'accord de la Présidente de l'université »). La généralisation est fausse : le guide de master de Paris 1 écrit « Le mémoire peut être assorti d'une clause de confidentialité : seuls les membres du jury auront accès à l'information, la soutenance ne sera pas publique ». ICN, cité dans le tableau, précise aussi que ses rapports « ne font pas l'objet de soutenance publique devant un jury ». |
+
+Également vérifiés et confirmés : service-public (« Le contrat d'apprentissage est un contrat de travail »), les quatre citations EPFL (« soumis·e aux règles de l'entreprise : salaire, horaire, absence, confidentialité », « sauf si elles sont du domaine public », « une exception », « Dans la mesure où le rapport n'est pas confidentiel, la présentation n'est pas confidentielle », retrait des parties confidentielles sans contrat), la liste de HEC Montréal, son protocole à trois signataires, l'engagement du second juré et la durée d'un an, le Cnam (IIM, mention « confidentiel », 3 ans sans prêt), Lyon 3 (déclaration remplie par l'entreprise, placée après la page de garde, suivie de l'accord de diffusion), l'INSA Rennes (nom de l'entreprise demandé, archive consultable seulement par ses gestionnaires, « Il appartient à l'entreprise de demander une clause confidentialité », clause signée par les directeurs et portée à la connaissance du jury), Neuchâtel (« sans autorisation expresse », « strictement confidentiels, sauf déclaration expresse contraire ») et ICN (mention « CONFIDENTIEL » sur la couverture).
+
+### Bloquant
+1. **La réponse du H2 « Peut-on soutenir son mémoire à huis clos ? » est fausse et contredit un autre article de la vague.** Ligne 107 : « Aucune des consignes de mémoire de master consultées ici ne prévoit de soutenance à huis clos. Dans les documents publics trouvés, cette procédure relève de la thèse. » Or `rediger-un-memoire.md` l. 163 (qui renvoie vers cet article) écrit : « Paris 1 permet d'assortir le mémoire d'une clause de confidentialité. Seul le jury le lit alors, et la soutenance n'est pas publique. » C'est vérifié dans le guide de Paris 1 (p. 7 et p. 11 : « Sauf exception (clause de confidentialité), la soutenance est publique »). Un lecteur qui suit le lien tombe sur deux réponses contraires.
+   Correctif : ajouter la source au frontmatter (`titre: "Université Paris 1, UFR de géographie : Écrire et soutenir un mémoire de master (P. Beckouche, V9)"`, `url: "https://cours.univ-paris1.fr/pluginfile.php/1799833/mod_resource/content/1/Ecrire%20un%20memoire%20de%20master_V9.pdf"`, `consulte: 2026-11-06`), puis remplacer l. 107 par :
+   > « Certaines formations le prévoient. Dans son guide du mémoire de master, l'UFR de géographie de Paris 1 écrit qu'avec une clause de confidentialité, « seuls les membres du jury auront accès à l'information, la soutenance ne sera pas publique ». Chez ICN, les rapports d'alternance « ne font pas l'objet de soutenance publique devant un jury ». Le huis clos au sens strict, avec une demande formelle et un accord de la présidence, relève surtout de la thèse. À l'Université Paris Cité, le doctorant et son directeur de thèse demandent la confidentialité au moins trois mois avant la soutenance, avec un argumentaire écrit, et le huis clos est soumis à l'accord de la présidente de l'université. »
+
+   À la l. 111, remplacer « N'attends pas la fin de l'année, puisque pour une thèse, Paris Cité exige déjà trois mois d'avance. » par « Paris 1 demande d'en discuter « préalablement à la rédaction du mémoire avec le directeur et le maître de stage ». »
+
+### À corriger
+1. **Pour l'apprenti, l'obligation de confidentialité ne s'appuie que sur une règle suisse.** Ligne 49 : « Si tu es apprenti, tu es salarié. « Le contrat d'apprentissage est un contrat de travail », rappelle service-public.fr. L'EPFL l'écrit pour ses étudiants salariés en entreprise : ils sont soumis aux règles de l'entreprise, confidentialité comprise. » La page service-public ne dit rien sur la confidentialité, et l'EPFL ne parle que de ses propres étudiants. Le lecteur français en tire une règle de droit qui n'est sourcée nulle part. Correctif, sans conseil juridique inventé :
+   > « Si tu es apprenti, tu es salarié : « Le contrat d'apprentissage est un contrat de travail », rappelle service-public.fr. Ton contrat et le règlement intérieur de l'entreprise s'appliquent donc, avec leur clause de confidentialité s'ils en ont une. Relis-les. L'EPFL, en Suisse, l'écrit pour ses étudiants salariés : ils sont soumis aux règles de l'entreprise, « confidentialité » comprise. »
+2. **Les critères d'anonymisation sont attribués à la CNIL.** Ligne 81 : « La CNIL retient trois critères pour juger une anonymisation. » Correctif : « La CNIL reprend les trois critères fixés par les autorités européennes de protection des données. »
+3. **Trois des sept écoles du tableau ne sont pas françaises, et rien ne le signale.** EPFL, Neuchâtel (Suisse) et HEC Montréal (Québec) figurent dans le tableau (l. 99-101). L'EPFL porte aussi les règles des l. 49, 51 et 109. Pour un étudiant français, le pays est une information utile. Correctif : ajouter « (Suisse) » après les liens EPFL et Université de Neuchâtel, et « (Québec) » après HEC Montréal. Remplacer aussi l. 91 « Voici celles des documents publics consultés le 6 novembre 2026. » par « Le tableau reprend sept documents publics consultés le 6 novembre 2026, dont trois hors de France. »
+4. **Les chiffres classés confidentiels par HEC sont élargis.** Ligne 69 : « Un chiffre d'affaires, une marge ou un budget exacts font partie des données que HEC Montréal classe comme confidentielles. » Le protocole vise les renseignements « conservés de manière confidentielle par l'Entreprise », dont les « budgets et états financiers non publiés ». Le chiffre d'affaires d'une société française est souvent public. Correctif : « Les budgets et états financiers non publiés, les prix, tarifs et coûts figurent dans la liste de HEC Montréal. Tu peux garder ces chiffres utiles sans les révéler : »
+5. **L'ouverture de section recopie le H2 et généralise sans source.** Ligne 91 : « Un mémoire confidentiel est un mémoire dont la diffusion est limitée, le plus souvent au jury, à la demande de l'entreprise. » Rien ne permet d'écrire « le plus souvent ». Correctif : « Quand anonymiser ne suffit pas, parce que le sujet lui-même est sensible, certaines écoles limitent la diffusion du mémoire : couverture marquée, archive fermée, lecture réservée au jury. » La phrase suivante, qui redit « Quand anonymiser ne suffit pas », est alors à supprimer.
+
+### Mineur
+- Ligne 51 : la citation de l'EPFL est sortie de son contexte. La règle porte sur ce que l'étudiant transmet au professeur sans le signaler. Correctif : « L'EPFL demande de signaler comme confidentielles, en plus de ce que l'entreprise désigne par écrit, « les informations observées au sein de l'entreprise, sauf si elles sont du domaine public ». »
+- Lignes 85-87, exemple fictif : le « Après » ajoute une information absente du « Avant » (« son premier client »). Correctif : dans le « Avant », écrire « …réalisé avec son premier client, Hypermarchés Duval, passer de 2,1 à 2,6 M€… ». Le calcul est juste (+24 %, « environ un quart »).
+- Ligne 120 : « C'est souvent là que finissent les documents internes. » est une généralisation sans source. Correctif : « Regarde surtout les annexes, où l'on glisse facilement un document interne. »
+- Ligne 123 : « Coller un document dans un outil externe revient aussi à le sortir de l'entreprise » gagnerait à être sourcé. Correctif : ajouter « La charte d'Angers interdit par exemple de transmettre à une IA des « données internes à une entreprise d'accueil de stage ». »
+- Ligne 65 : le formulaire INSA date de 2016 et exclut les mémoires d'ingénieur (« hors mémoires permettant la délivrance du diplôme d'ingénieur »). Option : « (formulaire de 2016) ».
+- Le brief prévoyait « secret des affaires » comme mot-clé secondaire, avec Neuchâtel comme source (« L'étudiant-e doit à l'entreprise/institution le secret des affaires »). Le terme n'apparaît pas. Option : l'ajouter dans la ligne Neuchâtel du tableau, entre guillemets et attribué.
+
+### Faits MemoFlow
+- Le corps ne nomme pas MemoFlow. La seule suggestion de connexion (l. 123, « ne connecte un outil de l'entreprise à un service externe que si ton entreprise t'y autorise ») porte bien la clause.
+- CTA `generique`, tel qu'affiché dans le HTML : « Écris ton document section par section. L'espace d'écriture de MemoFlow organise ton texte en sections et le sauvegarde automatiquement. Commence gratuitement ». Conforme à `product-facts.md` (WritingSpace, décision freemium). Il arrive après la l. 55, qui l'amène sans le contredire.
+- Aucune affirmation sur le RGPD, l'export ou le modèle d'IA.
+
+---
+
+## 7. declarer-ia-memoire : à corriger
+
+Contenu : 80/100. Citabilité IA : 86/100. Environ 1 430 mots de corps, dans la fourchette du brief. Le tableau « quoi / où », la distinction entre déclarer et citer, et le modèle sont citables et justes. Le défaut principal est une synthèse qui prête à tous les textes ce que trois seulement demandent.
+
+Title 60 car. (« mémoire » qualifié), description 160 car. (à la limite). Le hub `/blog/ia-memoire/` et `/blog/ia-autorisee-memoire/` sont liés avant le 1er H2 (l. 32), le hub `rapport-d-alternance` à la l. 107.
+
+### Contrôle anti-hallucination : 3 confirmées / 0 déformée / 0 introuvable
+| Affirmation | Source | Verdict + extrait |
+|---|---|---|
+| l. 44, 89-90, 98 : Lorraine demande une mention dans le corps du texte et une déclaration en annexe, avec deux formules, et chaque prompt numéroté avec l'IA, son développeur et la date | Charte du master Urbanisme et Aménagement, Lorraine (Metz), validée le 12/03/2026 | **Confirmée**, mot pour mot : « Ce paragraphe a été reformulé à l'aide d'un outil d'IA, cf. prompt n°1 en annexe », « L'ensemble du dossier a été vérifié avec un correcteur orthographique d'IA, cf. prompt n°2 en annexe », « Elle liste les prompts utilisés en les numérotant », champs « IA / Développeur / Date de consultation » |
+| l. 42 et 113 : Angers accepte quatre emplacements, et l'« absence de mention et explication » peut entraîner un refus du mémoire | Charte IA d'Angers (Polytech) | **Confirmée** : « mentionnée dans le document final (dans une section dédiée, en annexe, en note de bas de page ou en introduction) », « absence de mention et explication de l'usage… pourra entraîner : -Un refus du devoir, du rapport et du mémoire » |
+| l. 41 et 98 : l'UPEC veut l'outil, la finalité et les passages, « dans le manuscrit », et recommande un journal d'IA qui « pourra être mis à disposition en cas de vérification » | Charte UPEC, CA du 13/03/2026 (§ 5.2) | **Confirmée** : « mentionner explicitement, dans le manuscrit ou la publication concernés… l'outil utilisé, la finalité poursuivie (ex. : reformulation linguistique, traduction, aide à la structuration) et, le cas échéant, les passages concernés », « Il est recommandé… journal d'IA… Ce journal pourra être mis à disposition en cas de vérification » |
+
+Également vérifiés et confirmés : Clermont (« quels outils utilisés pour quelles tâches) y compris dans le cas de génération de schémas, d'images ou de vidéos », « formaliser la façon de signaler le recours à l'IAG », « Vérifiez et citez les sources utilisées par l'IAG »), LLASIC (« repérer les passages qui relèveraient d'un usage de l'IA », « généralement APA ou ISO-690 », déclaration par normes bibliographiques « et/ou » tableau, trois blocs, « la rédaction automatique de paragraphes », « se rapprocher… de son directeur ou sa directrice de mémoire »), UPEC (« Rédiger intégralement ou substantiellement un chapitre ou une section scientifique »), Angers (« données internes à une entreprise d'accueil de stage »), Paris 1 ED 441 (les six engagements, « J'ai utilisé / je n'ai pas utilisé (barrer la mention inutile) », « si possible, les versions des programmes », « s'être adressé à la personne chargée de l'encadrer », formulaire pour « le mémoire de la thèse »).
+
+### Bloquant
+Aucun.
+
+### À corriger
+1. **La synthèse prête à tous les textes ce que trois seulement demandent.** Ligne 47 : « D'un texte à l'autre, on retrouve les mêmes informations : l'outil, ce que tu en as fait, les parties touchées. Seul l'emplacement varie. » Les parties concernées ne figurent ni chez Clermont (outils et tâches), ni chez Angers (usage précis et façon de procéder, sans l'outil), ni dans le formulaire de Paris 1 (outils et étapes). Seuls l'UPEC (« le cas échéant »), LLASIC et Lorraine les demandent. C'est justement l'élément qu'on te demande de rattacher à une charte nommée. Correctif :
+   > « Les six textes demandent ce que tu as fait avec l'IA. Cinq veulent le nom de l'outil (Angers parle seulement de l'usage précis), et trois les parties concernées : l'UPEC, l'UFR LLASIC et Lorraine. L'emplacement varie encore plus. »
+
+   Même correction dans le chapô, l. 30 : « …tu indiques l'outil et ce que tu lui as demandé, plus les parties du texte concernées et tes prompts si ta formation les exige. »
+2. **Les « six » ne sont pas ceux de l'article lié juste au-dessus.** La l. 32 renvoie vers `ia-autorisee-memoire`, qui compare « six chartes » dont la Picardie (l. 30, 51). Ici, l. 36, « Six établissements » remplacent la Picardie par le formulaire de Paris 1. Le hub `ia-memoire` parle, lui, de « 5 chartes » (description). Un lecteur qui enchaîne les pages croit lire le même relevé. Correctif, à ajouter après la l. 36 : « La charte de Picardie, comparée dans l'article sur l'IA autorisée, n'est pas reprise ici : elle renvoie aux consignes sans détailler le contenu de la déclaration. »
+3. **Phrase-mot-clé plaquée.** Ligne 47 : « Si tu te demandes où écrire que tu as utilisé ChatGPT, la réponse dépend donc de ta formation. » Correctif : « Pour ChatGPT comme pour un correcteur, l'endroit dépend donc de ta formation. »
+
+### Mineur
+- Ligne 36, « dans des textes de 2025-2026 » : ni la charte d'Angers ni le formulaire de Paris 1 ne portent de date dans leur texte. Seules leurs URL indiquent 2026/06 et 2025-09. Correctif : « dans des textes adoptés ou mis en ligne en 2025-2026 ».
+- Ligne 79 : l'en-tête du modèle (« Je soussigné(e) [Prénom Nom]… déclare avoir utilisé les outils d'IA générative suivants ») reprend presque mot pour mot l'annexe de Lorraine, qui n'est pas créditée, et la colonne « Outil et version » vient de Paris 1. Correctif : « On a repris l'en-tête de l'annexe de Lorraine, pour le tableau les trois blocs de la charte de l'UFR LLASIC… et pour les engagements et la version des outils ceux du formulaire de Paris 1. »
+- Lignes 61-67 : le tableau LLASIC contient aussi « Reformuler » et « Résumer », et la reformulation est l'exemple de Lorraine. Option : ajouter une ligne « Forme et structuration | Reformuler un passage ».
+- Ligne 43 : LLASIC écrit « normes bibliographiques en vigueur et/ou » tableau. Correctif : « Normes bibliographiques, tableau récapitulatif, ou les deux ».
+- H2 « Que faire si ta formation ne donne aucun modèle ? » : la charte d'Angers indique que l'université « met à disposition un questionnaire permettant aux apprenants de déclarer leur utilisation ». Option, l. 113 : « À Angers, l'université fournit un questionnaire de déclaration. »
+- Le modèle est bien annoncé comme modèle à adapter (title, l. 55 : « n'est le formulaire officiel d'aucun établissement… Si elle fournit son propre formulaire, prends le sien »), et le journal est annoncé comme fictif (l. 100). Rien à changer.
+
+### Comparaison avec `ia-autorisee-memoire` (mêmes chartes)
+- **Exige ou recommande : aucune divergence sur les cinq chartes communes.** Les deux articles disent que l'UPEC « recommande » le journal d'IA (D2 l. 98, ia-autorisee l. 102), que les prompts sont à fournir « si ta formation les exige » (D2 l. 30, ia-autorisee l. 91), que Lorraine demande une mention dans le texte et une annexe (D2 l. 44, ia-autorisee l. 45), et qu'Angers prévoit un refus du mémoire en l'absence de mention (D2 l. 113, ia-autorisee l. 106). D2 ne dit nulle part que toutes les chartes « exigent » la déclaration. La nuance sur la Picardie, qui recommande seulement, ne s'applique pas puisque D2 ne la cite pas (voir À corriger, point 2).
+- **LLASIC, mode de déclaration :** ia-autorisee l. 44 ne mentionne que le « Tableau ». D2 l. 43 ajoute les normes bibliographiques, ce qui est conforme à la charte (« normes bibliographiques en vigueur et/ou… tableau récapitulatif »). C'est ia-autorisee qui est incomplet, pas D2.
+- **Même citation de l'UPEC** dans les deux articles (« rédiger intégralement ou substantiellement un chapitre ou une section »), tronquée de « scientifique ». Ça reste acceptable.
+- Hors de mon périmètre, mais à signaler : `ia-memoire.md` l. 107 écrit « Toutes les chartes lues exigent une déclaration », alors que ia-autorisee l. 51 écrit « la Picardie la range parmi ses recommandations ». Si le hub inclut la Picardie, c'est une contradiction.
+
+### Faits MemoFlow
+- Le corps ne nomme jamais MemoFlow, comme le brief le préférait.
+- CTA `generique`, tel qu'affiché : « Écris ton document section par section. L'espace d'écriture de MemoFlow organise ton texte en sections et le sauvegarde automatiquement. Commence gratuitement ». Conforme. La 1re section finit sur « Ça va plus vite si tu le notes section par section, au fil de l'écriture », qui amène le CTA sans le contredire.
+- Rien sur la détection d'IA ou son contournement.
+
+---
+
+## SEO de page (seo-page), synthèse
+| | A6 donnees-entreprise | D2 declarer-ia |
+|---|---|---|
+| Title (car.) | 52 ✔ | 60 ✔ (limite) |
+| Meta description (car.) | 150 ✔ | 160 ✔ (limite) |
+| H1 unique / Hn | ✔ / ✔ (H3 sous anonymiser) | ✔ / ✔ |
+| Lien hub tôt | ✔ l. 45 | ✔ l. 32 |
+| Liens latéraux | 2, en 200 | 2, en 200 |
+| Schema | BlogPosting (11 citations), BreadcrumbList | BlogPosting (6 citations), BreadcrumbList |
+| Manque | source Paris 1 géo (voir bloquant) | rien |
