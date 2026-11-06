@@ -13,6 +13,7 @@ User-agent: Claude-User
 User-agent: PerplexityBot
 User-agent: Perplexity-User
 User-agent: Google-Extended
+Content-Signal: search=yes, ai-input=yes, ai-train=yes
 Allow: /blog/
 Disallow: /admin
 Disallow: /reset-password
