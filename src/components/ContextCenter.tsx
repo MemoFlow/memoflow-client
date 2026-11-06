@@ -15,9 +15,12 @@ interface SourceFile {
   id: string;
   name: string;
   size: string;
-  progress: number;
-  relevance: string;
-  status: 'uploading' | 'completed' | 'failed';
+}
+
+function formatFileSize(bytes: number): string {
+  if (bytes < 1024) return `${bytes} o`;
+  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} Ko`;
+  return `${(bytes / (1024 * 1024)).toFixed(1)} Mo`;
 }
 
 interface ContextCenterProps {
@@ -115,65 +118,24 @@ export default function ContextCenter({ onAddToast }: ContextCenterProps) {
     }
   };
 
-  // Simulated File Upload
-  const handleSimulateUpload = () => {
-    const fileNames = [
-      'Neural_Elasticity_Draft.pdf',
-      'Cognitive_Load_Survey.docx',
-      'Literature_Review_Notes.txt',
-    ];
-    const randomName = fileNames[Math.floor(Math.random() * fileNames.length)];
-    const randomSize = (Math.random() * 15 + 1).toFixed(1) + ' MB';
-    const fileId = Date.now().toString();
+  // Local source files (kept in this page only: there is no upload endpoint yet)
+  const handleFilesSelected = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const selected = Array.from(e.target.files || []);
+    e.target.value = '';
+    if (selected.length === 0) return;
 
-    const newFile: SourceFile = {
-      id: fileId,
-      name: randomName,
-      size: randomSize,
-      progress: 0,
-      relevance: 'Analyse en cours...',
-      status: 'uploading',
-    };
-
-    setFiles((prev) => [...prev, newFile]);
-    onAddToast('assistant', 'Téléversement', `Début du traitement de ${randomName}...`);
-
-    // Simulate progress
-    let currentProgress = 0;
-    const interval = setInterval(() => {
-      currentProgress += 20;
-      setFiles((prev) =>
-        prev.map((f) => {
-          if (f.id === fileId) {
-            const isDone = currentProgress >= 100;
-            return {
-              ...f,
-              progress: Math.min(currentProgress, 100),
-              status: isDone ? 'completed' : 'uploading',
-              relevance: isDone ? 'Analysé : 95%' : 'Analyse en cours...',
-            };
-          }
-          return f;
-        })
-      );
-
-      if (currentProgress >= 100) {
-        clearInterval(interval);
-        onAddToast('success', 'Fichier indexé', `${randomName} est prêt et intégré au contexte.`);
-      }
-    }, 400);
+    setFiles((prev) => [
+      ...prev,
+      ...selected.map((f) => ({
+        id: `${Date.now()}-${f.name}`,
+        name: f.name,
+        size: formatFileSize(f.size),
+      })),
+    ]);
   };
 
   const handleRemoveFile = (id: string) => {
-    const file = files.find((f) => f.id === id);
-    setFiles(files.filter((f) => f.id !== id));
-    if (file) {
-      onAddToast('assistant', 'Fichier retiré', `${file.name} a été supprimé de la bibliothèque.`);
-    }
-  };
-
-  const handleInitializeEngine = () => {
-    onAddToast('success', 'Moteur Intelligent Initialisé', 'Les paramètres de contexte de recherche ont été synchronisés avec le moteur de génération.');
+    setFiles((prev) => prev.filter((f) => f.id !== id));
   };
 
   return (
@@ -192,29 +154,6 @@ export default function ContextCenter({ onAddToast }: ContextCenterProps) {
           <p className="text-[0.88rem] text-slate-500 max-w-[800px] leading-relaxed font-medium">
             Centralisez vos paramètres de recherche pour aligner le moteur d'IA de MemoFlow avec vos objectifs académiques et votre ton spécifiques.
           </p>
-        </div>
-
-        {/* Top Actions */}
-        <div className="flex items-center gap-3.5 flex-shrink-0 self-end max-md:self-start">
-          <button
-            onClick={() => onAddToast('assistant', 'Instantanés', 'Ouverture de l\'historique des instantanés...')}
-            className="bg-white hover:bg-slate-50 text-[#2F4858] border border-solid border-[#E5E9EB] font-brand text-[0.8rem] font-bold px-4 py-2 rounded-xl flex items-center gap-2 transition-all cursor-pointer active:scale-95 shadow-xs"
-          >
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-              <circle cx="12" cy="12" r="10" />
-              <polyline points="12 6 12 12 16 14" />
-            </svg>
-            <span>Instantanés</span>
-          </button>
-          <button
-            onClick={() => onAddToast('success', 'Contexte synchronisé', 'Le contexte global a été actualisé et synchronisé.')}
-            className="bg-[#94D2B8] hover:bg-[#6DAEA7] text-[#0F4C3A] font-brand text-[0.8rem] font-bold px-4 py-2 rounded-xl flex items-center gap-2 transition-all border-none cursor-pointer active:scale-95 shadow-[0_4px_12px_rgba(148,210,184,0.15)]"
-          >
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-              <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
-            </svg>
-            <span>Synchronisation du contexte</span>
-          </button>
         </div>
       </div>
 
@@ -376,7 +315,7 @@ export default function ContextCenter({ onAddToast }: ContextCenterProps) {
                     </button>
                     <button
                       type="submit"
-                      className="px-3 py-1.5 rounded-lg text-[0.72rem] font-bold bg-[#94D2B8] hover:bg-[#6DAEA7] text-[#0F4C3A] border-none cursor-pointer transition-colors"
+                      className="px-3 py-1.5 rounded-lg text-[0.72rem] font-bold bg-[#94D2B8] hover:bg-[#C4F4C7] text-[#0F4C3A] hover:text-[#0A382A] border border-[#94D2B8] hover:border-[#7BCBAA] cursor-pointer transition-colors"
                     >
                       Ajouter
                     </button>
@@ -417,20 +356,10 @@ export default function ContextCenter({ onAddToast }: ContextCenterProps) {
                   Bibliothèque de Sources 
                 </h3>
               </div>
-              <button
-                onClick={() => onAddToast('assistant', 'Options', 'Ouverture des options de bibliothèque...')}
-                className="bg-transparent border-none text-slate-400 hover:text-slate-600 cursor-pointer p-1"
-              >
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                  <circle cx="12" cy="12" r="1" />
-                  <circle cx="12" cy="5" r="1" />
-                  <circle cx="12" cy="19" r="1" />
-                </svg>
-              </button>
             </div>
 
-            {/* Dotted Drop Zone */}
-            <div className="border border-dashed border-[#E5E9EB] hover:border-[#6DAEA7]/40 rounded-xl p-6 bg-[#F8FAFB] flex flex-col items-center justify-center text-center gap-3 transition-colors group/drop">
+            {/* Drop Zone */}
+            <label className="border border-dashed border-[#E5E9EB] hover:border-[#6DAEA7]/40 rounded-xl p-6 bg-[#F8FAFB] flex flex-col items-center justify-center text-center gap-3 transition-colors group/drop cursor-pointer">
               <div className="w-10 h-10 rounded-full bg-white border border-[#E5E9EB] flex items-center justify-center text-[#6DAEA7] group-hover/drop:scale-105 transition-transform duration-300 shadow-xs">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                   <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
@@ -439,62 +368,35 @@ export default function ContextCenter({ onAddToast }: ContextCenterProps) {
                 </svg>
               </div>
               <div className="flex flex-col gap-1">
-                <p className="text-[0.78rem] font-bold text-[#2F4858]">Déposer vos fichiers PDF de recherche ici</p>
-                <p className="text-[0.65rem] text-slate-500 font-medium">Taille maximale : 50 Mo (Supports .pdf, .docx, .txt)</p>
+                <p className="text-[0.78rem] font-bold text-[#2F4858]">Ajouter vos fichiers de recherche</p>
+                <p className="text-[0.65rem] text-slate-500 font-medium">.pdf, .docx, .txt — conservés localement, non envoyés au serveur</p>
               </div>
-              <button
-                onClick={handleSimulateUpload}
-                className="mt-1.5 bg-white hover:bg-slate-50 text-[#2F4858] font-brand text-[0.72rem] font-bold px-4 py-1.5 rounded-full border border-solid border-[#E5E9EB] transition-all cursor-pointer active:scale-95 shadow-xs"
-              >
+              <span className="mt-1.5 bg-white hover:bg-slate-50 text-[#2F4858] font-brand text-[0.72rem] font-bold px-4 py-1.5 rounded-full border border-solid border-[#E5E9EB] transition-all shadow-xs">
                 Parcourir les fichiers
-              </button>
-            </div>
+              </span>
+              <input type="file" multiple accept=".pdf,.docx,.txt" onChange={handleFilesSelected} className="hidden" />
+            </label>
 
-            {/* Uploaded Files list */}
+            {/* Selected Files list */}
             <div className="flex flex-col gap-3">
               {files.map((file) => (
                 <div
                   key={file.id}
-                  className="p-3.5 bg-[#F8FAFB] border border-solid border-[#E5E9EB] rounded-xl flex gap-3 items-center justify-between group/file hover:border-[#6DAEA7]/30 hover:bg-white transition-all shadow-xs"
+                  className="p-3.5 bg-[#F8FAFB] border border-solid border-[#E5E9EB] rounded-xl flex gap-3 items-center justify-between hover:border-[#6DAEA7]/30 hover:bg-white transition-all shadow-xs"
                 >
-                  <div className="flex items-center gap-3 overflow-hidden">
-                    <span className="p-2 rounded-lg bg-[#E24B4A]/10 text-[#E24B4A] flex-shrink-0">
-                      {file.name.endsWith('.pdf') ? (
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-                          <polyline points="14 2 14 8 20 8" />
-                          <line x1="9" y1="15" x2="15" y2="15" />
-                        </svg>
-                      ) : (
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="text-blue-400">
-                          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-                          <polyline points="14 2 14 8 20 8" />
-                        </svg>
-                      )}
-                    </span>
-                    <div className="text-left overflow-hidden">
-                      <h4 className="text-[0.78rem] font-bold text-[#2F4858] truncate max-w-[170px]" title={file.name}>
-                        {file.name}
-                      </h4>
-                      <p className="text-[0.62rem] text-slate-500 font-semibold mt-0.5">
-                        {file.size} • {file.relevance}
-                      </p>
-                    </div>
+                  <div className="text-left overflow-hidden">
+                    <h4 className="text-[0.78rem] font-bold text-[#2F4858] truncate max-w-[220px]" title={file.name}>
+                      {file.name}
+                    </h4>
+                    <p className="text-[0.62rem] text-slate-500 font-semibold mt-0.5">{file.size}</p>
                   </div>
-
-                  {file.status === 'uploading' ? (
-                    <div className="w-10 h-1 bg-slate-200 rounded-full overflow-hidden flex-shrink-0">
-                      <div className="h-full bg-[#6DAEA7] transition-all duration-300" style={{ width: `${file.progress}%` }}></div>
-                    </div>
-                  ) : (
-                    <button
-                      onClick={() => handleRemoveFile(file.id)}
-                      className="bg-transparent border-none text-slate-400 hover:text-red-500 cursor-pointer p-1 text-[0.85rem] transition-colors"
-                      title="Retirer la source"
-                    >
-                      ×
-                    </button>
-                  )}
+                  <button
+                    onClick={() => handleRemoveFile(file.id)}
+                    className="bg-transparent border-none text-slate-400 hover:text-red-500 cursor-pointer p-1 text-[0.85rem] transition-colors"
+                    title="Retirer la source"
+                  >
+                    ×
+                  </button>
                 </div>
               ))}
             </div>
@@ -560,27 +462,6 @@ export default function ContextCenter({ onAddToast }: ContextCenterProps) {
             </div>
           </div>
         </div>
-      </div>
-
-      {/* Bottom Integrity Banner */}
-      <div className="max-w-[1200px] mt-6 bg-gradient-to-r from-white to-[#F8FAFB] border border-solid border-[#E5E9EB] rounded-2xl p-5 flex justify-between items-center gap-6 max-md:flex-col max-md:text-center shadow-[0_4px_20px_rgba(47,72,88,0.02)] hover:border-[#6DAEA7]/40 transition-all duration-300">
-        <div className="flex flex-col gap-1 text-left max-md:text-center">
-          <h4 className="text-[0.92rem] font-bold text-[#2F4858] tracking-tight">
-            Intégrité du Contexte : 92%
-          </h4>
-          <p className="text-[0.78rem] text-slate-500 font-medium leading-relaxed max-w-[700px]">
-            Vos paramètres de recherche sont hautement définis. La génération d'IA sera d'une précision chirurgicale.
-          </p>
-        </div>
-        <button
-          onClick={handleInitializeEngine}
-          className="bg-[#94D2B8] hover:bg-[#6DAEA7] text-[#0F4C3A] font-brand text-[0.8rem] font-bold px-5 py-2.5 rounded-xl flex items-center gap-2.5 transition-all border-none cursor-pointer active:scale-95 shadow-[0_4px_12px_rgba(148,210,184,0.1)]"
-        >
-          <span>Initialiser le Moteur Intelligent</span>
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-            <path d="M22 2l-7 20-4-9-9-4 20-7z" />
-          </svg>
-        </button>
       </div>
     </div>
   );

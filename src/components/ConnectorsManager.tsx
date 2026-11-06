@@ -4,6 +4,7 @@ import type { ConnectorResponseDto, InitiateConnectionResponseDto } from '../ser
 
 interface ConnectorsManagerProps {
   addToast: (type: 'success' | 'assistant' | 'warning' | 'error', title: string, message: string) => void;
+  onOpenPrivacy?: () => void;
 }
 
 interface ProviderMeta {
@@ -14,7 +15,7 @@ interface ProviderMeta {
   icon: React.ReactNode;
 }
 
-export default function ConnectorsManager({ addToast }: ConnectorsManagerProps) {
+export default function ConnectorsManager({ addToast, onOpenPrivacy }: ConnectorsManagerProps) {
   const [connectors, setConnectors] = useState<ConnectorResponseDto[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [actionLoading, setActionLoading] = useState<string | null>(null); // provider key or connection id
@@ -201,11 +202,40 @@ export default function ConnectorsManager({ addToast }: ConnectorsManagerProps) 
 
   return (
     <div className="max-w-[1000px] mx-auto p-4 animate-fade-in">
-      <div className="mb-8">
+      <div className="mb-6">
         <h2 className="text-[1.8rem] font-bold text-[#2F4858] font-brand tracking-tight">Centre de Contexte</h2>
         <p className="text-sm text-slate-500 font-sans leading-relaxed">
           Liez vos applications externes pour permettre au planificateur IA de collecter du contexte pertinent (sujets, tâches, documentation) sans jamais détenir vos identifiants.
         </p>
+      </div>
+
+      {/* Privacy & Security Guarantee Banner based on Privacy Data Inventory */}
+      <div className="mb-8 p-4 bg-[#EAF3DE]/60 border border-[#94D2B8]/40 rounded-2xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div className="flex items-start gap-3">
+          <div className="p-2 rounded-xl bg-white border border-[#94D2B8]/40 text-[#2F4858] flex-shrink-0 mt-0.5">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+              <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+            </svg>
+          </div>
+          <div>
+            <h4 className="text-xs font-bold text-[#2F4858] font-brand uppercase tracking-wider">
+              Sécurité renforcée & Zéro stockage de jetons OAuth
+            </h4>
+            <p className="text-xs text-slate-600 mt-0.5 leading-relaxed">
+              Vos autorisations restent chiffrées dans le coffre-fort Composio. MemoFlow ne stocke aucun mot de passe ni jeton d'accès tiers sur ses serveurs.
+            </p>
+          </div>
+        </div>
+
+        {onOpenPrivacy && (
+          <button
+            onClick={onOpenPrivacy}
+            className="px-3.5 py-1.5 text-xs font-brand font-bold text-[#2F4858] bg-white hover:bg-slate-50 border border-[#94D2B8]/50 rounded-xl transition-all cursor-pointer whitespace-nowrap shadow-sm hover:shadow"
+          >
+            Inventaire des données
+          </button>
+        )}
       </div>
 
       {isLoading ? (

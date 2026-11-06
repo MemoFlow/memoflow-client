@@ -3,7 +3,7 @@
 
 @theme {
   --color-brand-green: #89cfae;
-  --color-brand-green-hover: #75bd9b;
+  --color-brand-green-hover: #a3e7c8;
   --color-brand-green-dark: #0f4c3a;
   --color-brand-green-light: #eefaf4;
   --color-brand-green-muted: rgba(137, 207, 174, 0.15);
@@ -74,20 +74,39 @@
     min-height: 100vh;
   }
   
+  /* Accessible focus indicators for keyboard navigation (WCAG 2.4.7) */
+  input:focus-visible,
+  button:focus-visible,
+  select:focus-visible,
+  textarea:focus-visible,
+  a:focus-visible {
+    outline: 2px solid #518B91;
+    outline-offset: 2px;
+  }
+
   /* Smooth focus rings */
   input:focus {
     outline: none;
   }
 }
 
-/* Custom premium scrollbar for dark dashboard */
+/* Thin scrollbar */
 .custom-scrollbar::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 
 .custom-scrollbar::-webkit-scrollbar-track {
-  background: rgba(22, 37, 47, 0.5);
+  background: transparent;
+}
+
+/* Scrollable without a visible scrollbar (focus mode) */
+.no-scrollbar {
+  scrollbar-width: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb {

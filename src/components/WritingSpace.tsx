@@ -8,13 +8,10 @@ import {
 } from '../services/api';
 import type { ConnectorResponseDto, PlanningJobResponseDto, DocumentResponseDto, SectionResponseDto } from '../services/api';
 
-interface Message {
-  id: number;
-  sender: 'user' | 'assistant';
-  text: string;
-}
+type SaveState = 'idle' | 'saving' | 'saved' | 'error';
 
 interface WritingSpaceProps {
+  isGuest: boolean;
   isFocusMode: boolean;
   onToggleFocusMode: (focus: boolean) => void;
   userName: string;
@@ -23,6 +20,8 @@ interface WritingSpaceProps {
   onSelectDocument: (docId: string | null) => void;
   documents: DocumentResponseDto[];
   onRefreshDocuments: () => Promise<void>;
+  onCreateDocument: () => void;
+  onOpenSettings: () => void;
 }
 
 function AutoResizingTextarea({
@@ -67,6 +66,7 @@ function AutoResizingTextarea({
 }
 
 export default function WritingSpace({
+  isGuest,
   isFocusMode,
   onToggleFocusMode,
   userName,
@@ -75,11 +75,14 @@ export default function WritingSpace({
   onSelectDocument,
   documents,
   onRefreshDocuments,
+  onCreateDocument,
+  onOpenSettings,
 }: WritingSpaceProps) {
   // Sections states
   const [sections, setSections] = useState<SectionResponseDto[]>([]);
   const [isLoadingSections, setIsLoadingSections] = useState(false);
   const [localDocTitle, setLocalDocTitle] = useState('');
+  const [saveState, setSaveState] = useState<SaveState>('idle');
 
   // Planning States
   const [activeConnectors, setActiveConnectors] = useState<string[]>([]);
@@ -93,6 +96,7 @@ export default function WritingSpace({
   const activeJobIdRef = useRef<string | null>(null);
   const pollIntervalRef = useRef<number | null>(null);
   const debounceTimersRef = useRef<{ [sectionId: string]: number }>({});
+  const pendingSectionUpdatesRef = useRef<{ [sectionId: string]: { title?: string; content?: string } }>({});
   const docTitleTimerRef = useRef<number | null>(null);
 
   // Fetch sections function
@@ -128,8 +132,9 @@ export default function WritingSpace({
     }
   }, [selectedDocumentId, documents]);
 
-  // Load active connectors to display checkboxes
+  // Load active connectors to display checkboxes (accounts only)
   useEffect(() => {
+    if (isGuest) return;
     const loadConnectors = async () => {
       try {
         const list = await apiFetch<ConnectorResponseDto[]>('/connectors');
@@ -140,7 +145,7 @@ export default function WritingSpace({
       }
     };
     loadConnectors();
-  }, []);
+  }, [isGuest]);
 
   // Clear debounces and timers on unmount
   useEffect(() => {
@@ -187,50 +192,6 @@ export default function WritingSpace({
     setJobError(null);
     setJobResult(null);
     setJobStatus('pending');
-
-    const lowPrompt = planningPrompt.trim().toLowerCase();
-    const normalized = lowPrompt.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-
-    const isPlanPrompt = normalized.includes("redige un plan") || normalized.includes("redige-moi un plan") || normalized.includes("faire un plan") || normalized.includes("generer un plan");
-    const isSectionPrompt = normalized.includes("conseil moi") || normalized.includes("conseille moi") || normalized.includes("conseille-moi") || normalized.includes("nouvelle section");
-
-    if (isPlanPrompt || isSectionPrompt) {
-      console.log('[Frontend Fallback] Intercepting test prompt:', planningPrompt);
-      
-      // Simulate state progression: pending -> running -> completed
-      setTimeout(() => {
-        setJobStatus('running');
-        
-        setTimeout(() => {
-          setJobStatus('completed');
-          setIsSubmittingJob(false);
-          
-          if (isPlanPrompt) {
-            setJobResult({
-              suggestions: [
-                "Structure proposée :",
-                "1. Introduction aux réseaux de neurones artificiels",
-                "2. Analyse de la charge cognitive et de l'élasticité",
-                "3. Méthodologie empirique et protocole de test",
-                "4. Résultats expérimentaux et perspectives de recherche"
-              ]
-            });
-            addToast('success', 'Plan généré', 'Le plan d\'écriture a été préparé avec succès.');
-          } else {
-            setJobResult({
-              suggestions: [
-                "Section conseillée : 'Impact socio-cognitif des interfaces'",
-                "Description : Analyse de l'impact à long terme des outils collaboratifs sur l'attention soutenue des chercheurs.",
-                "Raison : Cette section fait le lien logique entre votre méthodologie de test et la discussion des résultats."
-              ]
-            });
-            addToast('success', 'Conseil généré', 'Une nouvelle section pertinente vous a été suggérée.');
-          }
-        }, 2000);
-      }, 1500);
-      
-      return;
-    }
 
     try {
       const res = await apiFetch<PlanningJobResponseDto>('/planning-jobs', {
@@ -312,15 +273,26 @@ export default function WritingSpace({
       window.clearTimeout(debounceTimersRef.current[sectionId]);
     }
 
+    // Accumulate edits so a title change isn't lost when the content is edited right after
+    pendingSectionUpdatesRef.current[sectionId] = {
+      ...pendingSectionUpdatesRef.current[sectionId],
+      ...updates,
+    };
+    setSaveState('saving');
+
     debounceTimersRef.current[sectionId] = window.setTimeout(async () => {
+      const pending = pendingSectionUpdatesRef.current[sectionId];
+      delete pendingSectionUpdatesRef.current[sectionId];
       try {
-        if (!selectedDocumentId) return;
+        if (!selectedDocumentId || !pending) return;
         await apiFetch<SectionResponseDto>(`/documents/${selectedDocumentId}/sections/${sectionId}`, {
           method: 'PATCH',
-          body: JSON.stringify(updates),
+          body: JSON.stringify(pending),
         });
+        setSaveState('saved');
       } catch (err) {
         console.error('Error auto-saving section:', err);
+        setSaveState('error');
       }
     }, 1000);
   };
@@ -333,6 +305,7 @@ export default function WritingSpace({
       window.clearTimeout(docTitleTimerRef.current);
     }
 
+    setSaveState('saving');
     docTitleTimerRef.current = window.setTimeout(async () => {
       try {
         if (!selectedDocumentId) return;
@@ -340,9 +313,11 @@ export default function WritingSpace({
           method: 'PATCH',
           body: JSON.stringify({ title: newTitle }),
         });
+        setSaveState('saved');
         onRefreshDocuments();
       } catch (err) {
         console.error('Error saving document title:', err);
+        setSaveState('error');
       }
     }, 1000);
   };
@@ -381,118 +356,21 @@ export default function WritingSpace({
     }
   };
 
-  // Assistant chatbot states
-  const [chatMessages, setChatMessages] = useState<Message[]>([
-    {
-      id: 1,
-      sender: 'assistant',
-      text: `Bonjour ${userName}. Je peux vous aider à reformuler vos phrases, vérifier vos citations ou analyser la structure de votre document. Que souhaitez-vous faire ?`,
-    },
-  ]);
-  const [chatInput, setChatInput] = useState('');
-  const [isTyping, setIsTyping] = useState(false);
-  const chatEndRef = useRef<HTMLDivElement>(null);
-
-  // Interactive Checklist States
-  const [checks, setChecks] = useState([
-    {
-      id: 1,
-      text: "L'introduction définit clairement l'« Élasticité Cognitive ».",
-      completed: true,
-    },
-    {
-      id: 2,
-      text: "Pensez à ajouter une transition entre « Méthodologie » et « Résultats ».",
-      completed: false,
-    },
-  ]);
-
-  // Scroll to bottom of chat
-  useEffect(() => {
-    chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [chatMessages, isTyping]);
-
-  const handleApplySuggestion = () => {
-    if (sections.length > 0) {
-      const firstSec = sections[0];
-      handleUpdateSectionLocal(firstSec.id, {
-        content: `Les universitaires s'intéressent depuis longtemps à la tension entre la densité d'information et la capacité cognitive. Avec l'évolution des espaces de travail numériques, le passage de la prise de notes linéaire traditionnelle à la cartographie des connaissances en réseau offre un angle d'observation privilégié sur le traitement des données multidimensionnelles par le cerveau humain.`
-      });
-    }
-    
-    setChatMessages((prev) => [
-      ...prev,
-      {
-        id: Date.now(),
-        sender: 'assistant',
-        text: 'La suggestion de reformulation a été appliquée dans votre premier paragraphe.',
-      },
-    ]);
-  };
-
-  const handleSendChatMessage = (e?: React.FormEvent) => {
-    if (e) e.preventDefault();
-    if (!chatInput.trim()) return;
-
-    const userMsg: Message = {
-      id: Date.now(),
-      sender: 'user',
-      text: chatInput,
-    };
-
-    setChatMessages((prev) => [...prev, userMsg]);
-    const currentInput = chatInput.trim().toLowerCase();
-    setChatInput('');
-    setIsTyping(true);
-
-    // Simulate AI response
-    setTimeout(() => {
-      setIsTyping(false);
-      let reply = "Je peux analyser votre texte pour y ajouter des citations adaptées.";
-
-      if (currentInput.includes('reformule') || currentInput.includes('suggestion')) {
-        reply = "Je vous conseille d'appliquer la suggestion de reformulation disponible dans le panneau latéral droit. Elle simplifie la structure de votre paragraphe.";
-      } else if (currentInput.includes('titre')) {
-        reply = "Voici une suggestion de titre alternatif : 'Flux Neural et Élasticité Cognitive : Analyse de l'interactivité des espaces numériques'. Qu'en pensez-vous ?";
-      } else if (currentInput.includes('kahneman') || currentInput.includes('reference')) {
-        reply = "J'ai trouvé la référence suivante dans votre base de données : Kahneman, D. (2011) 'Thinking, Fast and Slow'. Souhaitez-vous que je l'insère ?";
-      } else if (currentInput.includes('focus')) {
-        reply = "Le mode focus masque la barre latérale et l'assistant pour vous laisser vous concentrer uniquement sur votre rédaction. Cliquez sur 'Mode Focus' dans la barre flottante du bas pour l'essayer.";
-      } else {
-        reply = `J'ai bien reçu votre message. Je surveille la structure de votre document (${localDocTitle.split(':')[0]}). N'hésitez pas à me demander de reformuler des passages complexes !`;
-      }
-
-      setChatMessages((prev) => [
-        ...prev,
-        {
-          id: Date.now() + 1,
-          sender: 'assistant',
-          text: reply,
-        },
-      ]);
-    }, 1000);
-  };
-
-  const toggleCheck = (id: number) => {
-    setChecks(
-      checks.map((c) => (c.id === id ? { ...c, completed: !c.completed } : c))
-    );
-  };
-
   // Word counter & Read time
   const totalWords = sections.reduce((acc, sec) => {
     const words = sec.content ? sec.content.trim().split(/\s+/).filter(Boolean).length : 0;
     return acc + words;
   }, 0);
   const readTime = Math.ceil(totalWords / 200);
+  const activeDocument = documents.find((d) => d.id === selectedDocumentId) ?? null;
 
   return (
     <div className="flex-1 flex flex-col h-full overflow-hidden bg-[#F8FAFB]">
       {/* Writing Space Sub-Header */}
       {!isFocusMode && (
-        <header className="h-[76px] px-8 flex-shrink-0 border-b border-[#E5E9EB] bg-white flex justify-between items-center z-20 shadow-[0_1px_4px_rgba(0,0,0,0.01)] transition-all duration-300">
+        <header className="h-[76px] px-8 max-sm:px-4 flex-shrink-0 border-b border-[#E5E9EB] bg-white flex justify-between items-center gap-4 z-20 shadow-[0_1px_4px_rgba(0,0,0,0.01)] transition-all duration-300">
           {/* Breadcrumbs */}
-          <div className="flex items-center gap-2.5 text-slate-500 font-brand text-[0.88rem] font-semibold">
+          <div className="flex items-center gap-2.5 text-slate-500 font-brand text-[0.88rem] font-semibold min-w-0">
             <svg
               width="16"
               height="16"
@@ -502,92 +380,48 @@ export default function WritingSpace({
               strokeWidth="2"
               strokeLinecap="round"
               strokeLinejoin="round"
-              className="text-slate-400"
+              className="text-slate-400 flex-shrink-0"
             >
               <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" />
             </svg>
-            <span>Neuroscience</span>
-            <span className="text-slate-300">/</span>
-            <span className="text-slate-400 font-medium">Brouillons</span>
+            <span className="flex-shrink-0">{isGuest ? 'Documents (invité)' : 'Mes documents'}</span>
+            {activeDocument && (
+              <>
+                <span className="text-slate-300">/</span>
+                <span className="text-slate-400 font-medium truncate" title={localDocTitle}>
+                  {localDocTitle || 'Sans titre'}
+                </span>
+              </>
+            )}
           </div>
 
-          {/* Reference Search bar */}
-          <div className="relative w-[300px]">
-            <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400">
-              <svg
-                width="16"
-                height="16"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <circle cx="11" cy="11" r="8" />
-                <line x1="21" y1="21" x2="16.65" y2="16.65" />
-              </svg>
-            </span>
-            <input
-              type="text"
-              placeholder="Rechercher des références..."
-              className="w-full pl-10 pr-4 py-2 text-[0.85rem] bg-[#F1F5F7] border border-[#E5E9EB] rounded-xl text-slate-800 placeholder-slate-400 focus:outline-none focus:bg-white focus:border-[#518B91] transition-all"
-            />
-          </div>
-
-          {/* Right Profile / Widgets */}
-          <div className="flex items-center gap-4">
-            <button className="p-2 text-slate-500 hover:text-[#2F4858] hover:bg-slate-100 rounded-xl transition-all border-none bg-transparent cursor-pointer">
-              <svg
-                width="18"
-                height="18"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
-                <path d="M13.73 21a2 2 0 0 1-3.46 0" />
-              </svg>
-            </button>
-            <button className="p-2 text-slate-500 hover:text-[#2F4858] hover:bg-slate-100 rounded-xl transition-all border-none bg-transparent cursor-pointer">
-              <svg
-                width="18"
-                height="18"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <circle cx="12" cy="8" r="7" />
-                <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88" />
-              </svg>
-            </button>
-            <div className="h-8 w-8 rounded-full overflow-hidden bg-[#94D2B8]/30 border border-[#94D2B8]/40 flex items-center justify-center text-[#2F4858] font-bold text-sm">
-              {userName.charAt(0)}
-            </div>
-          </div>
+          {/* Profile -> settings */}
+          <button
+            onClick={onOpenSettings}
+            title="Paramètres"
+            className="flex-shrink-0 h-8 w-8 rounded-full overflow-hidden bg-[#94D2B8]/30 border border-[#94D2B8]/40 flex items-center justify-center text-[#2F4858] font-bold text-sm cursor-pointer hover:bg-[#94D2B8]/50 transition-colors"
+          >
+            {userName.charAt(0).toUpperCase()}
+          </button>
         </header>
       )}
 
       {/* Main Workspace split */}
       <div className="flex-1 flex overflow-hidden relative">
         {/* LEFT COLUMN: EDITOR */}
+        {/* Grey "desk" behind the page, like a word processor. Always full width so the
+            scrollbar stays on the window edge; hidden in focus mode. */}
         <div
-          className={`flex-1 overflow-y-auto custom-scrollbar flex flex-col p-8 transition-all duration-300 relative ${
-            isFocusMode ? 'max-w-[800px] mx-auto px-4 py-16' : ''
+          className={`flex-1 overflow-y-auto flex flex-col bg-[#E9EDEF] px-8 py-8 max-sm:px-3 max-sm:py-4 transition-all duration-300 relative ${
+            isFocusMode ? 'no-scrollbar pt-12' : 'custom-scrollbar'
           }`}
         >
           {/* Main Document Content */}
-          <div className="flex flex-col gap-6 max-w-[760px] mx-auto w-full pb-28">
-            
+          <div className="flex flex-col gap-4 max-w-[794px] mx-auto w-full pb-28">
+
             {/* Active Document Selector row */}
             {documents.length > 0 && (
-              <div className="flex justify-between items-center gap-4 bg-slate-50 border border-slate-200/60 p-3.5 rounded-2xl mb-4">
+              <div className="flex justify-between items-center gap-4 bg-white border border-[#DDE3E6] px-4 py-3 rounded-xl max-sm:flex-col max-sm:items-stretch">
                 <div className="flex items-center gap-2.5">
                   <span className="text-[0.7rem] text-slate-500 font-bold uppercase tracking-wider">Document Actif :</span>
                   <select
@@ -604,7 +438,7 @@ export default function WritingSpace({
                 </div>
                 <button
                   onClick={handleAddSection}
-                  className="bg-[#94D2B8] hover:bg-[#6DAEA7] text-[#0F4C3A] font-brand text-[0.78rem] font-bold px-3 py-1.5 rounded-xl border-none transition-all cursor-pointer flex items-center gap-1.5"
+                  className="bg-[#94D2B8] hover:bg-[#C4F4C7] text-[#0F4C3A] hover:text-[#0A382A] font-brand text-[0.78rem] font-bold px-3 py-1.5 rounded-xl border border-[#94D2B8] hover:border-[#7BCBAA] transition-all cursor-pointer flex items-center gap-1.5 shadow-xs hover:shadow-sm active:bg-[#94D2B8]"
                 >
                   <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
                     <line x1="12" y1="5" x2="12" y2="19" />
@@ -627,16 +461,41 @@ export default function WritingSpace({
                   <h3 className="text-[1.1rem] font-bold text-[#2F4858]">Aucun document ouvert</h3>
                   <p className="text-[0.82rem] text-slate-400 font-medium">Sélectionnez un modèle ou créez un nouveau document pour commencer.</p>
                 </div>
+                <button
+                  onClick={onCreateDocument}
+                  className="bg-[#2F4858] hover:bg-[#3E6976] text-white font-brand text-[0.82rem] font-bold px-4 py-2 rounded-xl border-none cursor-pointer transition-all"
+                >
+                  Nouveau document
+                </button>
               </div>
             ) : (
               <>
-                {/* Version Badge */}
-                <div>
-                  <span className="inline-flex items-center px-2.5 py-0.5 rounded-md text-[0.68rem] font-bold uppercase tracking-wider bg-[#EAF3DE] text-[#639922] border border-[#639922]/10">
-                    Document Synchronisé
+                {/* Status line (outside the page) */}
+                <div className="flex items-center justify-between gap-4 flex-wrap px-1">
+                  {isGuest ? (
+                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-md text-[0.68rem] font-bold uppercase tracking-wider bg-[#FAEEDA] text-[#BA7517] border border-[#BA7517]/15">
+                      Non sauvegardé — mode invité
+                    </span>
+                  ) : saveState === 'error' ? (
+                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-md text-[0.68rem] font-bold uppercase tracking-wider bg-[#FCEBEB] text-[#E24B4A] border border-[#E24B4A]/15">
+                      Erreur d'enregistrement
+                    </span>
+                  ) : saveState === 'saving' ? (
+                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-md text-[0.68rem] font-bold uppercase tracking-wider bg-slate-100 text-slate-500 border border-slate-200">
+                      Enregistrement…
+                    </span>
+                  ) : (
+                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-md text-[0.68rem] font-bold uppercase tracking-wider bg-[#EAF3DE] text-[#639922] border border-[#639922]/10">
+                      {saveState === 'saved' ? 'Enregistré' : 'Synchronisé'}
+                    </span>
+                  )}
+                  <span className="text-slate-500 text-[0.75rem] font-semibold">
+                    {totalWords} mot{totalWords > 1 ? 's' : ''} · {readTime} min de lecture
                   </span>
                 </div>
 
+                {/* PAGE SHEET (A4 proportions: 794px wide, ~2.3cm margins) */}
+                <div className="bg-white w-full min-h-[1123px] rounded-[3px] border border-[#DDE3E6] shadow-[0_1px_3px_rgba(47,72,88,0.08),0_8px_24px_rgba(47,72,88,0.08)] px-[88px] py-[88px] max-md:px-12 max-md:py-14 max-sm:px-5 max-sm:py-8 max-sm:min-h-0 flex flex-col gap-6">
                 {/* Editable Title */}
                 <input
                   type="text"
@@ -645,64 +504,6 @@ export default function WritingSpace({
                   className="w-full text-[2rem] font-extrabold text-[#2F4858] tracking-tight leading-tight border-none outline-none bg-transparent font-brand"
                   placeholder="Titre du document..."
                 />
-
-                {/* Meta Row */}
-                <div className="flex items-center gap-5 text-slate-400 text-[0.78rem] font-semibold flex-wrap">
-                  <span className="flex items-center gap-1.5">
-                    <svg
-                      width="14"
-                      height="14"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2.5"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    >
-                      <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
-                      <line x1="16" y1="2" x2="16" y2="6" />
-                      <line x1="8" y1="2" x2="8" y2="6" />
-                      <line x1="3" y1="10" x2="21" y2="10" />
-                    </svg>
-                    Sauvegarde automatique
-                  </span>
-                  <span className="flex items-center gap-1.5">
-                    <svg
-                      width="14"
-                      height="14"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2.5"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    >
-                      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-                      <polyline points="14 2 14 8 20 8" />
-                      <line x1="16" y1="13" x2="8" y2="13" />
-                      <line x1="16" y1="17" x2="8" y2="17" />
-                    </svg>
-                    {totalWords} Mots
-                  </span>
-                  <span className="flex items-center gap-1.5">
-                    <svg
-                      width="14"
-                      height="14"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2.5"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    >
-                      <circle cx="12" cy="12" r="10" />
-                      <polyline points="12 6 12 12 16 14" />
-                    </svg>
-                    {readTime} min de lecture
-                  </span>
-                </div>
-
-                <hr className="border-0 border-b border-solid border-[#E5E9EB] my-1" />
 
                 {isLoadingSections ? (
                   <div className="flex justify-center items-center py-10">
@@ -746,79 +547,24 @@ export default function WritingSpace({
                     </div>
                   ))
                 )}
+                </div>
               </>
             )}
           </div>
 
-          {/* FLOATING TEXT FORMATTING BAR */}
+          {/* FLOATING FOCUS MODE BAR */}
           <div
-            className={`fixed bottom-8 left-1/2 -translate-x-1/2 bg-[#2F4858] text-white shadow-2xl px-5 py-3 rounded-2xl flex items-center gap-5 transition-all duration-300 z-30 ${
+            className={`fixed bottom-8 max-lg:bottom-20 left-1/2 -translate-x-1/2 bg-[#2F4858] text-white shadow-2xl p-2 rounded-2xl flex items-center gap-5 transition-all duration-300 z-30 ${
               isFocusMode ? 'scale-105' : ''
             }`}
           >
-            {/* Bold */}
-            <button className="bg-transparent hover:bg-slate-700/60 p-1.5 rounded-lg border-none text-slate-300 hover:text-white cursor-pointer transition-colors font-bold text-sm w-8 h-8 flex items-center justify-center">
-              G
-            </button>
-            {/* Italic */}
-            <button className="bg-transparent hover:bg-slate-700/60 p-1.5 rounded-lg border-none text-slate-300 hover:text-white cursor-pointer transition-colors italic text-sm w-8 h-8 flex items-center justify-center">
-              I
-            </button>
-            {/* List */}
-            <button className="bg-transparent hover:bg-slate-700/60 p-1.5 rounded-lg border-none text-slate-300 hover:text-white cursor-pointer transition-colors w-8 h-8 flex items-center justify-center">
-              <svg
-                width="16"
-                height="16"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2.5"
-              >
-                <line x1="8" y1="6" x2="21" y2="6" />
-                <line x1="8" y1="12" x2="21" y2="12" />
-                <line x1="8" y1="18" x2="21" y2="18" />
-                <line x1="3" y1="6" x2="3.01" y2="6" />
-                <line x1="3" y1="12" x2="3.01" y2="12" />
-                <line x1="3" y1="18" x2="3.01" y2="18" />
-              </svg>
-            </button>
-            {/* Link */}
-            <button className="bg-transparent hover:bg-slate-700/60 p-1.5 rounded-lg border-none text-slate-300 hover:text-white cursor-pointer transition-colors w-8 h-8 flex items-center justify-center">
-              <svg
-                width="16"
-                height="16"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2.5"
-              >
-                <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
-                <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
-              </svg>
-            </button>
-            {/* Blockquote */}
-            <button className="bg-transparent hover:bg-slate-700/60 p-1.5 rounded-lg border-none text-slate-300 hover:text-white cursor-pointer transition-colors w-8 h-8 flex items-center justify-center">
-              <svg
-                width="16"
-                height="16"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2.5"
-              >
-                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
-              </svg>
-            </button>
-
-            <div className="w-[1px] h-6 bg-slate-600"></div>
-
             {/* Focus Mode button */}
             <button
               onClick={() => onToggleFocusMode(!isFocusMode)}
               className={`px-4 py-2 rounded-xl text-xs font-bold font-brand flex items-center gap-1.5 cursor-pointer border-none transition-all ${
                 isFocusMode
                   ? 'bg-white hover:bg-slate-100 text-[#2F4858]'
-                  : 'bg-[#94D2B8] hover:bg-[#6DAEA7] text-[#0F4C3A] shadow-md shadow-[#94D2B8]/10'
+                  : 'bg-[#94D2B8] hover:bg-[#C4F4C7] text-[#0F4C3A] hover:text-[#0A382A] shadow-md shadow-[#94D2B8]/10'
               }`}
             >
               <svg
@@ -845,7 +591,7 @@ export default function WritingSpace({
 
         {/* RIGHT COLUMN: ASSISTANT PANEL */}
         <aside
-          className={`w-[360px] border-l border-solid border-[#E5E9EB] bg-white flex flex-col justify-between overflow-hidden transition-all duration-350 ${
+          className={`w-[360px] max-lg:hidden border-l border-solid border-[#E5E9EB] bg-white flex flex-col justify-between overflow-hidden transition-all duration-350 ${
             isFocusMode ? 'w-0 opacity-0 border-none pointer-events-none' : 'opacity-100'
           }`}
         >
@@ -868,65 +614,19 @@ export default function WritingSpace({
               </h3>
             </div>
 
-            {/* Section 1: Structural Guide */}
-            <div className="flex flex-col gap-3">
-              <div className="flex items-center justify-between">
-                <span className="text-[0.68rem] font-bold text-slate-400 tracking-wider uppercase">
-                  Guide Structurel
-                </span>
-                <span className="inline-flex items-center px-2 py-0.5 rounded-md text-[0.62rem] font-bold bg-[#EAF3DE] text-[#639922]">
-                  75% Complété
-                </span>
-              </div>
-
-              {/* Checks */}
-              <div className="flex flex-col gap-2.5">
-                {checks.map((chk) => (
-                  <button
-                    key={chk.id}
-                    onClick={() => toggleCheck(chk.id)}
-                    className="w-full text-left p-3.5 bg-[#F8FAFB] hover:bg-slate-50/80 border border-solid border-[#E5E9EB] rounded-xl flex gap-3 items-start transition-all cursor-pointer"
-                  >
-                    <span
-                      className={`flex-shrink-0 w-4 h-4 rounded-full border border-solid flex items-center justify-center mt-0.5 transition-all ${
-                        chk.completed
-                          ? 'bg-[#EAF3DE] border-[#639922] text-[#639922]'
-                          : 'border-slate-300 bg-transparent text-transparent'
-                      }`}
-                    >
-                      {chk.completed && (
-                        <svg
-                          width="10"
-                          height="10"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="3.5"
-                        >
-                          <polyline points="20 6 9 17 4 12" />
-                        </svg>
-                      )}
-                    </span>
-                    <span
-                      className={`text-[0.78rem] leading-snug font-medium transition-all ${
-                        chk.completed ? 'text-slate-500' : 'text-slate-700'
-                      }`}
-                    >
-                      {chk.text}
-                    </span>
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Section 2: Planificateur de Rédaction (Async Planning Jobs) */}
+            {/* Planificateur de Rédaction (Async Planning Jobs) */}
             <div className="flex flex-col gap-3">
               <span className="text-[0.68rem] font-bold text-slate-400 tracking-wider uppercase">
                 Planificateur de Rédaction (IA)
               </span>
               
               <div className="bg-[#F8FAFB] border border-solid border-[#E5E9EB] rounded-xl p-4 flex flex-col gap-3.5 relative overflow-hidden">
-                {jobStatus === null ? (
+                {isGuest ? (
+                  <p className="text-[0.75rem] text-slate-500 leading-relaxed m-0">
+                    Le planificateur IA est réservé aux comptes MemoFlow. Connectez-vous depuis les paramètres pour
+                    l'utiliser.
+                  </p>
+                ) : jobStatus === null ? (
                   <form onSubmit={handleLaunchPlanning} className="flex flex-col gap-3">
                     <div className="flex flex-col gap-1">
                       <label className="text-[0.7rem] font-bold text-[#2F4858]">Consigne / Prompt :</label>
@@ -984,6 +684,9 @@ export default function WritingSpace({
                         </>
                       )}
                     </button>
+                    <span className="text-[0.62rem] text-slate-400 text-center block leading-tight">
+                      Traité par Anthropic Claude avec les extraits des connecteurs sélectionnés.
+                    </span>
                   </form>
                 ) : (
                   <div className="flex flex-col gap-3">
@@ -1095,150 +798,6 @@ export default function WritingSpace({
                 )}
               </div>
             </div>
-
-            {/* Section 3: Reformulation Suggestions */}
-            <div className="flex flex-col gap-3">
-              <span className="text-[0.68rem] font-bold text-slate-400 tracking-wider uppercase">
-                Suggestions de Reformulation
-              </span>
-
-              {/* Reformulation card */}
-              <div className="bg-[#F1F5F7] border border-solid border-[#E5E9EB] rounded-xl p-4 flex flex-col gap-3.5 relative overflow-hidden">
-                <div className="flex flex-col gap-1">
-                  <span className="text-[0.68rem] font-bold text-slate-400">
-                    Texte sélectionné :
-                  </span>
-                  <p className="text-[0.75rem] text-slate-500 italic font-medium leading-relaxed">
-                    "Historically, researchers have grappled with the paradox..."
-                  </p>
-                </div>
-
-                <div className="bg-white border border-solid border-slate-200/80 rounded-lg p-3.5 shadow-[0_2px_8px_rgba(0,0,0,0.01)]">
-                  <p className="text-[0.78rem] text-[#2F4858] font-semibold leading-relaxed">
-                    "Les universitaires s'intéressent depuis longtemps à la tension entre la densité d'information et la capacité cognitive..."
-                  </p>
-                </div>
-
-                <div className="flex justify-end">
-                  <button
-                    onClick={handleApplySuggestion}
-                    className="bg-transparent hover:text-[#518B91] text-[#639922] font-brand text-[0.72rem] font-bold tracking-wider cursor-pointer border-none flex items-center gap-1.5 transition-colors uppercase"
-                  >
-                    Appliquer la suggestion
-                    <svg
-                      width="12"
-                      height="12"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2.5"
-                    >
-                      <polyline points="9 18 15 12 9 6" />
-                    </svg>
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            {/* Section 3: Contextual References */}
-            <div className="flex flex-col gap-3">
-              <span className="text-[0.68rem] font-bold text-slate-400 tracking-wider uppercase">
-                Références Contextuelles
-              </span>
-
-              <div className="flex flex-col gap-2.5">
-                {/* Ref 1 */}
-                <div className="p-3.5 bg-white border border-solid border-[#E5E9EB] rounded-xl flex flex-col gap-1 shadow-[0_2px_8px_rgba(0,0,0,0.01)]">
-                  <h4 className="text-[0.8rem] font-bold text-[#2F4858]">
-                    Vance, E. (2022)
-                  </h4>
-                  <p className="text-[0.72rem] text-slate-500 leading-normal font-medium">
-                    "Échafaudages neuronaux dans les environnements d'apprentissage numériques : Une étude d'expérience utilisateur."
-                  </p>
-                </div>
-
-                {/* Ref 2 */}
-                <div className="p-3.5 bg-white border border-solid border-[#E5E9EB] rounded-xl flex flex-col gap-1 shadow-[0_2px_8px_rgba(0,0,0,0.01)]">
-                  <h4 className="text-[0.8rem] font-bold text-[#2F4858]">
-                    Kahneman, D. (2011)
-                  </h4>
-                  <p className="text-[0.72rem] text-slate-500 leading-normal font-medium">
-                    "Système 1, Système 2 : Les deux vitesses de la pensée."
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Assistant chatbot input area */}
-          <div className="border-t border-solid border-[#E5E9EB] p-4 bg-[#F8FAFB]">
-            {/* Mini Message feed */}
-            <div className="max-h-[140px] overflow-y-auto flex flex-col gap-2.5 mb-3.5 p-1 custom-scrollbar text-[0.75rem]">
-              {chatMessages.map((msg) => (
-                <div
-                  key={msg.id}
-                  className={`flex flex-col gap-0.5 max-w-[85%] ${
-                    msg.sender === 'user' ? 'self-end items-end' : 'self-start'
-                  }`}
-                >
-                  <span className="text-[0.62rem] text-slate-400 font-bold">
-                    {msg.sender === 'user' ? userName : 'Assistant'}
-                  </span>
-                  <div
-                    className={`p-2.5 rounded-xl font-medium leading-relaxed ${
-                      msg.sender === 'user'
-                        ? 'bg-[#2F4858] text-white rounded-tr-none shadow-[0_2px_6px_rgba(47,72,88,0.1)]'
-                        : 'bg-white text-slate-700 border border-solid border-[#E5E9EB] rounded-tl-none shadow-[0_2px_6px_rgba(0,0,0,0.01)]'
-                    }`}
-                  >
-                    {msg.text}
-                  </div>
-                </div>
-              ))}
-              {isTyping && (
-                <div className="self-start flex flex-col gap-0.5">
-                  <span className="text-[0.62rem] text-slate-400 font-bold">
-                    Assistant
-                  </span>
-                  <div className="p-2 bg-white text-slate-400 border border-solid border-[#E5E9EB] rounded-xl rounded-tl-none flex items-center gap-1 font-semibold">
-                    <span className="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce"></span>
-                    <span className="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce delay-100"></span>
-                    <span className="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce delay-200"></span>
-                  </div>
-                </div>
-              )}
-              <div ref={chatEndRef} />
-            </div>
-
-            {/* Input field */}
-            <form
-              onSubmit={handleSendChatMessage}
-              className="relative flex items-center bg-white border border-solid border-[#E5E9EB] rounded-xl p-1 shadow-sm"
-            >
-              <input
-                type="text"
-                value={chatInput}
-                onChange={(e) => setChatInput(e.target.value)}
-                placeholder="Demander à l'assistant..."
-                className="flex-1 pl-3 pr-10 py-2 text-[0.8rem] text-slate-800 placeholder-slate-400 focus:outline-none border-none"
-              />
-              <button
-                type="submit"
-                className="absolute right-1 w-8 h-8 rounded-lg bg-[#2F4858] hover:bg-[#3E6976] text-white flex items-center justify-center border-none transition-colors cursor-pointer"
-              >
-                <svg
-                  width="14"
-                  height="14"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="3"
-                >
-                  <line x1="22" y1="2" x2="11" y2="13" />
-                  <polygon points="22 2 15 22 11 13 2 9 22 2" />
-                </svg>
-              </button>
-            </form>
           </div>
         </aside>
       </div>
