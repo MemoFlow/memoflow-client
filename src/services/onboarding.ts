@@ -18,7 +18,7 @@ export type DeliverableType = 'thesis' | 'apprenticeship_report' | 'internship_r
 export type AcademicLevel = 'l3' | 'm1' | 'm2' | 'other';
 export type WorkTool = 'trello' | 'notion' | 'teams' | 'slack' | 'email' | 'drive' | 'other';
 export type Blocker = 'getting_started' | 'finding_past_work' | 'structuring' | 'writing' | 'lack_of_time';
-export type AcquisitionChannel = 'friend' | 'school' | 'tiktok' | 'instagram' | 'linkedin' | 'google' | 'other';
+export type AcquisitionChannel = 'friend' | 'school' | 'tiktok' | 'instagram' | 'linkedin' | 'google' | 'ai' | 'other';
 
 export const SCHOOL_NAME_MAX_LENGTH = 120;
 
@@ -103,6 +103,7 @@ export const CHANNEL_CHOICES: Choice<AcquisitionChannel>[] = [
   { value: 'instagram', label: 'Instagram' },
   { value: 'linkedin', label: 'LinkedIn' },
   { value: 'google', label: 'Google' },
+  { value: 'ai', label: 'ChatGPT ou une autre IA' },
   { value: 'other', label: 'Autre' },
 ];
 
