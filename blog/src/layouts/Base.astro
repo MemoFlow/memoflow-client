@@ -63,5 +63,61 @@ const jsonLd = JSON.stringify({ '@context': 'https://schema.org', '@graph': node
         <span>© MemoFlow</span>
       </div>
     </footer>
+    <!-- Mesure d'audience : mêmes textes et même clé que src/components/ConsentBanner.tsx.
+         Caché sans JS ; le script l'affiche tant que le visiteur n'a pas choisi. -->
+    <div class="consent" id="consent" role="region" aria-label="Mesure d'audience" hidden>
+      <div class="consent-texte">
+        <p class="consent-titre">Mesure d'audience</p>
+        <p>
+          Avec votre accord, nous utilisons Google Analytics pour savoir quelles pages sont consultées et améliorer
+          MemoFlow. Aucun cookie de mesure n'est déposé si vous refusez. Vous pouvez changer d'avis à tout moment dans
+          les Paramètres de MemoFlow. <a href="/">En savoir plus</a>
+        </p>
+      </div>
+      <div class="consent-choix">
+        <button type="button" data-consent="denied">Refuser</button>
+        <button type="button" data-consent="granted">Accepter</button>
+      </div>
+    </div>
+    <!-- Même logique que src/services/analytics.ts (Consent Mode v2 basique) : rien n'est chargé avant l'accord.
+         La clé localStorage est partagée avec l'app (même origine). -->
+    <script is:inline>
+      (function () {
+        var KEY = 'memoflow_analytics_consent';
+        var GTM_ID = 'GTM-KJR96BWV';
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { window.dataLayer.push(arguments); }
+        gtag('consent', 'default', {
+          ad_storage: 'denied',
+          ad_user_data: 'denied',
+          ad_personalization: 'denied',
+          analytics_storage: 'denied'
+        });
+        var loaded = false;
+        function loadGtm() {
+          if (loaded) return;
+          loaded = true;
+          gtag('consent', 'update', { analytics_storage: 'granted' });
+          window.dataLayer.push({ 'gtm.start': Date.now(), event: 'gtm.js' });
+          var s = document.createElement('script');
+          s.async = true;
+          s.src = 'https://www.googletagmanager.com/gtm.js?id=' + GTM_ID;
+          document.head.appendChild(s);
+        }
+        var consent = null;
+        try { consent = localStorage.getItem(KEY); } catch (e) {}
+        if (consent === 'granted') return loadGtm();
+        if (consent === 'denied') return;
+        var banner = document.getElementById('consent');
+        banner.hidden = false;
+        banner.addEventListener('click', function (e) {
+          var choice = e.target.getAttribute('data-consent');
+          if (!choice) return;
+          try { localStorage.setItem(KEY, choice); } catch (err) {}
+          banner.hidden = true;
+          if (choice === 'granted') loadGtm();
+        });
+      })();
+    </script>
   </body>
 </html>
