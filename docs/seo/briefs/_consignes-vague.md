@@ -2,6 +2,8 @@
 
 À lire en entier avant de commencer. Elles reprennent ce qu'a appris le pilote (relecture : `docs/seo/relecture-pilote.md`).
 
+**Ne lance aucun sous-agent : fais tout toi-même.**
+
 ## À lire d'abord
 - `docs/seo/product-facts.md` : la SEULE source de faits sur MemoFlow, décisions de François comprises.
 - `docs/seo/carte-articles.md` : ta ligne dans la carte (requête, format, pilier).
@@ -24,6 +26,16 @@
 - Rien sur le contournement de la détection IA.
 - Pièges de ton relevés au pilote : une section qui s'ouvre en recopiant son H2 ; « X, pas Y » ; deux-points de révélation (« Résultat : ») ; objets qui agissent (« les chartes disent » → « l'UPEC écrit ») ; métadiscours (« Trois choses ressortent »). Attaque chaque section par le fait.
 - « mémoire » est toujours qualifié dans le title (sinon Google sert la RAM).
+
+## Erreurs trouvées par la relecture de la vague 1 (à ne pas refaire)
+- **Quantificateurs plus forts que la preuve.** « toutes les consignes », « aucune école », « quatre sur cinq » : compte dans tes sources et écris le chiffre exact, ou nomme les établissements. Un document muet sur un point ne compte ni pour ni contre.
+- **Règle attribuée à la mauvaise source.** Chaque règle est attribuée nommément à l'établissement qui l'écrit, avec la bonne section (PGE2 ou PGE3, M1 ou M2). Un ordre de plan ou une longueur ne s'attribue qu'à une école qui les donne vraiment.
+- **Source sortie de son public.** Ne présente pas un guide de thèse, de formation continue (Executive) ou de BUT comme valant pour un master initial. Si tu l'utilises quand même, dis à qui il s'adresse.
+- **Avis présenté comme règle.** Ton conseil est un conseil (« à notre avis », « ce qui marche bien ») ; une consigne est citée et sourcée.
+- **Règle inventée dans le brief.** Si ton brief contient une règle, retrouve-la dans une source avant de l'écrire dans l'article. Sinon, retire-la.
+- **Contradiction avec un article publié.** Avant de donner une longueur, une règle ou un chiffre, regarde si un article déjà publié en parle (`grep -ri "<mot-clé>" blog/src/content/articles/`) et aligne-toi, ou explique l'écart.
+- **Hub qui duplique.** Un hub résume en 2 ou 3 phrases chaque sous-sujet et renvoie vers l'article détaillé ; il ne recopie pas ses passages.
+- Citation : recopie mot pour mot, sans couper un mot qui change le sens.
 - Longueur dictée par le brief, sans remplissage.
 
 ## Liens internes
