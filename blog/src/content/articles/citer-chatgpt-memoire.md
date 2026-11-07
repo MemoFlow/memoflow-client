@@ -37,9 +37,6 @@ sources:
   - titre: "Université Paris-Est Créteil, Charte sur le bon usage de l'intelligence artificielle (approuvée par le CA le 13 mars 2026)"
     url: "https://www.u-pec.fr/medias/fichier/del-ca-approbation-de-la-charte-relative-a-l-usage-de-l-intelligence-artificielle-au-sein-de-l-universite_1774866747115-pdf"
     consulte: 2026-11-07
-  - titre: "Université Clermont Auvergne, Charte du bon usage de l'IA générative (délibération du CA du 27 juin 2025)"
-    url: "https://www.uca.fr/medias/fichier/delib-ca-20250627-04-charte-ia_1751379185214-pdf"
-    consulte: 2026-11-07
 ---
 
 Pour citer ChatGPT dans un mémoire en norme APA, mets OpenAI en auteur, puis la date de la conversation, son titre, la mention [Generative AI chat], le nom de l'outil et le lien de partage. Dans le texte, tu écris (OpenAI, 2025), avec l'année de la conversation. Le prompt ne va jamais dans la référence. Tu le donnes dans le texte ou en annexe.
@@ -57,8 +54,6 @@ Le blog officiel APA Style distingue deux cas depuis le 9 septembre 2025 : une c
 Exemple publié par l'APA :
 
 > OpenAI. (2025, August 21). *High school grammar concepts* [Generative AI chat]. ChatGPT. https://chatgpt.com/share/68a77b60-0ee4-800c-9acc-cd3fd573c311
-
-L'APA détaille chaque élément :
 
 - **l'auteur** est l'entreprise qui a développé l'outil, OpenAI pour ChatGPT. L'IA elle-même ne peut pas être autrice ;
 - **la date** est le jour où la conversation a eu lieu ou s'est terminée ;
@@ -91,10 +86,11 @@ Un exemple fictif, construit sur celui de l'APA :
 
 > J'ai soumis à ChatGPT (OpenAI, 2026) la consigne suivante : « Liste les indicateurs d'absentéisme qu'une PME de 50 salariés peut suivre chaque mois. » Après la première réponse, j'ai demandé de retirer les indicateurs qui exigent un logiciel de paie.
 
-Deux établissements français demandent aussi de garder la trace de l'échange :
+Trois établissements français poussent à garder la trace de l'échange :
 
-- **La BU d'Aix-Marseille Université** conseille d'enregistrer une transcription de l'échange et de la mettre à disposition du lecteur, « éventuellement en l'incluant dans une annexe ». Elle demande aussi de décrire l'invite et d'indiquer la date à laquelle la réponse a été générée, parce que ces outils sont mis à jour régulièrement.
+- **La BU d'Aix-Marseille Université** propose d'enregistrer une transcription de l'échange et de la mettre à disposition du lecteur, « éventuellement en l'incluant dans une annexe ». Elle demande aussi de décrire l'invite et d'indiquer la date à laquelle la réponse a été générée, parce que ces outils sont mis à jour régulièrement.
 - **Le master Urbanisme et Aménagement de l'Université de Lorraine**, à Metz, fait numéroter chaque prompt dans une déclaration en annexe, avec l'IA, son développeur et la date de consultation. Dans le corps du texte, il propose cette formule : « Ce paragraphe a été reformulé à l'aide d'un outil d'IA, cf. prompt n°1 en annexe ».
+- **L'UPEC** recommande de tenir un « journal d'IA » qui retrace les requêtes, les sorties générées et les corrections apportées.
 
 Si ta formation ne dit rien, à notre avis l'annexe numérotée de Lorraine reste la solution la plus lisible, parce que chaque citation renvoie à un numéro que le jury retrouve dans l'annexe.
 
@@ -102,7 +98,7 @@ Si ta formation ne dit rien, à notre avis l'annexe numérotée de Lorraine rest
 
 Deux bibliothèques universitaires qui appliquent Harvard donnent des réponses opposées pour ChatGPT. Le point qui change est l'auteur. Pour la norme elle-même, voir notre article sur la [norme Harvard](/blog/norme-harvard-bibliographie/).
 
-**UCL (University College London) ne met pas l'IA en auteur.** Sa bibliothèque écrit que les systèmes d'IA ne doivent être ni cités comme auteur ni inclus comme source dans la bibliographie. Un usage de l'IA comme outil de travail se signale dans une section de remerciements (« Acknowledgements »). Si la réponse de l'outil doit malgré tout être référencée, par exemple parce que ton sujet porte sur l'IA, UCL la traite comme une œuvre sans auteur, sur le modèle de la communication personnelle. Le titre décrit ce qui a été généré et peut reprendre le prompt :
+**UCL (University College London) ne met pas l'IA en auteur.** Sa bibliothèque écrit que les systèmes d'IA ne doivent être ni cités comme auteur ni inclus comme source dans la bibliographie. Un usage de l'IA comme outil de travail se signale dans une section de remerciements (« Acknowledgements »). Parfois, la réponse de l'outil doit malgré tout être référencée, par exemple quand ton sujet porte sur l'IA. UCL la traite alors comme une œuvre sans auteur, sur le modèle de la communication personnelle. Le titre décrit ce qui a été généré et peut reprendre le prompt :
 
 > Explain why the sky is blue (2024). ChatGPT (GPT-4). 8 July. Available at: https://chatgpt.com/share/2808d9f2-18c3-4aed-a84e-02e0d670eff1
 
@@ -118,7 +114,7 @@ Les deux guides gardent le jour de la conversation et le lien. Si ta formation i
 
 ## Comment citer ChatGPT en norme ISO 690 ?
 
-En ISO 690, ChatGPT se cite comme un logiciel : le développeur en majuscules, l'année, le nom de l'outil avec son type entre crochets, la version, l'adresse et la date de consultation. La bibliothèque de la Haute école d'ingénierie et d'architecture de Fribourg (HEIA-FR), en Suisse, donne ce modèle dans son guide ISO-690:2021. Elle écrit que l'IA « ne constitue pas une source documentaire au même titre qu'un livre, un article ou un site web », mais que « son utilisation doit être référencée en bibliographie selon les mêmes normes de citation qu'un logiciel ».
+En ISO 690, ChatGPT se cite comme un logiciel. La référence donne le développeur en majuscules, l'année, le nom de l'outil avec son type entre crochets, la version, l'adresse et la date de consultation. La bibliothèque de la Haute école d'ingénierie et d'architecture de Fribourg (HEIA-FR), en Suisse, donne ce modèle dans son guide ISO-690:2021. Elle écrit que l'IA « ne constitue pas une source documentaire au même titre qu'un livre, un article ou un site web », mais que « son utilisation doit être référencée en bibliographie selon les mêmes normes de citation qu'un logiciel ».
 
 Principe :
 
@@ -148,24 +144,16 @@ Si ta formation n'impose aucune norme, commence par [choisir la norme de ta bibl
 
 Le lien de partage n'entre dans une référence APA que si tu cites une conversation précise. L'APA précise que la personne qui ouvre ce lien peut poursuivre l'échange, mais que la suite ne s'enregistre que pour elle. Les autres lecteurs voient la conversation d'origine.
 
-L'UPEC recommande l'inverse. Dans le tableau des paramètres à vérifier avant d'utiliser une IA, sa charte conseille de « désactiver les options de partage/publication par défaut », et range « rendre publics prompts et résultats » parmi ce qu'il faut éviter, pour prévenir les fuites d'informations.
+La charte de l'UPEC tire dans l'autre sens. Dans son tableau des paramètres à vérifier avant d'utiliser une IA, elle conseille de « désactiver les options de partage/publication par défaut », et range « rendre publics prompts et résultats » parmi ce qu'il faut éviter, pour prévenir les fuites d'informations.
 
-Pour ne pas publier le lien, tu peux citer l'outil en général, ce que l'APA admet quand citer la conversation serait inapproprié. UCD et la BU d'Aix-Marseille font mettre la conversation en annexe.
+Pour ne pas publier le lien, tu peux citer l'outil en général, ce que l'APA admet quand citer la conversation serait inapproprié. UCD prévoit l'annexe quand il n'y a pas de lien, et la BU d'Aix-Marseille la suggère.
 
 Pour un alternant, la question se règle en amont. La charte d'Angers interdit de transmettre à une IA des « données internes à une entreprise d'accueil de stage ». Une conversation qui en contient ne devrait pas exister, et encore moins circuler par un lien.
 
-## Citer un texte généré ou déclarer son usage : quelle différence ?
+## Citer ChatGPT ou citer sa source : quelle différence ?
 
 Citer, c'est référencer au passage même un élément qui vient de l'outil, avec un appel dans le texte et une entrée en bibliographie. Déclarer, c'est décrire l'ensemble de ton recours à l'IA, en annexe ou dans une section dédiée. Les règles de six établissements et un modèle sont dans [déclarer l'usage de l'IA dans son mémoire](/blog/declarer-ia-memoire/).
 
-Dans leurs chartes, trois établissements français parlent explicitement de citer :
-
-- **L'UFR LLASIC** veut que les enseignants puissent « repérer les passages qui relèveraient d'un usage de l'IA », d'où la référence au passage selon la norme demandée.
-- **L'Université d'Angers** interdit de présenter la production d'une IA comme la sienne « sans citer correctement ses sources ». Elle demande aussi de citer les sources de toute information obtenue par l'IA, « pour ne pas réaliser un plagiat ».
-- **L'Université Clermont Auvergne** écrit : « Vérifiez et citez les sources utilisées par l'IAG. »
-
-Une information trouvée grâce à ChatGPT se cite donc à sa source d'origine, après l'avoir lue. Dans le billet APA de 2023, l'auteur avait demandé ses sources à ChatGPT et obtenu cinq références. Il en a retrouvé quatre, et la cinquième ne semblait pas exister. La bibliothèque d'UCD prévient de la même façon que l'IA générative fournit souvent des références inexistantes ou inexactes.
-
-Citer un passage ne le rend pas autorisé pour autant. L'UFR LLASIC proscrit « la rédaction automatique de paragraphes », quelle que soit la façon dont on les référence.
+Une information trouvée grâce à ChatGPT, elle, se cite à sa source d'origine, après l'avoir lue. Angers le demande « pour ne pas réaliser un plagiat », et la charte de Lorraine veut des sources « vérifiées et citées selon les normes académiques en vigueur ». Dans le billet APA de 2023, l'auteur avait demandé ses sources à ChatGPT et obtenu cinq références. Il en a retrouvé quatre, et la cinquième ne semblait pas exister. La bibliothèque d'UCD prévient de la même façon que l'IA générative fournit souvent des références inexistantes ou inexactes.
 
 Avant de reprendre une phrase de ChatGPT dans ton mémoire, renomme la conversation, note sa date et son lien, numérote le prompt dans ton annexe, puis écris la référence dans la norme de ta formation.

@@ -36,13 +36,13 @@ sources:
     consulte: 2026-11-06
 ---
 
-Pour présenter tes missions dans ton rapport d'alternance, raconte chacune en trois temps : le contexte (pourquoi on te l'a confiée), tes actions (ce que tu as fait et pourquoi ces choix), les résultats (ce qui a changé, chiffré quand c'est possible). Relie ensuite chaque mission à une compétence de ton référentiel. L'IUT 1 de Grenoble, ICN Business School et Centrale Méditerranée demandent cet enchaînement. Aucune des trois ne fixe le nombre de missions, et deux à quatre suffisent à notre avis.
+Pour présenter tes missions dans ton rapport d'alternance, raconte chacune en trois temps : le contexte (pourquoi on te l'a confiée), tes actions (ce que tu as fait et pourquoi ces choix), les résultats (ce qui a changé, chiffré quand c'est possible). L'IUT 1 de Grenoble, ICN Business School et Centrale Méditerranée demandent cet enchaînement. Aucune des trois ne fixe le nombre de missions. À notre avis, une seule mission bien développée suffit si elle a rempli ton année, sinon deux à quatre. Relie ensuite chaque mission à une compétence de ton référentiel.
 
 La partie missions est le cœur du [rapport d'alternance](/blog/rapport-d-alternance/). La méthode vaut aussi pour décrire tes missions dans un rapport de stage. Les consignes de ton école passent avant ce qui suit.
 
 ## Que demandent les grilles pour la partie missions ?
 
-Dans les cinq documents publics relevés le 6 novembre 2026, la partie missions comprend toujours un contexte et une démarche, et quatre fois sur cinq des résultats. Le tableau reprend les mots de chaque école.
+Dans les cinq documents publics relevés le 6 novembre 2026, la partie missions comprend toujours un contexte et une démarche, et quatre fois sur cinq des résultats. Le tableau résume chaque document, et les passages entre guillemets sont textuels.
 
 | Établissement et document | Contexte | Actions | Résultats |
 |---|---|---|---|
@@ -60,7 +60,7 @@ Il te faut des dates, des volumes et des décisions pour remplir ces trois temps
 
 ## Combien de missions présenter, et lesquelles ?
 
-À notre avis, deux à quatre missions suffisent dans un rapport d'alternance : une développée en détail, les autres plus courtes. Aucune des cinq consignes du tableau ne fixe de nombre. ICN parle de « la ou les missions confiées », la grille de S5 de Grenoble du contexte « du ou des projets traités ». À Grenoble, le rapport de S3 consacre à la mission une seule partie, intitulée « Ma mission, mon projet ».
+À notre avis, une seule mission peut porter tout le rapport si elle a occupé l'essentiel de ton année, comme dans notre [exemple de rapport d'alternance](/blog/exemple-rapport-d-alternance/). Si tu en as eu plusieurs, garde-en deux à quatre : une développée en détail, les autres plus courtes. Aucune des cinq consignes du tableau ne fixe de nombre. ICN parle de « la ou les missions confiées », la grille de S5 de Grenoble du contexte « du ou des projets traités ». À Grenoble, le rapport de S3 consacre à la mission une seule partie, intitulée « Ma mission, mon projet ».
 
 Pour choisir, garde celles qui :
 
@@ -72,7 +72,7 @@ Les petites tâches récurrentes (reporting, mises à jour, support) se regroupe
 
 ## Comment rédiger une mission en contexte, actions, résultats ?
 
-Une mission de rapport d'alternance se rédige en trois temps, toujours dans le même ordre : le contexte, les actions, les résultats. Ton lecteur sait ainsi où il en est d'une mission à l'autre.
+Trois temps, toujours dans le même ordre : le contexte, les actions, les résultats. Ton lecteur sait ainsi où il en est d'une mission à l'autre.
 
 ### Le contexte : pourquoi cette mission existe
 
@@ -110,7 +110,7 @@ Les chiffres sensibles (chiffre d'affaires, prix, marges), passe-les en pourcent
 
 ## Comment relier une mission à une compétence du référentiel ?
 
-Pour relier une mission à une compétence, cite une ou deux compétences avec les mots exacts de ton référentiel, puis donne la preuve tirée de la mission : le livrable, le résultat, la validation de ton tuteur.
+Cite une ou deux compétences avec les mots exacts de ton référentiel, puis donne la preuve tirée de la mission : le livrable, le résultat, la validation de ton tuteur.
 
 Si ton diplôme est inscrit au RNCP, ses compétences sont rangées en blocs. France compétences rappelle que la loi « rend obligatoires les blocs de compétences pour les certifications enregistrées au RNCP », et que chaque certificateur doit les structurer « en entités homogènes et cohérentes de compétences ». Cherche-les dans le livret de ta formation, ou demande-les à ton tuteur pédagogique.
 
@@ -123,7 +123,7 @@ Centrale Méditerranée prévient de son côté qu'« une partie spécifique con
 
 ## Quelles erreurs éviter dans la partie missions ?
 
-Évite ces six erreurs dans la partie missions, chacune signalée par une consigne :
+L'IUT 1 de Grenoble et ICN signalent quatre erreurs dans leurs consignes, et AuFutur, un site de conseils aux étudiants, deux autres :
 
 1. **Lister des tâches.** AuFutur l'écrit : « Ne te contente pas de décrire les tâches que tu as effectuées, inclus également une analyse critique de ton expérience. »
 2. **Oublier le contexte.** Pour le rapport final, l'[IUT 1 de Grenoble](https://chamilo.univ-grenoble-alpes.fr/courses/IUT1GMPK/document/Chamilo-BUT3-MA/Rapport_S5-2024-2025_fond.pdf) prévient : « C'est souvent une partie que vous négligez (voire que vous oubliez) ».

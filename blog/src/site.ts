@@ -21,4 +21,4 @@ export const PILIERS = {
 export type Pilier = keyof typeof PILIERS;
 
 // Chaque CTA renvoie à une fonction vérifiée dans docs/seo/product-facts.md
-export const CTA_TYPES = ['connecteurs', 'planificateur', 'harvard', 'generique'] as const;
+export const CTA_TYPES = ['connecteurs', 'planificateur', 'generique'] as const;

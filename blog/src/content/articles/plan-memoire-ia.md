@@ -1,6 +1,6 @@
 ---
 title: "Faire son plan de mémoire de fin d'études avec l'IA"
-description: "Ce que 4 chartes d'universités acceptent pour le plan, et une méthode où tu écris d'abord ton plan, puis le confrontes à l'IA, le vérifies et le déclares."
+description: "Ce que 4 chartes IA disent du plan de mémoire, et une méthode : tu écris ton plan, tu le confrontes à l'IA, tu vérifies ses remarques et tu déclares l'usage."
 pilier: ia-memoire
 hub: false
 datePublished: 2026-11-07
@@ -33,22 +33,22 @@ Pour les autres étapes du mémoire (recherche documentaire, reformulation, rele
 
 ## Que disent les chartes d'un plan de mémoire fait avec l'IA ?
 
-Quatre chartes d'universités de 2025-2026, lues en entier pour cet article, ne traitent pas de la même façon un plan de mémoire fait avec l'IA. L'Université Paris-Est Créteil (UPEC) et le master Urbanisme et Aménagement de l'Université de Lorraine à Metz admettent une aide au plan. L'UFR LLASIC de l'Université Grenoble Alpes demande que la structure du mémoire vienne entièrement de l'étudiant. L'Université Clermont Auvergne (UCA) ne parle pas du plan, mais autorise l'IA pour les mémoires sauf interdiction de l'enseignant.
+Quatre chartes de 2025-2026 (deux d'université, une d'UFR, une de master), lues en entier pour cet article, ne traitent pas de la même façon un plan de mémoire fait avec l'IA. L'Université Paris-Est Créteil (UPEC) et le master Urbanisme et Aménagement de l'Université de Lorraine à Metz admettent une aide au plan. L'UFR LLASIC de l'Université Grenoble Alpes demande que la structure du mémoire vienne entièrement de l'étudiant. L'Université Clermont Auvergne (UCA) ne parle pas du plan, mais autorise l'IA pour les mémoires sauf interdiction de l'enseignant.
 
 | Établissement et texte | Ce qu'il écrit sur le plan | Ce que ça veut dire pour toi |
 |---|---|---|
 | UPEC, charte du 13 mars 2026, travaux académiques dont le mémoire | Range l'« assistance à la structuration de plans ou de bibliographies » parmi les « tâches de soutien limitées ». Interdit de substituer l'outil « à la réflexion critique, à l'analyse méthodologique ou à l'argumentation scientifique personnelle » | Aide admise, avec l'« autorisation expresse et préalable » de l'enseignant, à déclarer comme « aide à la structuration » |
 | Master Urbanisme et Aménagement, Université de Lorraine (Metz), 12 mars 2026 | Autorise « la génération d'idées ou de plans de travail ». Classe en « délestage cognitif » le prompt « Propose-moi une problématique et des hypothèses » | Aide possible pour le plan. La problématique se construit sans l'outil |
-| UFR LLASIC, Université Grenoble Alpes, mars 2026 | Pour le mémoire : « Les idées développées et la structure du texte doivent être entièrement le fruit du travail des étudiant·e·s ». Son tableau de déclaration contient pourtant une ligne « Aider à structurer ses idées » | Demande à ton directeur ce qu'il accepte avant de montrer ton plan à un outil |
+| UFR LLASIC, Université Grenoble Alpes, mars 2026 | Pour le mémoire : « Les idées développées et la structure du texte doivent être entièrement le fruit du travail des étudiant·e·s ». Son tableau de déclaration contient pourtant une ligne « Aider à structurer ses idées » | Avant de montrer ton plan à un outil, demande à ton directeur ce qu'il accepte |
 | UCA, charte du 27 juin 2025 | Rien sur le plan. Pour les mémoires et rapports, « l'usage de l'IAG est par défaut autorisé sauf s'il est expressément interdit par l'enseignant responsable de l'évaluation » | Usage possible sauf interdiction, à déclarer en précisant « quels outils utilisés pour quelles tâches » |
 
 Ces quatre chartes ne valent que pour leurs étudiants. Le comparatif de six chartes, avec la règle par défaut de chacune, est dans [l'IA est-elle autorisée pour le mémoire ?](/blog/ia-autorisee-memoire/).
 
-Aucune des quatre ne te laisse confier la réflexion à l'outil. Là où l'aide au plan est admise, un outil qui propose une structure à partir de ton contexte reste une aide à la structuration : tu compares sa proposition à ton propre plan, tu la retravailles et tu la déclares.
+Aucune des quatre ne te laisse confier la réflexion à l'outil. L'UPEC admet une assistance à la structuration du plan, avec l'accord préalable de l'enseignant. Le master lorrain admet la génération de plans de travail, l'UCA l'IA en général sauf interdiction de l'enseignant, et l'UFR LLASIC veut une structure entièrement de l'étudiant. Les quatre demandent de déclarer l'usage. Là où l'aide au plan est admise, et si ton directeur l'accepte, un plan proposé par un outil se traite comme une remarque sur le tien : tu le compares à ton propre plan, tu ne gardes que ce que tu sais justifier et tu déclares cet usage.
 
 ## Comment faire son plan de mémoire avec l'IA, étape par étape ?
 
-Pour faire ton plan de mémoire avec l'IA, écris d'abord ta problématique et ton premier plan, confronte-les ensuite à l'outil, vérifie ses remarques, puis déclare l'usage. Cet ordre est notre conseil, construit à partir des chartes de l'UPEC, du master lorrain, de l'UFR LLASIC et de l'UCA.
+Écris d'abord ta problématique et ton premier plan, confronte-les ensuite à l'outil, vérifie ses remarques, puis déclare l'usage. Cet ordre est notre conseil, construit à partir des chartes de l'UPEC, du master lorrain, de l'UFR LLASIC et de l'UCA.
 
 1. **Vérifie la règle.** Trouve la charte de ton université, celle de ta formation si elle existe, et demande la consigne de ton directeur ou ta directrice de mémoire par écrit. À l'UPEC, il faut l'autorisation préalable de l'enseignant.
 2. **Écris ta problématique seul.** Le master lorrain range la demande de problématique à un outil parmi les mauvais usages, à cause du « défaut d'apprentissage lié à l'appropriation de la question et à sa conceptualisation ».
@@ -85,7 +85,7 @@ Deux remarques sur quatre ont tenu. Elle note les quatre dans son journal, avec 
 
 ## Quelles sont les limites d'un plan proposé par l'IA ?
 
-Un plan de mémoire proposé par l'IA a quatre limites : il reste générique sans tes lectures ni ton terrain, il peut s'appuyer sur des sources inventées, le contexte que tu lui donnes peut contenir des données de l'entreprise, et c'est toi qui le défends à l'oral.
+Il reste générique sans tes lectures ni ton terrain, il peut s'appuyer sur des sources inventées, le contexte que tu lui donnes peut contenir des données de l'entreprise, et c'est toi qui le défends à l'oral.
 
 **Un plan générique.** À notre avis, sans tes lectures ni ton terrain, un outil reproduit la forme la plus courante du sujet, avec des parties qui pourraient servir à n'importe quel mémoire voisin. Pour le prompt de problématique, le master lorrain décrit un risque proche, la « soumission à des positions données par un algorithme probabiliste dont les critères de décision sont inconnus ».
 

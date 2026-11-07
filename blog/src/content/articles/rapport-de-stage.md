@@ -24,7 +24,7 @@ sources:
     consulte: 2026-11-07
 ---
 
-En licence ou en master, le rapport de stage raconte à ta formation où tu as fait ton stage, ce que tu y as fait, ce que ça a donné et ce que tu en retiens. Sa longueur suit la durée du stage : 5 pages au plus pour un stage d'observation d'au plus quatre semaines en licence de psychologie à Caen, 50 pages au plus pour le stage de fin d'études du master Énergie de l'Université de Lorraine. La note et l'oral dépendent de la formation : à Lyon 2, le stage court de M1 n'a pas de soutenance, le stage long de M2 en a une.
+En licence ou en master, le rapport de stage raconte à ta formation où tu as fait ton stage, ce que tu y as fait, ce que ça a donné et ce que tu en retiens. Sa longueur dépend de la formation : 5 pages au plus pour un stage d'observation d'au plus quatre semaines en licence de psychologie à Caen, 50 pages au plus pour le stage de fin d'études du master Énergie de l'Université de Lorraine. La note et l'oral changent aussi d'une formation à l'autre : à Lyon 2, le stage court de M1 n'a pas de soutenance, le stage long de M2 en a une.
 
 Ce guide compare 6 consignes publiques de 5 universités, de la L2-L3 au M2, lues le 7 novembre 2026. Celles de ta formation passent avant tout ce qui suit.
 
@@ -54,11 +54,11 @@ Relevé du 7 novembre 2026 sur des consignes publiques trouvées en ligne : deux
 | Paris 1 (IEDES), master Études du développement, M2 (2023) | 6 mois au plus ; 3 ou 4 mois faits avant d'écrire | Environ 40 pages hors annexes, à titre indicatif | L'organisme remplit une évaluation du stage ; rôle dans la note non précisé | Non précisé |
 | Lorraine, master Énergie, M2 (stage de fin d'études) | Non précisé | 50 pages au plus | Non précisé | Date à indiquer sur la page de titre, modalités non précisées |
 
-Les sources : [Caen](https://ufr-psychologie.unicaen.fr/wp-content/uploads/sites/13/2024/08/guide-redaction-2025.pdf), [Paris Descartes](https://helios2.mi.parisdescartes.fr/~dorta/StageL3/cadrage_stage_2020_21.pdf), [Lyon 2](https://lesla.univ-lyon2.fr/medias/fichier/guide-methodologique-rapport-de-stage-m1-m2-cinema-et-audiovisuel_1779375251664-pdf), [IEDES](https://iedes.pantheonsorbonne.fr/sites/default/files/2023-05/consignes_rapport_de_stage.pdf), [Lorraine](https://arche.univ-lorraine.fr/pluginfile.php/4907533/mod_resource/content/1/Consignes%20Rapport%20de%20stage%20M2%20ME.pdf). Le document de Paris Descartes date de 2020-2021, c'est le plus ancien du relevé. Ceux de Lyon 2 et de Lorraine ne portent pas de date.
+Les sources : [Caen](https://ufr-psychologie.unicaen.fr/wp-content/uploads/sites/13/2024/08/guide-redaction-2025.pdf), [Paris Descartes](https://helios2.mi.parisdescartes.fr/~dorta/StageL3/cadrage_stage_2020_21.pdf), [Lyon 2](https://lesla.univ-lyon2.fr/medias/fichier/guide-methodologique-rapport-de-stage-m1-m2-cinema-et-audiovisuel_1779375251664-pdf), [IEDES](https://iedes.pantheonsorbonne.fr/sites/default/files/2023-05/consignes_rapport_de_stage.pdf), [Lorraine](https://arche.univ-lorraine.fr/pluginfile.php/4907533/mod_resource/content/1/Consignes%20Rapport%20de%20stage%20M2%20ME.pdf). Le document de Paris Descartes (aujourd'hui Université Paris Cité) date de 2020-2021, c'est le plus ancien du relevé. Ceux de Lyon 2 et de Lorraine ne portent pas de date.
 
 ## Combien de pages pour un rapport de stage ?
 
-Un rapport de stage fait entre 5 et 50 pages dans les consignes relevées, selon la durée du stage et le niveau :
+Un rapport de stage fait entre 5 et 50 pages dans les consignes relevées, selon la formation :
 
 - **Stage de quatre semaines** : 5 pages au plus en L2-L3 à Caen, 10 à 15 pages en M1 à Lyon 2.
 - **Stage de dix semaines en L3** : 30 pages au plus hors annexes à Paris Descartes, plus une fiche de bilan et de synthèse d'une page au début.
@@ -98,7 +98,7 @@ Les consignes de Caen et de l'IEDES ne parlent pas d'oral. Ça ne veut pas dire 
 
 ## Rapport de stage ou rapport d'alternance : quelle différence ?
 
-Le rapport d'alternance porte sur une ou plusieurs années passées en entreprise en même temps que les cours. Le rapport de stage couvre une période plus courte, de quelques semaines à six mois dans ce relevé, mais on y attend le même fond : la structure d'accueil, tes missions, ton recul. Les consignes d'école propres à l'alternance sont comparées dans le guide du [rapport d'alternance](/blog/rapport-d-alternance/), et la frontière avec le mémoire dans [rapport ou mémoire d'alternance](/blog/rapport-ou-memoire-d-alternance/).
+Le rapport d'alternance porte sur une ou plusieurs années passées en entreprise en même temps que les cours. Le rapport de stage couvre une période plus courte, de quelques semaines à six mois dans ce relevé, mais on y attend le même fond : la structure d'accueil, tes missions, ton recul. Les consignes d'école propres à l'alternance sont comparées dans le guide du [rapport d'alternance](/blog/rapport-d-alternance/), et la frontière avec le mémoire dans [rapport ou mémoire d'alternance](/blog/rapport-ou-memoire-d-alternance/). En Lorraine, la consigne du rapport de stage de fin d'études l'appelle même « mémoire » d'un bout à l'autre.
 
 ## Qu'est-ce qui change d'une formation à l'autre ?
 
@@ -107,15 +107,15 @@ D'une formation à l'autre, le fond du rapport de stage bouge peu. La longueur, 
 **Ce qui revient :**
 
 - décrire tes missions et ce que tu as fait toi-même, dans les cinq universités ;
-- présenter la structure d'accueil, dans quatre d'entre elles. Lyon 2 et l'IEDES demandent de ne pas recopier ses documents, Lorraine d'éviter les présentations « fastidieuses » ;
-- relier le stage à ce que tu as appris à l'université : Caen, Paris Descartes, Lyon 2 et l'IEDES le demandent.
+- présenter la structure d'accueil, là aussi dans les cinq. Lyon 2 et l'IEDES demandent de ne pas recopier ses documents, Lorraine d'éviter les présentations « fastidieuses » ;
+- relier le stage à ce que tu as appris à l'université : Caen et Paris Descartes le demandent, Lyon 2 et l'IEDES le proposent.
 
 **Ce qui change :**
 
 - **La longueur** : de 5 pages à Caen à 50 en Lorraine.
 - **L'oral** : aucun, un quart d'heure ou une soutenance de fin d'année.
 - **La part de l'entreprise** : une grille de ton tuteur chez Lyon 2, une partie de la note chez Paris Descartes.
-- **Les pièces imposées** : une fiche de bilan d'une page à Paris Descartes ; un CV d'une page, la convention de stage et une synthèse en français et en anglais à Lyon 2 ; un résumé et des mots-clés en français et en anglais en Lorraine ; une phrase obligatoire dans l'introduction à l'IEDES, qui commence par « Conformément aux orientations pour la rédaction du rapport de stage ».
+- **Les pièces imposées** : une fiche de bilan d'une page à Paris Descartes ; un CV d'une page, la convention de stage et une synthèse en français et en anglais à Lyon 2 ; un résumé en français et en anglais, avec des mots-clés en français, en Lorraine ; une phrase obligatoire dans l'introduction à l'IEDES, qui commence par « Conformément aux orientations pour la rédaction du rapport de stage ».
 - **La forme** : Caen fixe une police en taille 12 et un interligne de 1,5, Lyon 2 une taille 11 avec une marge de 3,5 cm à gauche pour la reliure, Lorraine du Times 12 avec un interligne de 1,15.
 
 ## Quelles questions poser à ta formation avant d'écrire ?

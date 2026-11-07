@@ -19,7 +19,7 @@ sources:
   - titre: "Université de Caen Normandie, UFR de psychologie : consignes du rapport de stage « Découverte et Orientation » (2025)"
     url: "https://ufr-psychologie.unicaen.fr/wp-content/uploads/sites/13/2024/08/guide-redaction-2025.pdf"
     consulte: 2026-11-07
-  - titre: "Université de Reims Champagne-Ardenne : le stage obligatoire de 3e année de licence"
+  - titre: "Université de Reims Champagne-Ardenne : le stage obligatoire de 3e année de licence de psychologie"
     url: "https://www.univ-reims.fr/media-files/12459/consignes.stage.obligatoire-l3.pdf"
     consulte: 2026-11-07
   - titre: "L'Étudiant : comment présenter ses missions dans un rapport de stage"
@@ -30,7 +30,7 @@ sources:
     consulte: 2026-11-07
 ---
 
-Un rapport de stage de 2 mois fait de 5 à 30 pages selon les consignes d'université qu'on a lues, et aucune ne calcule la longueur d'après la durée du stage. Ces cinq consignes font toutes décrire tes missions ou tes activités, et trois y ajoutent une partie ou une conclusion sur les compétences. Le reste dépend de ta formation, comme pour tout [rapport de stage](/blog/rapport-de-stage/).
+Un rapport de stage de 2 mois fait de 6 à 30 pages dans les quatre consignes d'université lues qui permettent un stage de cette durée, et aucune ne calcule la longueur d'après la durée du stage. Une cinquième, à Caen, limite le stage à quatre semaines. Ces cinq consignes font toutes décrire tes missions ou tes activités, et trois y ajoutent une partie ou une conclusion sur les compétences. Le reste dépend de ta formation, comme pour tout [rapport de stage](/blog/rapport-de-stage/).
 
 ## Que mettre dans un rapport de stage de 2 mois quand on a peu de missions ?
 
@@ -39,7 +39,7 @@ Deux ou trois missions peuvent remplir un rapport de stage court si tu les décr
 1. **Tes missions, découpées en activités.** Le guide du master Cinéma et audiovisuel de Lyon 2, qui prévoit un stage court en M1, le permet : « Il est possible de sous-découper les activités en tâches ». Une mission « préparer un salon » devient la liste des exposants, le planning, la logistique, le bilan avec ta tutrice.
 2. **Ce que chaque activité a produit.** Lyon 2 demande, pour chaque activité, ce que tu devais faire, ce que tu as fait, ta marge de manœuvre, les problèmes rencontrés et les résultats.
 3. **Comment ta mission a bougé.** Le même guide le note : « Il arrive très souvent que les contours de votre mission se modifient en cours de stage ». Si la tienne a été réduite ou déplacée, écris ce qui était prévu, ce qui a été fait, et pourquoi l'écart.
-4. **Ce que tu n'as pas pu faire.** Le bilan du stage de L3 de l'université de Reims comporte une rubrique « Ce qui n'a pas pu être observé (et pourquoi) ».
+4. **Ce que tu n'as pas pu faire.** Le bilan du stage de L3 de psychologie de l'université de Reims, un stage d'observation d'au moins 50 heures, comporte une rubrique « Ce qui n'a pas pu être observé (et pourquoi) ».
 
 Pour la présentation d'une mission elle-même, vois [comment présenter ses missions dans un rapport](/blog/presenter-ses-missions-rapport/). Une fois ces blocs listés, tu peux les rédiger un par un, dans l'ordre qui t'arrange, et assembler le rapport à la fin.
 
@@ -51,11 +51,11 @@ La question revient pourtant. En avril 2026, sur le forum info.fr, une personne 
 
 - **Lyon 2, M1 Cinéma et audiovisuel** : un chapitre « description et analyse de la mission », puis un troisième chapitre « compétences mobilisées ». Le guide précise que ce dernier chapitre « sera exclusivement consacré à la question des compétences mobilisées ».
 - **Caen, licence de psychologie** (stage « Découverte et Orientation ») : un « Bilan d'activités du stagiaire », puis une partie « Evolution personnelle au cours du stage » qui demande une « Prise de recul sur le développement de vos compétences ».
-- **Reims, stage obligatoire de L3** : un bilan de stage, puis une conclusion où l'étudiant fait la synthèse « de ce qu'il a acquis comme connaissances et compétences ».
+- **Reims, licence de psychologie (stage d'observation de L3)** : un bilan de stage, puis une conclusion où l'étudiant fait la synthèse « de ce qu'il a acquis comme connaissances et compétences ».
 - **Paris Nanterre, L3 droit français-droit italien** : « Le détail des missions accomplies », puis les apports du stage pour ton projet d'études et ton projet professionnel. Le mot « compétences » n'apparaît pas dans la liste.
 - **Paris Nanterre, L3 LEA** : trois parties, l'entreprise, « l'activité du stagiaire (compte rendu des tâches) », puis une critique de l'entreprise.
 
-L'Étudiant présente les missions dans l'ordre chronologique et juge qu'« il est logique de débuter par les missions les plus simples ».
+L'Étudiant, dont le seul exemple vient d'une 1re année de BTS, présente les missions dans l'ordre chronologique et juge qu'« il est logique de débuter par les missions les plus simples ».
 
 À notre avis, avec deux ou trois vraies missions, fais une partie par mission et garde les compétences pour une partie à part ou pour la conclusion. Avec beaucoup de petites tâches, regroupe-les par thème, comme Lyon 2 avec sa « présentation thématique » des activités, ou par compétence, en décrivant dans chaque partie les tâches qui la prouvent. Ce second plan reste dans les clous des cinq consignes tant que tes activités y sont décrites. Si ta consigne renvoie à un référentiel de compétences, suis-la, elle prime sur ces conseils.
 
@@ -82,13 +82,13 @@ Le plan type complet et un exemple de plan par compétences sont dans le [plan d
 
 ## Combien de pages pour un rapport de stage de 2 mois ?
 
-Compte entre 5 et 30 pages pour un rapport de stage de 2 mois, d'après les cinq consignes lues. Chacune fixe sa propre longueur, sans formule liée à la durée du stage. Sur l'ensemble des stages, les rapports s'allongent avec la durée et le niveau, jusqu'à 50 pages pour un stage long de M2 dans le relevé de notre guide du rapport de stage.
+Compte entre 6 et 30 pages pour un rapport de stage de 2 mois, d'après les quatre consignes lues qui permettent cette durée. Chacune fixe sa propre longueur, sans formule liée à la durée du stage. Caen reste dans le tableau comme repère, mais son stage ne dépasse pas quatre semaines. Pour d'autres formations, la longueur monte jusqu'à 50 pages pour un stage long de M2 dans le relevé de notre [guide du rapport de stage](/blog/rapport-de-stage/).
 
 | Formation | Durée du stage | Longueur demandée |
 |---|---|---|
-| Licence de psychologie (L2 ou L3), Caen | 4 semaines au maximum | 5 pages au maximum, hors page de garde, sommaire et questionnaire du tuteur |
+| Licence de psychologie (L2 ou L3), Caen | 4 semaines au maximum (un stage de 2 mois n'y entre pas) | 5 pages au maximum, hors page de garde, sommaire et questionnaire du tuteur |
 | L3 droit français-droit italien, Paris Nanterre (2025-2026) | 2 semaines au minimum | 6 à 8 pages pour le retour d'expérience, hors pages de garde et annexes |
-| Stage obligatoire de L3, Reims | 50 heures au minimum | 10 pages au maximum pour le corps du texte, remerciements non comptés |
+| Stage obligatoire de L3 de psychologie, Reims | 50 heures au minimum | 10 pages au maximum pour le corps du texte, remerciements non comptés |
 | M1 Cinéma et audiovisuel, Lyon 2 | 4 semaines au minimum | 10 à 15 pages |
 | L3 LEA, Paris Nanterre | 280 heures au minimum, soit 8 semaines | environ 30 pages |
 

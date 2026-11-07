@@ -75,11 +75,7 @@ Ces taux valent pour les versions testées à ces dates. Les modèles ont chang�
 
 ## Peut-on faire sa problématique et son plan avec l'IA ?
 
-L'UPEC range l'« assistance à la structuration de plans ou de bibliographies » parmi les tâches de soutien limitées. La charte lorraine autorise la « génération d'idées ou de plans de travail », mais classe en « délestage cognitif » le prompt « Propose-moi une problématique et des hypothèses », qui « signifie une sous-traitance de l'effort de réflexion à l'IA ».
-
-L'UFR LLASIC est la plus stricte pour le mémoire. Elle reprend sa charte anti-plagiat : « Les idées développées et la structure du texte doivent être entièrement le fruit du travail des étudiant·e·s ». Son tableau de déclaration contient pourtant une ligne « Aider à structurer ses idées ». À LLASIC, demande donc à ton directeur ce qu'il accepte avant de montrer ton plan à un outil.
-
-La réflexion reste à toi dans les trois textes. L'UPEC interdit de substituer l'outil « à la réflexion critique, à l'analyse méthodologique ou à l'argumentation scientifique personnelle ». En pratique, écris ta problématique toi-même (méthode et exemples dans [la problématique de mémoire](/blog/problematique-de-memoire/)), bâtis un premier [plan de mémoire](/blog/plan-de-memoire/), puis, si ta charte l'admet, soumets ce plan à l'outil pour repérer les trous ou les redites. Tu déclares ensuite cette aide à la structuration.
+L'UPEC et le master lorrain admettent une aide au plan, l'UFR LLASIC veut une structure entièrement de l'étudiant, et aucune des trois ne te laisse confier la réflexion à l'outil. Écris ta [problématique](/blog/problematique-de-memoire/) et ton premier [plan de mémoire](/blog/plan-de-memoire/) toi-même, puis, si ta charte l'admet, soumets ce plan à l'outil et déclare cette aide à la structuration. Les citations des chartes, la méthode pas à pas et un exemple sont dans [faire son plan de mémoire avec l'IA](/blog/plan-memoire-ia/).
 
 ## Reformuler et corriger son texte avec l'IA, qu'est-ce qui est toléré ?
 

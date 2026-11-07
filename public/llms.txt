@@ -7,7 +7,7 @@ Ce que fait l'application :
 - Un espace d'écriture organisé en sections, avec sauvegarde automatique.
 - Un planificateur qui rassemble le contexte et génère un plan, ajouté comme section du document.
 - Des connecteurs qui importent du contexte : pages de notes et wikis, cartes de tâches et tableaux Kanban, fichiers Markdown et dépôts de code.
-- Un centre de contexte : fichiers de recherche, personas de lecteurs, et une option qui impose le style de citation Harvard.
+- Un centre de contexte : fichiers de recherche et personas de lecteurs.
 - Des modèles de documents, dont certains réservés aux comptes, et des modèles personnels.
 
 MemoFlow est freemium : on peut commencer gratuitement.

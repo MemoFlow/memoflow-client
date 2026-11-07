@@ -1,11 +1,11 @@
 ---
 title: "Bibliographie de mémoire : quelle norme choisir ?"
-description: "APA, ISO 690, notes de bas de page ou Harvard : qui impose quelle norme, une référence type par norme et comment classer ta bibliographie de mémoire."
+description: "APA, ISO 690, notes de bas de page ou Harvard : qui impose quelle norme, un exemple de référence par norme et comment classer ta bibliographie de mémoire."
 pilier: rediger-un-memoire
 hub: false
 datePublished: 2026-11-07
 dateModified: 2026-11-07
-cta: harvard
+cta: generique
 sources:
   - titre: "Université de Poitiers, Inspé : guide de l'étudiant du master 2 IPHD (2023-2024)"
     url: "https://inspe.univ-poitiers.fr/wp-content/uploads/sites/513/2023/08/Guide-M2-2023-2024_VF.pdf"
@@ -49,18 +49,24 @@ sources:
   - titre: "Office québécois de la langue française, Vitrine linguistique : généralités sur la bibliographie"
     url: "https://vitrinelinguistique.oqlf.gouv.qc.ca/23244/la-redaction-et-la-communication/bibliographie-et-citations/bibliographie-et-notices-bibliographiques/generalites-sur-la-bibliographie"
     consulte: 2026-11-07
+  - titre: "EM Normandie, Learning Center : Style Harvard EM Normandie, guide de rédaction des références bibliographiques (Catois, Rogoff et Vouillemont, 2021)"
+    url: "https://drive.google.com/file/d/1dkgiDfAtnFVgcuF0hZetJrqJ_vWbUUyO/view"
+    consulte: 2026-11-07
+  - titre: "UBC Library : APA Citation Style Guide, personal communications"
+    url: "https://guides.library.ubc.ca/apacitationstyle/personal"
+    consulte: 2026-11-07
 ---
 
-Ta formation fixe la norme de ta bibliographie de mémoire. Lis ta consigne, puis fais valider ton choix par ton directeur. Dans les consignes françaises lues pour cet article, on trouve l'APA, l'ISO 690 et les notes de bas de page, et aucune n'impose Harvard. Quelle que soit la norme, tu l'appliques à toutes tes références, du début à la fin.
+Ta formation fixe la norme de ta bibliographie de mémoire. Lis ta consigne, puis fais valider ton choix par ton directeur. Dans les consignes françaises lues pour cet article, on trouve l'APA, l'ISO 690 et les notes de bas de page. Aucune n'impose Harvard, même si l'école de commerce EM Normandie en publie un guide. Quelle que soit la norme, tu l'appliques à toutes tes références, du début à la fin.
 
-Ce guide s'appuie sur 10 documents d'universités, d'écoles et de bibliothèques universitaires françaises, plus trois références étrangères, consultés le 7 novembre 2026. La bibliographie n'est qu'une étape du travail, les autres sont dans le guide pour [rédiger un mémoire](/blog/rediger-un-memoire/).
+Ce guide s'appuie sur 11 documents d'universités, d'écoles et de bibliothèques universitaires françaises, plus quatre références étrangères, consultés le 7 novembre 2026. La bibliographie n'est qu'une étape du travail, les autres sont dans le guide pour [rédiger un mémoire](/blog/rediger-un-memoire/).
 
 ## Quelle norme choisir pour la bibliographie de ton mémoire ?
 
 Ta consigne décide d'abord, puis ton directeur, puis ta bibliothèque universitaire. Ta discipline ne compte que si personne n'a rien fixé. Dans l'ordre :
 
 1. **La consigne écrite de ta formation.** Guide du mémoire, livret de l'alternant, cahier des charges. Si elle nomme une norme, la question est réglée.
-2. **Ton directeur de mémoire.** La BU de l'Université catholique de l'Ouest (UCO) conseille de toujours faire valider « choix de la norme + mode de classement » par le directeur, parce qu'il a souvent « des exigences susceptibles de s'éloigner des normes ».
+2. **Ton directeur de mémoire.** Dans son guide AFNOR, la BU de l'Université catholique de l'Ouest (UCO) conseille de toujours faire valider « choix de la norme + mode de classement » par le directeur, parce qu'il a souvent « des exigences susceptibles de s'éloigner des normes ».
 3. **Le défaut de ta bibliothèque.** À l'INSA Toulouse, « si aucun style n'est recommandé par votre Département, la bibliothèque suggère les adaptations du style ISO-690 ».
 4. **Ta discipline, si rien n'est fixé.** À notre avis, un style auteur-date (APA, Harvard) convient quand tu cites surtout des articles et des études, et les notes de bas de page quand tu commentes des textes ou des œuvres. C'est ce que font les deux formations de philosophie et d'arts lues ici, à Paris Nanterre et à l'ENSAD.
 
@@ -68,7 +74,7 @@ Une fois la norme retenue, ne la lâche plus. Le guide du mémoire de master de 
 
 ## Qui impose quelle norme ?
 
-Dans les documents lus, Poitiers impose l'APA, l'UFR LLASIC de Grenoble laisse l'enseignant choisir, « généralement » entre APA et ISO 690, les bibliothèques de l'INSA Toulouse, de Reims et d'HEC Paris proposent l'ISO 690, et Paris Nanterre (philosophie) comme l'ENSAD travaillent en notes de bas de page. Le détail :
+Dans les documents lus, Poitiers impose l'APA, l'UFR LLASIC de Grenoble laisse l'enseignant choisir, « généralement » entre APA et ISO 690, les bibliothèques de l'INSA Toulouse, de Reims et d'HEC Paris proposent l'ISO 690, et Paris Nanterre (philosophie) comme l'ENSAD travaillent en notes.
 
 | Établissement | Document | Norme demandée ou proposée |
 |---|---|---|
@@ -78,15 +84,15 @@ Dans les documents lus, Poitiers impose l'APA, l'UFR LLASIC de Grenoble laisse l
 | Université de Reims, BU (janvier 2026) | Mémo ISO 690, cite le mémoire de master | ISO 690, avec le style Zotero ISO 690 en notes |
 | HEC Paris, Learning Center (2022) | Guide pour le mémoire ou la thèse | ISO 690 |
 | Paris Nanterre, master de philosophie | Guide du mémoire, non daté | Notes de bas de page et bibliographie générale, norme libre si elle est cohérente |
-| ENSAD, Arts décoratifs (2026) | Normes rédactionnelles du mémoire | Notes de bas de page. Les normes s'adaptent, mais « il est impératif d'en respecter l'esprit » |
+| ENSAD, Arts décoratifs (2026) | Normes rédactionnelles du mémoire | Notes (en bas de page ou en marge). Les normes s'adaptent, mais « il est impératif d'en respecter l'esprit » |
 
 Poitiers est la seule du tableau à rendre une norme obligatoire, pour le mémoire comme pour le rapport. Les guides de bibliothèque (INSA, Reims, HEC) proposent une norme par défaut, ils ne l'imposent pas à ta formation. Enfin, le livret d'alternance d'ICN Business School demande une bibliographie et des citations dans le texte sans nommer de norme. Dans ce cas, c'est ton tuteur ou ton directeur qui tranche.
 
-Harvard n'apparaît comme norme dans aucun des 10 documents français lus. Une école peut très bien la demander, et si ta consigne la nomme, c'est elle qui compte.
+Harvard n'apparaît comme norme dans aucun des 10 autres documents français lus. Une école peut pourtant l'adopter, comme EM Normandie, dont le Learning Center a publié en 2021 son propre guide Harvard, en français. Si ta consigne nomme Harvard, c'est elle qui compte.
 
 ## APA, Harvard, ISO 690, notes : à quoi ressemble une référence ?
 
-En APA et en Harvard, l'année suit l'auteur, entre parenthèses. En ISO 690, le nom est en majuscules et l'année vient souvent à la fin. En notes de bas de page, à Paris Nanterre, la référence donne le prénom, le nom, le titre en italique, la ville, l'éditeur et l'année. Chaque exemple ci-dessous est recopié d'un guide officiel.
+En APA et en Harvard, l'année suit l'auteur, entre parenthèses en APA et dans la version d'UCL, sans parenthèses dans celle de Leeds. En ISO 690, le nom est en majuscules et l'année vient souvent à la fin. En notes de bas de page, à Paris Nanterre, la référence donne le prénom, le nom, le titre en italique, la ville, l'éditeur et l'année. Chaque exemple ci-dessous est recopié d'un guide officiel.
 
 **APA, 7e édition.** Exemple du guide de la BU de l'UCO :
 
@@ -114,7 +120,7 @@ Harvard est un système auteur-date, et UCL prévient qu'il en existe « many va
 
 ## Comment présenter et classer ta bibliographie ?
 
-Mets ta bibliographie à la place prévue par ta consigne (après la conclusion et avant les annexes dans les consignes françaises lues ici), classe-la par ordre alphabétique d'auteurs et n'y garde que les sources que tu as utilisées. Le détail, guide par guide :
+Mets ta bibliographie à la place prévue par ta consigne (après la conclusion et avant les annexes dans les trois consignes françaises lues qui le précisent : ICN, ENSAD, Paris 8), classe-la par ordre alphabétique d'auteurs et n'y garde que les sources que tu as utilisées.
 
 **Place.** ICN veut la bibliographie « avant la partie "annexes" ». L'ENSAD propose l'ordre conclusion, bibliographie, table des matières, annexes, et Paris 8 met aussi la bibliographie avant les annexes (voir le guide pour [rédiger un mémoire](/blog/rediger-un-memoire/)). L'Office québécois de la langue française (OQLF) la place au contraire « après les annexes et les appendices ». C'est l'usage qu'il recommande au Québec. En France, suis ta consigne.
 
@@ -122,15 +128,15 @@ Mets ta bibliographie à la place prévue par ta consigne (après la conclusion 
 
 **Une seule liste, ou plusieurs.** Ça dépend de la norme et de la formation. Pour l'APA, la BU de l'UCO réunit toutes les références « dans une seule liste, par ordre alphabétique d'auteurs et de date », sans séparer ouvrages et articles. Le guide de philosophie de Paris Nanterre demande au contraire deux sections : les sources primaires, ton corpus, et les sources secondaires, les commentaires.
 
-**Seulement ce que tu as utilisé.** L'INSA Toulouse l'écrit ainsi : « Il ne faut citer que les documents sur lesquels vous vous êtes appuyés pour rédiger vos travaux. » Le guide APA de l'UCO exige en plus que toute référence de la liste soit citée dans le texte, et que toute référence citée figure dans la liste.
+**Seulement ce que tu as utilisé.** L'INSA Toulouse l'écrit ainsi : « Il ne faut citer que les documents sur lesquels vous vous êtes appuyés pour rédiger vos travaux. » Le guide APA de l'UCO exige en plus que toute référence de la liste soit citée dans le texte, et que toute référence citée figure dans la liste. Le manuel APA fait une exception pour les communications personnelles (mails, entretiens, notes de service) : ton lecteur ne peut pas les retrouver, elles sont donc « cited in the text only », comme le rappelle la bibliothèque de l'Université de la Colombie-Britannique (UBC).
 
 **Même auteur, même année.** En APA, l'UCO distingue deux textes d'un auteur parus la même année par une lettre : (Dupont, 2021a) et (Dupont, 2021b).
 
 ## Bibliographie, sitographie, références citées : quelle différence ?
 
-La bibliographie liste tes sources, citées ou seulement consultées. La liste de références ne garde que celles que tu cites dans le texte. La sitographie, ou webographie, met à part les sources tirées d'Internet.
+Une bibliographie peut lister toutes les sources consultées. Une liste de références ne garde que les sources citées dans le texte, ce que l'APA exige (guide de l'UCO). La sitographie, ou webographie, met à part les sources tirées d'Internet.
 
-L'OQLF définit la bibliographie comme « une liste descriptive d'ouvrages qui permet l'identification de chacun d'eux ». Elle peut recenser tout ce que tu as consulté. La liste des références, elle, « peut se limiter aux ouvrages cités dans le document ». Si ta norme ou ta consigne exige que chaque entrée soit citée, comme le guide APA de l'UCO, ta bibliographie est en fait une liste de références.
+L'OQLF définit la bibliographie comme « une liste descriptive d'ouvrages qui permet l'identification de chacun d'eux ». Sur la même page, il parle de « liste des références » et en laisse le contenu au choix : « La liste des références peut se limiter aux ouvrages cités dans le document, ou encore répertorier tous les ouvrages que l'auteur ou l'autrice a consultés, ou enfin contenir une liste d'ouvrages répertoriés par la personne sur tel ou tel sujet. » Si ta norme ou ta consigne exige que chaque entrée soit citée, comme le guide APA de l'UCO, tu fais en fait une liste de références.
 
 L'OQLF range la webographie parmi les catégories possibles d'une bibliographie. Les pratiques des établissements varient :
 
@@ -143,7 +149,7 @@ Une sitographie séparée n'est donc pas une règle générale. À notre avis, s
 ## Questions fréquentes
 
 **Peut-on mélanger deux normes dans un même mémoire ?**
-Non. Nanterre veut des choix « cohérents et systématiques », et le guide APA de l'UCO une seule liste homogène. Si ton directeur demande une adaptation, applique-la partout.
+Non. Nanterre veut des choix « cohérents et systématiques », et l'OQLF demande d'« adopter une présentation uniforme et cohérente ». Si ton directeur demande une adaptation, applique-la partout.
 
 **Zotero est-il obligatoire ?**
 Pas chez ICN : « Ce logiciel n'est pas obligatoire », écrit le livret, qui le juge pourtant très utile pour produire une bibliographie conforme. La BU de Reims propose une formation, et indique que pour un mémoire de master tu peux choisir dans Zotero le style « ISO 690 (note, no abstract, français) ».
@@ -152,11 +158,11 @@ Pas chez ICN : « Ce logiciel n'est pas obligatoire », écrit le livret, qui le
 L'UFR LLASIC demande de référencer les passages issus d'une IA, « dans la mesure du possible » selon les normes bibliographiques. La méthode est dans le guide pour [citer ChatGPT dans ton mémoire](/blog/citer-chatgpt-memoire/). Pour une note interne ou un compte rendu de réunion, voici comment [citer un document interne d'entreprise](/blog/citer-document-interne-entreprise/).
 
 **Faut-il indiquer les pages dans la bibliographie ?**
-Pas pour un livre entier. Nanterre réserve la mention des pages aux références en note ou dans le texte. Pour un article ou un chapitre, les guides APA et ISO 690 lus donnent la pagination de la partie, par exemple p. 133-156.
+Pas pour un livre entier. Nanterre réserve la mention des pages aux références en note ou dans le texte. Pour un article ou un chapitre, les guides APA et ISO 690 lus donnent la pagination de la partie, par exemple p. 133-156 en ISO 690 (Reims), pp. 19-36 pour un chapitre en APA (UCO).
 
 **Avant de rendre, vérifie que :**
 - ta norme est celle de ta consigne, ou validée par ton directeur ;
-- chaque source citée dans le texte est dans la liste, et inversement si ta norme l'exige ;
+- chaque source citée dans le texte est dans la liste, et inversement si ta norme l'exige, sauf en APA pour les communications personnelles (mail, entretien, note interne), citées dans le texte seulement ;
 - la liste suit un seul ordre, alphabétique par défaut ;
 - chaque page web porte son URL et sa date de consultation ;
 - la bibliographie est à la place prévue par ta consigne, en général avant les annexes.

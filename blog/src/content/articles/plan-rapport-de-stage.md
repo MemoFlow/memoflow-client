@@ -27,7 +27,7 @@ sources:
     consulte: 2026-11-07
 ---
 
-Le plan type d'un rapport de stage de licence ou de master enchaîne une introduction, la présentation de la structure d'accueil, tes missions et leurs résultats, un bilan de ce que tu as appris et une conclusion, suivis des annexes. Dans les six consignes de licence et de master relevées ici, le rapport fait de 15 à 40 pages hors annexes, parfois davantage. Un seul des six établissements relevés ici donne une longueur pour chaque partie, l'université de Reims, pour son master de psychologie sociale du travail.
+Le plan type d'un rapport de stage de licence ou de master enchaîne une introduction, la présentation de la structure d'accueil, tes missions et leurs résultats, un bilan de ce que tu as appris et une conclusion, suivis des annexes. Dans les six consignes relevées ici (deux licences, la 3e année de Sciences Po Lille et trois masters), le rapport fait de 15 à 40 pages, ou davantage. Un seul des six établissements relevés ici donne une longueur pour chaque partie, l'université de Reims, pour son master de psychologie sociale du travail.
 
 Les consignes de ton établissement passent avant tout ce qui suit. Pour le reste de l'exercice, va voir le guide du [rapport de stage de licence ou de master](/blog/rapport-de-stage/).
 
@@ -35,7 +35,7 @@ Les consignes de ton établissement passent avant tout ce qui suit. Pour le rest
 
 Un rapport de stage de licence ou de master compte cinq parties rédigées (introduction, présentation de la structure, missions, bilan, conclusion), encadrées par la page de garde, le sommaire et le résumé au début, la bibliographie et les annexes à la fin.
 
-Le tableau ci-dessous est notre synthèse de six consignes publiques : trois de niveau bac+3 (licence informatique de Lyon 1, L3 informatique de Paris Descartes, 3e année de Sciences Po Lille) et trois de master (Reims, Inalco, IEDES de Paris 1). Chaque longueur est attribuée à l'établissement qui la donne. « Non chiffrée » veut dire qu'aucune des six n'en fixe.
+Le tableau ci-dessous est notre synthèse de six consignes publiques : deux de licence (L3 informatique de Lyon 1 et de Paris Descartes), une de 3e année d'IEP (Sciences Po Lille, parcours stage(s)) et trois de master (Reims, Inalco, IEDES de Paris 1). Chaque longueur est attribuée à l'établissement qui la donne. « Non chiffrée » veut dire qu'aucune des six n'en fixe.
 
 | Partie | Ce que tu y mets | Longueur indiquée |
 |---|---|---|
@@ -55,13 +55,15 @@ L'université de Reims fixe ces longueurs pour un total de 15 à 20 pages en M1 
 
 Reims précise aussi que son plan « indique le contenu des parties et non les titres qui devront être les plus spécifiques possible ». Tes titres viennent donc de ce que tu as fait pendant ton stage.
 
-## Combien de pages compte un rapport de stage ?
+## Quelle longueur totale pour ce plan ?
 
-Les six établissements demandent entre 15 et 40 pages, ou plus :
+Les six établissements de ce plan demandent entre 15 et 40 pages, ou plus. Sur un relevé plus large, du stage d'observation de licence au M2, les longueurs vont de 5 à 50 pages : voir le [guide du rapport de stage](/blog/rapport-de-stage/).
 
-- **Université Lyon 1, licence informatique (L3, note non datée)** : 25 pages au maximum, et « la borne inférieure peut raisonnablement être fixée à 15 pages ».
+Le détail des six :
+
+- **Université Lyon 1, licence informatique (L3, note non datée, en ligne sur la page d'un enseignant)** : 25 pages au maximum, et « la borne inférieure peut raisonnablement être fixée à 15 pages ».
 - **Paris Descartes, L3 informatique (2020-2021)** : 30 pages au maximum hors annexes.
-- **Sciences Po Lille, 3e année (2020-2021)** : au moins 25 pages hors annexes pour un stage de moins de trois mois, au moins 40 pages à partir de trois mois.
+- **Sciences Po Lille, 3e année d'IEP, parcours stage(s) (2020-2021)** : au moins 25 pages hors annexes pour un stage de moins de trois mois, au moins 40 pages à partir de trois mois.
 - **Université de Reims, master PSTO** : 15 à 20 pages en M1, 20 à 25 pages en M2, comptées du début de l'introduction à la fin de la conclusion.
 - **Inalco, master Relations internationales (2025-2026)** : 25 à 30 pages hors annexe.
 - **IEDES, Paris 1, master (M2)** : « environ 40 pages, hors annexes, avec une police de taille 12 », à titre indicatif.
@@ -94,7 +96,7 @@ Pour Reims, la conclusion « doit faire écho à l'introduction et permettre une
 
 ## Quelles variantes de plan pour un rapport de stage ?
 
-Les missions d'un rapport de stage peuvent se présenter une par une ou se regrouper par compétences. Les deux plans ci-dessous sont des exemples fictifs, à adapter. Ils gardent l'introduction, la présentation, le bilan et la conclusion du plan type, et ne changent que le milieu.
+Les missions d'un rapport de stage peuvent se présenter une par une ou se regrouper par compétences. Aucune des six consignes ne demande un plan par compétences : les deux plans ci-dessous sont des exemples fictifs, à adapter. Ils gardent l'introduction, la présentation, le bilan et la conclusion du plan type, et ne changent que le milieu.
 
 **Plan par missions** (exemple fictif : stage de M1 de cinq mois au service marketing d'une PME)
 
@@ -113,19 +115,19 @@ Les missions d'un rapport de stage peuvent se présenter une par une ou se regro
 - 2. Analyser un besoin client : deux cahiers des charges repris avec le chef de projet
 - 3. Développer et tester : les correctifs livrés, la mise en place des tests
 - 4. Travailler en équipe : les revues de code, le suivi des tickets
-- 5. Ce qu'il me reste à acquérir
+- 5. Bilan : ce que le stage m'a appris et ce qu'il me reste à acquérir
 - Conclusion
 - Annexes
 
 À notre avis, le plan par missions marche quand tu as eu deux ou trois missions bien distinctes. Le plan par compétences convient mieux quand tu as enchaîné beaucoup de petites tâches. Pour choisir sur un stage court, voir le [rapport de stage de 2 mois](/blog/rapport-de-stage-2-mois/).
 
-Sciences Po Lille impose un troisième découpage en 3e année. La première partie fait le bilan de ton expérience, la seconde approfondit au choix une mission ou un thème du stage, ou la façon dont la structure traite un enjeu de société comme la transition écologique. Cette seconde partie est « problématisée » et s'appuie sur une bibliographie.
+En 3e année, Sciences Po Lille, un IEP, impose un troisième découpage aux étudiants du parcours stage(s). La première partie fait le bilan de ton expérience, la seconde approfondit au choix une mission ou un thème du stage, ou la façon dont la structure traite un enjeu de société comme la transition écologique. Cette seconde partie est « problématisée » et s'appuie sur une bibliographie.
 
 ## Quelles erreurs les établissements signalent-ils ?
 
 L'Inalco, Lyon 1, Reims et Paris Descartes mettent en garde contre cinq erreurs :
 
-- **Décrire la structure plus que ton travail.** L'Inalco cite « l'erreur courante qui consiste à rédiger 20 pages sur 30 de description de l'organisme d'accueil et 10 pages d'analyse et de réflexion ». Elle attend « plutôt l'inverse ».
+- **Décrire la structure plus que ton travail.** L'Inalco cite « l'erreur courante qui consiste à rédiger 20 pages sur 30 de description de l'organisme d'accueil et 10 pages d'analyse et de réflexion ». Elle précise : « Il est plutôt attendu l'inverse, ou du moins, un équilibre entre ces deux parties. »
 - **Recopier la plaquette de l'entreprise.** Lyon 1 demande ta propre synthèse.
 - **Lister des tâches.** Pour Reims, le rapport « ne doit pas se limiter à un compte-rendu d'exécution de tâches diverses ».
 - **Compter sur les annexes.** Reims écrit que les annexes « ne peuvent se substituer à la partie rédactionnelle ». À Paris Descartes, le tuteur enseignant « n'est pas censé lire ces annexes ». Le corps du rapport doit donc suffire.
@@ -139,7 +141,7 @@ Dans cinq des six consignes relevées, non : Paris Descartes, Sciences Po Lille,
 
 ### Faut-il une problématique dans un rapport de stage ?
 
-Trois des six établissements en demandent une. Lyon 1 la place dans le résumé, avec le but du stage. Reims exige une annexe « Analyse d'une problématique » d'une à deux pages en M1 et de trois à quatre pages en M2. Sciences Po Lille demande une seconde partie problématisée. L'IEDES parle des « principales questions » auxquelles ton rapport répond. Paris Descartes et l'Inalco n'en parlent pas.
+Trois des six établissements en demandent une. Lyon 1 la place dans le résumé, avec le but du stage. Reims, pour son master de psychologie, exige une annexe « Analyse d'une problématique » d'une à deux pages en M1 et de trois à quatre pages en M2. Sciences Po Lille demande une seconde partie problématisée. L'IEDES parle des « principales questions » auxquelles ton rapport répond. Paris Descartes et l'Inalco n'en parlent pas.
 
 ### Qui valide le plan du rapport de stage ?
 
