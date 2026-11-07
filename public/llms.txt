@@ -14,12 +14,12 @@ MemoFlow est freemium : on peut commencer gratuitement.
 
 ## Blog
 
-- [Blog MemoFlow](https://memoflow.example/blog/): guides pour rédiger un rapport d'alternance, un rapport de stage ou un mémoire, sourcés sur les consignes publiques des écoles.
-- [Sitemap du blog](https://memoflow.example/blog/sitemap.xml): liste des articles publiés.
+- [Blog MemoFlow](https://memoflow-client.vercel.app/blog/): guides pour rédiger un rapport d'alternance, un rapport de stage ou un mémoire, sourcés sur les consignes publiques des écoles.
+- [Sitemap du blog](https://memoflow-client.vercel.app/blog/sitemap.xml): liste des articles publiés.
 
 ## Guides par sujet
 
-- [Rapport d'alternance](https://memoflow.example/blog/rapport-d-alternance/)
-- [Rédiger un mémoire](https://memoflow.example/blog/rediger-un-memoire/)
-- [Rapport de stage](https://memoflow.example/blog/rapport-de-stage/)
-- [IA et écrits académiques](https://memoflow.example/blog/ia-memoire/)
+- [Rapport d'alternance](https://memoflow-client.vercel.app/blog/rapport-d-alternance/)
+- [Rédiger un mémoire](https://memoflow-client.vercel.app/blog/rediger-un-memoire/)
+- [Rapport de stage](https://memoflow-client.vercel.app/blog/rapport-de-stage/)
+- [IA et écrits académiques](https://memoflow-client.vercel.app/blog/ia-memoire/)

@@ -26,7 +26,7 @@ Prix et limites du plan gratuit, essai, nombre d'utilisateurs, écoles partenair
 
 ## Site
 - Pas de landing : `/` affiche la connexion. L'inscription est un état React (`view = 'signup'`), pas une URL.
-- Domaine et hébergeur de prod inconnus. Placeholder unique : `https://memoflow.example`.
+- Prod : Vercel, projet de Mohsen, URL `https://memoflow-client.vercel.app` (vérifié le 07/11/2026, aucun domaine perso). Elle est écrite dans 3 fichiers : `blog/astro.config.mjs`, `public/robots.txt`, `public/llms.txt`. Avec un domaine perso : remplacer dans ces 3 fichiers et rediriger en 301 dans Vercel.
 
 ## Décisions de François (06/11/2026)
 - Cible du blog : L3-M2, alternants, stagiaires. Pas de doctorants.
