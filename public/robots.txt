@@ -20,4 +20,4 @@ Disallow: /reset-password
 Disallow: /verify-email
 Disallow: /forgot-password
 
-Sitemap: https://memoflow.example/blog/sitemap.xml
+Sitemap: https://memoflow-client.vercel.app/blog/sitemap.xml

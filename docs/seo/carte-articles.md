@@ -57,7 +57,7 @@ Sous-hubs : B1 plan, B4 problématique, B7 revue de littérature, B16 bibliograp
 | B14 | conclusion-memoire | conclusion de mémoire | Article + modèles | 3 |
 | B15 | memoire-professionnel-ou-recherche | mémoire professionnel ou de recherche | Comparatif | 2 |
 | B16 | bibliographie-memoire-normes | bibliographie mémoire normes | Sous-hub : quelle norme choisir | 2 |
-| B17 | norme-harvard-bibliographie | norme Harvard | Article + exemples ★ option Harvard | 1 |
+| B17 | norme-harvard-bibliographie | norme Harvard | Article + exemples | 1 |
 | B18 | apa-ou-harvard-differences | APA ou Harvard | Comparatif (presque rien en français) | 2 |
 | B19 | citer-ses-sources-memoire | citer ses sources dans un mémoire | Article | 3 |
 
