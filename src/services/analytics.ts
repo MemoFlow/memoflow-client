@@ -109,8 +109,18 @@ function track(event: string, params: Record<string, unknown> = {}): void {
   window.dataLayer.push({ event, ...params });
 }
 
+/**
+ * Blog article that sent the visitor here: blog CTAs link to /inscription?from=<slug>.
+ * Read once at load, before any navigation drops the query string. Slug-shaped values only.
+ */
+const SIGNUP_SOURCE = (() => {
+  const from = new URLSearchParams(window.location.search).get('from');
+  return from && /^[a-z0-9-]{1,80}$/.test(from) ? from : undefined;
+})();
+
 /** Acquisition: account creation form accepted (POST /auth/register → 202) */
-export const trackSignUp = () => track('sign_up', { method: 'email' });
+export const trackSignUp = () =>
+  track('sign_up', { method: 'email', ...(SIGNUP_SOURCE && { signup_source: SIGNUP_SOURCE }) });
 
 export const trackLogin = () => track('login', { method: 'email' });
 
