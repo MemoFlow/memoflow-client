@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft, faCheck } from '@fortawesome/free-solid-svg-icons';
 import BrandLogo from './BrandLogo';
+import { trackOnboardingCompleted } from '../services/analytics';
 import {
   PERSONA_CHOICES,
   DELIVERABLE_CHOICES,
@@ -148,6 +149,7 @@ export default function OnboardingFlow({ userId, userName, userEmail, onComplete
       marketing_opt_in: draft.marketing_opt_in,
     };
     await submitOnboarding(userId, answers);
+    trackOnboardingCompleted();
     forgetSignupConsent(userEmail);
     onComplete();
   };
@@ -350,7 +352,7 @@ export default function OnboardingFlow({ userId, userName, userEmail, onComplete
           </p>
           {stepIndex === 0 && (
             <p className="text-[0.9rem] text-slate-500 mt-1.5 mb-0">
-              Bienvenue {userName} ! Quelques questions rapides pour adapter MemoFlow à ton projet.
+              Bienvenue <span className="ph-no-capture">{userName}</span> ! Quelques questions rapides pour adapter MemoFlow à ton projet.
             </p>
           )}
 

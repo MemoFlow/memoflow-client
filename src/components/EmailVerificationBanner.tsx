@@ -71,7 +71,7 @@ export default function EmailVerificationBanner({ email, variant = 'bar' }: Emai
   }
 
   return (
-    <div className="flex-shrink-0 flex items-center justify-between gap-4 px-8 py-2.5 bg-[#EAF3DE] border-b border-[#94D2B8]/50 text-[#2F4858] max-sm:px-4 max-sm:flex-col max-sm:items-start max-sm:gap-2">
+    <div className="ph-no-capture flex-shrink-0 flex items-center justify-between gap-4 px-8 py-2.5 bg-[#EAF3DE] border-b border-[#94D2B8]/50 text-[#2F4858] max-sm:px-4 max-sm:flex-col max-sm:items-start max-sm:gap-2">
       <div className="flex flex-col gap-0.5">
         <p className="text-[0.8rem] font-semibold leading-snug m-0">
           Confirmez votre adresse email : cliquez sur le lien envoyé à <span className="break-all">{email}</span>. Les

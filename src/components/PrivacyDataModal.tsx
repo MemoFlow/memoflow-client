@@ -49,7 +49,7 @@ const DATA_CATEGORIES = [
   {
     title: 'Mesure d’audience (si vous l’acceptez)',
     fields:
-      'pages consultées, durée et date des visites, source de la visite (site, réseau social, campagne), type d’appareil et de navigateur, pays, événements anonymes (inscription, connexion, outil connecté, plan généré), identifiants de cookie Google Analytics et PostHog ; sur le blog, déroulé des visites (clics, défilement, sans les champs saisis) et erreurs techniques',
+      'pages consultées, durée et date des visites, source de la visite (site, réseau social, campagne), type d’appareil et de navigateur, pays, événements anonymes (inscription, connexion, outil connecté, plan généré), identifiants de cookie Google Analytics et PostHog, identifiant de compte et rôle (si vous êtes connecté), déroulé des visites (clics, défilement) et erreurs techniques. Ne sont jamais enregistrés : les champs saisis, le contenu de vos documents et plans, vos fichiers, votre nom et votre email',
     purpose:
       'Comprendre comment MemoFlow est utilisé pour l’améliorer. Aucun cookie n’est déposé sans votre accord, aucune donnée publicitaire n’est activée, et aucun email, nom ou contenu de document n’est transmis. Choix modifiable dans Paramètres.',
     storage: 'Google Analytics 4 — cookies _ga (13 mois au plus) ; PostHog — cookie et stockage local ph_*',
@@ -143,8 +143,8 @@ const THIRD_PARTIES = [
   },
   {
     name: 'PostHog',
-    role: 'Mesure d’audience et enregistrement des visites du blog, seulement avec votre accord',
-    data: 'Pages vues, clics, défilement, erreurs JavaScript et identifiant de cookie, sans les champs saisis. Données hébergées aux États-Unis (PostHog Cloud US).',
+    role: 'Mesure d’audience et enregistrement des visites (application et blog), seulement avec votre accord',
+    data: 'Pages vues, clics, défilement, erreurs JavaScript, identifiant de cookie et, si vous êtes connecté, identifiant de compte et rôle. Sans les champs saisis, le contenu des documents, le nom ni l’email. Données hébergées aux États-Unis (PostHog Cloud US).',
   },
   {
     name: 'Google (Tag Manager et Analytics 4)',

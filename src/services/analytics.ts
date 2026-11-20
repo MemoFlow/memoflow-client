@@ -1,4 +1,5 @@
 import { useSyncExternalStore } from 'react';
+import { capturePostHogEvent, startPostHog, stopPostHog } from './posthog';
 
 /**
  * Google Analytics 4 through Google Tag Manager.
@@ -11,6 +12,9 @@ import { useSyncExternalStore } from 'react';
  * measurement), so every route change of the app counts as a page view.
  * Custom events are pushed to the dataLayer; GTM forwards them to GA4 (see the
  * setup steps given with this file).
+ *
+ * PostHog (services/posthog.ts) follows the same consent: started with GTM, stopped on
+ * withdrawal, and every event below is also sent to PostHog.
  */
 
 // Container "memoflow-client.vercel.app" of the "PIE Memoflow" Tag Manager account
@@ -63,9 +67,10 @@ function loadGtm(): void {
   script.async = true;
   script.src = `https://www.googletagmanager.com/gtm.js?id=${encodeURIComponent(GTM_ID)}`;
   document.head.appendChild(script);
+  startPostHog();
 }
 
-/** PostHog (blog, même origine) : cookies et stockage ph_* et marque de refus __ph_opt_in_out_* */
+/** PostHog (app et blog, même origine) : cookies et stockage ph_* et marque de refus __ph_opt_in_out_* */
 function deletePostHogStorage(): void {
   const isPostHogKey = (key: string) => /^(__)?ph_/.test(key);
   [localStorage, sessionStorage].forEach((store) => {
@@ -112,6 +117,7 @@ export function setAnalyticsConsent(granted: boolean): void {
   if (granted) {
     if (gtmLoaded) {
       gtag('consent', 'update', { analytics_storage: 'granted' });
+      startPostHog();
     } else {
       loadGtm();
     }
@@ -125,6 +131,7 @@ export function setAnalyticsConsent(granted: boolean): void {
       analytics_storage: 'denied',
     });
   }
+  stopPostHog();
   deleteGaCookies();
   deletePostHogStorage();
 }
@@ -134,6 +141,7 @@ export function setAnalyticsConsent(granted: boolean): void {
 function track(event: string, params: Record<string, unknown> = {}): void {
   if (!gtmLoaded || readConsent() !== 'granted') return;
   window.dataLayer.push({ event, ...params });
+  capturePostHogEvent(event, params);
 }
 
 /**
@@ -152,6 +160,16 @@ export const trackSignUp = () =>
 
 export const trackLogin = () => track('login', { method: 'email' });
 
+/** Activation: an authenticated user completes workspace personalization */
+export const trackOnboardingCompleted = () => track('onboarding_completed');
+
+/** Creation: a blank document and its first section are ready to edit */
+export const trackDocumentCreated = (isGuest: boolean) =>
+  track('document_created', { storage_mode: isGuest ? 'guest' : 'account' });
+
+/** Creation: a template has been applied to a new document */
+export const trackTemplateApplied = (documentType: string) => track('template_applied', { document_type: documentType });
+
 /** Activation: a connector reached the "active" status */
 export const trackToolConnected = (provider: string) => track('connect_tool', { tool: provider });
 
@@ -162,6 +180,9 @@ export function trackPlanGenerated(jobId: string): void {
   trackedPlans.add(jobId);
   track('generate_plan');
 }
+
+/** Activation: an AI-generated plan has been inserted into a document */
+export const trackGeneratedPlanInserted = () => track('generated_plan_inserted');
 
 // Conversion: no pricing page, export or payment exists in the app yet.
 // Call these from those features when they are built.

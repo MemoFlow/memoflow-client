@@ -4,6 +4,8 @@ import tailwindcss from '@tailwindcss/vite'
 
 // https://vite.dev/config/
 export default defineConfig({
+  // PUBLIC_ : variables shared with the blog (Astro), e.g. PUBLIC_POSTHOG_PROJECT_TOKEN
+  envPrefix: ['VITE_', 'PUBLIC_'],
   plugins: [
     react(),
     tailwindcss(),

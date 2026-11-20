@@ -18,7 +18,7 @@ import type {
   SectionResponseDto,
   UserResponseDto,
 } from '../services/api';
-import { trackPlanGenerated } from '../services/analytics';
+import { trackGeneratedPlanInserted, trackPlanGenerated } from '../services/analytics';
 import { registerNavigationGuard } from '../services/router';
 
 type SaveState = 'idle' | 'saving' | 'saved' | 'error';
@@ -1185,6 +1185,7 @@ export default function WritingSpace({
                                       content: contentToInsert,
                                     }),
                                   });
+                                  trackGeneratedPlanInserted();
                                   addToast('success', 'Plan inséré', 'Le plan généré a été ajouté comme nouvelle section.');
                                   fetchSections(selectedDocumentId);
                                 } catch (err) {

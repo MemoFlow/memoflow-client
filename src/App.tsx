@@ -15,6 +15,8 @@ import {
 } from './services/api';
 import type { LogoutReason, UserResponseDto } from './services/api';
 import { needsOnboarding } from './services/onboarding';
+import { useAnalyticsConsent } from './services/analytics';
+import { identifyPostHogUser, resetPostHogUser } from './services/posthog';
 import { ROUTES, isAppPath, matchRoute, navigate, usePath } from './services/router';
 import './App.css';
 
@@ -50,6 +52,7 @@ function App() {
   const [returnTo, setReturnTo] = useState<string | null>(null);
   // null = guest (no account, nothing is saved)
   const [user, setUser] = useState<UserResponseDto | null>(null);
+  const analyticsConsent = useAnalyticsConsent();
   const [isInitializing, setIsInitializing] = useState(true);
   // First connection: 'Personnalise ton espace' questionnaire
   const [showOnboarding, setShowOnboarding] = useState(false);
@@ -109,9 +112,17 @@ function App() {
     initAuth();
   }, [loadCurrentUser]);
 
+  // PostHog: link the visitor to the account (id and role only), once consent is granted
+  const userId = user?.id;
+  const userRole = user?.role;
+  useEffect(() => {
+    if (userId && userRole && analyticsConsent === 'granted') identifyPostHogUser({ id: userId, role: userRole });
+  }, [userId, userRole, analyticsConsent]);
+
   // Global logout: explicit logout -> home page; token rejected (401) -> login page
   useEffect(() => {
     const handleLogoutEvent = (event: Event) => {
+      resetPostHogUser();
       const reason = (event as CustomEvent<LogoutReason>).detail;
       disconnectSocket();
       setUser(null);

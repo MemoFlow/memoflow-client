@@ -679,7 +679,8 @@ interface AdminShellProps {
 
 function AdminShell({ user, onBackToApp, onLogout, actions, children }: AdminShellProps) {
   return (
-    <div className="min-h-screen w-full bg-[#F8FAFB] flex flex-col">
+    // ph-no-capture: lead emails, names and answers never appear in PostHog replays
+    <div className="min-h-screen w-full bg-[#F8FAFB] flex flex-col ph-no-capture">
       <header className="h-16 px-8 max-sm:px-4 flex items-center justify-between gap-4 border-b border-[#E5E9EB] bg-white sticky top-0 z-40">
         <div className="flex items-center gap-3">
           <Link to={ROUTES.home} className="flex items-center gap-3 no-underline" aria-label="MemoFlow, accueil">
