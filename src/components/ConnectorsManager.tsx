@@ -4,8 +4,11 @@ import { trackToolConnected } from '../services/analytics';
 import type { ConnectorResponseDto, InitiateConnectionResponseDto } from '../services/api';
 
 interface ConnectorsManagerProps {
+  isGuest: boolean;
   addToast: (type: 'success' | 'assistant' | 'warning' | 'error', title: string, message: string) => void;
   onOpenPrivacy?: () => void;
+  onRequestLogin: () => void;
+  onRequestSignup: () => void;
 }
 
 interface ProviderMeta {
@@ -16,9 +19,15 @@ interface ProviderMeta {
   icon: React.ReactNode;
 }
 
-export default function ConnectorsManager({ addToast, onOpenPrivacy }: ConnectorsManagerProps) {
+export default function ConnectorsManager({
+  isGuest,
+  addToast,
+  onOpenPrivacy,
+  onRequestLogin,
+  onRequestSignup,
+}: ConnectorsManagerProps) {
   const [connectors, setConnectors] = useState<ConnectorResponseDto[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(!isGuest);
   const [actionLoading, setActionLoading] = useState<string | null>(null); // provider key or connection id
 
   // Keep track of active polls to clear them on unmount
@@ -82,6 +91,7 @@ export default function ConnectorsManager({ addToast, onOpenPrivacy }: Connector
   }, [addToast, startPolling]);
 
   useEffect(() => {
+    if (isGuest) return;
     // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchConnectors();
     const activePolls = activePollsRef.current;
@@ -89,7 +99,7 @@ export default function ConnectorsManager({ addToast, onOpenPrivacy }: Connector
       // Clear all active polls on unmount using cloned reference to avoid changed ref warning
       Object.values(activePolls).forEach((intervalId) => clearInterval(intervalId));
     };
-  }, [fetchConnectors]);
+  }, [fetchConnectors, isGuest]);
 
   const handleConnect = async (provider: 'trello' | 'notion' | 'github') => {
     setActionLoading(provider);
@@ -170,7 +180,7 @@ export default function ConnectorsManager({ addToast, onOpenPrivacy }: Connector
     {
       key: 'notion',
       name: 'Notion',
-      description: 'Importez des pages de notes, des bases de connaissances et des wikis académiques.',
+      description: 'Retrouvez les notes, pages et bases de connaissances liées à votre projet.',
       color: '#000000',
       icon: (
         <svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor">
@@ -181,7 +191,7 @@ export default function ConnectorsManager({ addToast, onOpenPrivacy }: Connector
     {
       key: 'trello',
       name: 'Trello',
-      description: 'Lisez des cartes de tâches, des sujets de recherche et des tableaux Kanban.',
+      description: 'Consultez les tâches et cartes de vos tableaux de projet.',
       color: '#0079BF',
       icon: (
         <svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor">
@@ -192,7 +202,7 @@ export default function ConnectorsManager({ addToast, onOpenPrivacy }: Connector
     {
       key: 'github',
       name: 'GitHub',
-      description: 'Connectez vos fichiers Markdown, documentations techniques et dépôts de code.',
+      description: 'Retrouvez la documentation technique et les fichiers de vos dépôts.',
       color: '#24292E',
       icon: (
         <svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor">
@@ -207,11 +217,29 @@ export default function ConnectorsManager({ addToast, onOpenPrivacy }: Connector
       <div className="mb-6">
         <h2 className="text-[1.8rem] font-bold text-[#2F4858] font-brand tracking-tight">Intégrations & Connecteurs</h2>
         <p className="text-sm text-slate-500 font-sans leading-relaxed">
-          Liez vos applications externes pour permettre au planificateur IA de collecter du contexte pertinent (sujets, tâches, documentation) sans jamais détenir vos identifiants.
+          Retrouvez dans MemoFlow les notes, tâches ou documents de vos outils. Vous choisissez les sources utilisées comme contexte de travail.
         </p>
       </div>
 
-      {/* Privacy & Security Guarantee Banner based on Privacy Data Inventory */}
+      {isGuest && (
+        <div className="mb-6 rounded-2xl border border-[#94D2B8]/50 bg-[#EAF3DE]/50 p-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <h3 className="font-brand text-sm font-semibold text-[#2F4858]">Aperçu des outils disponibles</h3>
+            <p className="mt-1 text-[0.8rem] leading-relaxed text-slate-600">
+              Créez un compte pour associer un outil et choisir les contenus à utiliser dans votre espace.
+            </p>
+          </div>
+          <div className="flex flex-wrap gap-2 max-sm:flex-col">
+            <button onClick={onRequestSignup} className="mf-button mf-button--primary max-sm:w-full">
+              Créer un compte
+            </button>
+            <button onClick={onRequestLogin} className="mf-button mf-button--secondary max-sm:w-full">
+              Se connecter
+            </button>
+          </div>
+        </div>
+      )}
+
       <div className="mb-8 p-4 bg-[#EAF3DE]/60 border border-[#94D2B8]/40 rounded-2xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div className="flex items-start gap-3">
           <div className="p-2 rounded-xl bg-white border border-[#94D2B8]/40 text-[#2F4858] flex-shrink-0 mt-0.5">
@@ -221,11 +249,11 @@ export default function ConnectorsManager({ addToast, onOpenPrivacy }: Connector
             </svg>
           </div>
           <div>
-            <h4 className="text-xs font-bold text-[#2F4858] font-brand uppercase tracking-wider">
-              Sécurité renforcée & Zéro stockage de jetons OAuth
+            <h4 className="text-[0.8rem] font-semibold text-[#2F4858] font-brand">
+              Vos accès sont gérés par Composio
             </h4>
             <p className="text-xs text-slate-600 mt-0.5 leading-relaxed">
-              Vos autorisations restent chiffrées dans le coffre-fort Composio. MemoFlow ne stocke aucun mot de passe ni jeton d'accès tiers sur ses serveurs.
+              Les autorisations OAuth sont gérées par Composio et ne sont pas stockées par MemoFlow. Nous conservons seulement l’identifiant et l’état de la connexion.
             </p>
           </div>
         </div>
@@ -240,6 +268,10 @@ export default function ConnectorsManager({ addToast, onOpenPrivacy }: Connector
         )}
       </div>
 
+      <p className="mb-6 rounded-xl border border-[#E5E9EB] bg-white px-4 py-3 text-[0.78rem] leading-relaxed text-slate-600">
+        Avant de relier un outil, vérifiez que les règles de votre établissement ou de votre entreprise autorisent le partage des informations. N’envoyez pas de données confidentielles sans autorisation.
+      </p>
+
       {isLoading ? (
         <div className="flex flex-col items-center justify-center py-20 bg-white border border-[#E5E9EB] rounded-2xl">
           <span className="w-10 h-10 border-4 border-slate-200 border-t-[#518B91] rounded-full animate-spin"></span>
@@ -249,7 +281,7 @@ export default function ConnectorsManager({ addToast, onOpenPrivacy }: Connector
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {providerMetas.map((provider) => {
             // Find existing connection in list
-            const connection = connectors.find((c) => c.provider === provider.key);
+            const connection = isGuest ? undefined : connectors.find((c) => c.provider === provider.key);
             const isConnLoading = actionLoading === provider.key || (connection && actionLoading === connection.id);
 
             return (
@@ -285,6 +317,10 @@ export default function ConnectorsManager({ addToast, onOpenPrivacy }: Connector
                         {connection.status === 'failed' && 'Échoué'}
                         {connection.status === 'revoked' && 'Déconnecté'}
                       </span>
+                    ) : isGuest ? (
+                      <span className="px-3 py-1 rounded-full text-[0.72rem] font-semibold bg-slate-100 text-slate-500">
+                        Compte requis
+                      </span>
                     ) : (
                       <span className="px-3 py-1 rounded-full text-[0.72rem] font-bold bg-slate-100 text-slate-400 uppercase tracking-wide">
                         Non configuré
@@ -306,7 +342,11 @@ export default function ConnectorsManager({ addToast, onOpenPrivacy }: Connector
                     </div>
                   )}
 
-                  {connection && connection.status === 'initiated' ? (
+                  {isGuest ? (
+                    <p className="rounded-xl bg-slate-50 px-3 py-2.5 text-center text-xs text-slate-500">
+                      Associez cet outil après connexion
+                    </p>
+                  ) : connection && connection.status === 'initiated' ? (
                     <div className="flex gap-2">
                       <div className="flex-1 bg-slate-100 border border-slate-200/80 text-slate-500 font-brand text-[0.8rem] font-semibold py-2.5 rounded-xl flex items-center justify-center gap-1.5 select-none">
                         <span className="w-3.5 h-3.5 border-2 border-slate-400 border-t-transparent rounded-full animate-spin"></span>

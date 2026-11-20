@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import Link from './Link';
+import { ROUTES } from '../services/router';
 
 interface Tag {
   id: string;
@@ -71,21 +73,21 @@ export default function ContextCenter({ onAddToast }: ContextCenterProps) {
     }
 
     if (tags.some((t) => t.name === formattedTag)) {
-      onAddToast('warning', 'Tag existant', 'Ce tag est déjà présent.');
+      onAddToast('warning', 'Mot-clé déjà présent', 'Ce mot-clé est déjà dans la liste.');
       return;
     }
 
     setTags([...tags, { id: Date.now().toString(), name: formattedTag }]);
     setNewTagInput('');
     setShowTagInput(false);
-    onAddToast('success', 'Tag ajouté', `Le tag ${formattedTag} a été enregistré.`);
+    onAddToast('success', 'Mot-clé ajouté', `${formattedTag} a été ajouté à vos repères pour cette session.`);
   };
 
   const handleRemoveTag = (id: string) => {
     const removedTag = tags.find((t) => t.id === id);
     setTags(tags.filter((t) => t.id !== id));
     if (removedTag) {
-      onAddToast('assistant', 'Tag supprimé', `Le tag ${removedTag.name} a été retiré.`);
+      onAddToast('assistant', 'Mot-clé supprimé', `${removedTag.name} a été retiré de vos repères.`);
     }
   };
 
@@ -93,7 +95,7 @@ export default function ContextCenter({ onAddToast }: ContextCenterProps) {
   const handleAddPersona = (e: React.FormEvent) => {
     e.preventDefault();
     if (!newPersonaTitle.trim() || !newPersonaDesc.trim()) {
-      onAddToast('error', 'Erreur de saisie', 'Veuillez remplir tous les champs du Persona.');
+      onAddToast('error', 'Erreur de saisie', 'Veuillez renseigner le nom et les attentes du public.');
       return;
     }
 
@@ -107,14 +109,14 @@ export default function ContextCenter({ onAddToast }: ContextCenterProps) {
     setNewPersonaTitle('');
     setNewPersonaDesc('');
     setShowPersonaForm(false);
-    onAddToast('success', 'Persona défini', `Le public cible "${newPers.title}" a été ajouté.`);
+    onAddToast('success', 'Profil de lecteurs ajouté', `"${newPers.title}" a été ajouté à vos repères pour cette session.`);
   };
 
   const handleRemovePersona = (id: string) => {
     const removed = personas.find((p) => p.id === id);
     setPersonas(personas.filter((p) => p.id !== id));
     if (removed) {
-      onAddToast('assistant', 'Persona retiré', `Le public "${removed.title}" a été retiré.`);
+      onAddToast('assistant', 'Profil retiré', `"${removed.title}" a été retiré de vos repères.`);
     }
   };
 
@@ -145,16 +147,22 @@ export default function ContextCenter({ onAddToast }: ContextCenterProps) {
         <div className="flex flex-col gap-2">
           <div>
             <span className="inline-flex items-center px-2.5 py-1 rounded-md text-[0.68rem] font-bold uppercase tracking-wider bg-[#EAF3DE] text-[#0F4C3A] border border-[#94D2B8]/30">
-              Cadrage de Projet
+              Mon sujet
             </span>
           </div>
           <h2 className="text-[1.8rem] font-bold text-[#2F4858] tracking-tight font-brand">
-            Centre de Contexte
+            Cadrage du projet
           </h2>
-          <p className="text-[0.88rem] text-slate-500 max-w-[800px] leading-relaxed font-medium">
-            Centralisez vos paramètres de recherche pour aligner le moteur d'IA de MemoFlow avec vos objectifs académiques et votre ton spécifiques.
+          <p className="text-[0.88rem] text-slate-600 max-w-[800px] leading-relaxed">
+            Définissez votre sujet, vos mots-clés, les personnes qui liront votre travail et vos préférences de rédaction. Pour relier Notion, Trello ou GitHub à l’assistant de plan, ouvrez la page des connecteurs.
+          </p>
+          <p className="text-[0.78rem] text-slate-500 max-w-[800px] leading-relaxed">
+            Important : les repères ci-dessous sont temporaires. Ils ne sont pas sauvegardés et ne sont pas transmis à l’assistant.
           </p>
         </div>
+        <Link to={ROUTES.connectors} className="mf-button mf-button--primary flex-shrink-0">
+          Connecter mes outils
+        </Link>
       </div>
 
       {/* Main Content Grid */}
@@ -184,18 +192,19 @@ export default function ContextCenter({ onAddToast }: ContextCenterProps) {
                   </svg>
                 </span>
                 <h3 className="text-[1rem] font-bold text-[#2F4858] tracking-tight font-brand">
-                  Objectif de Recherche
+                  Sujet et objectif du document
                 </h3>
               </div>
 
               <div className="flex flex-col gap-1.5 mt-2">
-                <span className="text-[0.62rem] font-bold text-slate-500 tracking-wider uppercase">
-                  Hypothèse Principale / Thèse
-                </span>
+                <label htmlFor="context-topic" className="text-[0.72rem] font-semibold text-slate-600">
+                  Sujet, question ou objectif
+                </label>
                 <textarea
+                  id="context-topic"
                   value={hypothesis}
                   onChange={(e) => setHypothesis(e.target.value)}
-                  className="w-full bg-[#F8FAFB] border border-solid border-[#E5E9EB] hover:border-[#6DAEA7]/30 focus:border-[#6DAEA7] focus:bg-white rounded-xl p-4 text-[0.88rem] leading-relaxed text-[#2F4858] resize-none h-[110px] focus:outline-none transition-all font-medium custom-scrollbar"
+                  className="w-full bg-[#F8FAFB] border border-solid border-[#E5E9EB] hover:border-[#6DAEA7]/30 focus:border-[#6DAEA7] focus:bg-white rounded-xl p-4 text-[0.88rem] leading-relaxed text-[#2F4858] resize-none h-[110px] focus:outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#3E6976] focus-visible:outline-offset-2 transition-all font-medium custom-scrollbar"
                 />
               </div>
 
@@ -208,8 +217,10 @@ export default function ContextCenter({ onAddToast }: ContextCenterProps) {
                   >
                     {tag.name}
                     <button
+                      type="button"
                       onClick={() => handleRemoveTag(tag.id)}
                       className="bg-transparent border-none text-slate-400 hover:text-red-500 cursor-pointer p-0 text-[0.78rem]"
+                      aria-label={`Supprimer le mot-clé ${tag.name}`}
                     >
                       ×
                     </button>
@@ -224,8 +235,9 @@ export default function ContextCenter({ onAddToast }: ContextCenterProps) {
                       value={newTagInput}
                       onChange={(e) => setNewTagInput(e.target.value)}
                       onBlur={() => setShowTagInput(false)}
-                      placeholder="#NouveauTag"
-                      className="px-2.5 py-1 rounded-lg text-[0.72rem] bg-white border border-solid border-[#6DAEA7] text-[#518B91] w-[100px] outline-none"
+                      placeholder="#Mot-clé"
+                      aria-label="Nouveau mot-clé"
+                      className="px-2.5 py-1 rounded-lg text-[0.72rem] bg-white border border-solid border-[#6DAEA7] text-[#518B91] w-[100px] outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#3E6976] focus-visible:outline-offset-2"
                     />
                   </form>
                 ) : (
@@ -233,7 +245,7 @@ export default function ContextCenter({ onAddToast }: ContextCenterProps) {
                     onClick={() => setShowTagInput(true)}
                     className="inline-flex items-center px-3 py-1 rounded-lg text-[0.72rem] font-bold bg-transparent border border-dashed border-[#6DAEA7]/30 hover:border-[#6DAEA7]/65 hover:bg-[#6DAEA7]/5 text-[#518B91] transition-all cursor-pointer"
                   >
-                    + Ajouter un tag
+                    + Ajouter un mot-clé
                   </button>
                 )}
               </div>
@@ -254,15 +266,15 @@ export default function ContextCenter({ onAddToast }: ContextCenterProps) {
                     </svg>
                   </span>
                   <h3 className="text-[1rem] font-bold text-[#2F4858] tracking-tight font-brand">
-                    Public cible
+                    À qui s’adresse votre travail ?
                   </h3>
                 </div>
                 <span className="text-[0.68rem] font-bold text-slate-500">
-                  {personas.length} Personas Définis
+                  {personas.length} profil{personas.length === 1 ? '' : 's'} défini{personas.length === 1 ? '' : 's'}
                 </span>
               </div>
 
-              {/* Personas list */}
+              {/* Profils du lectorat */}
               <div className="grid grid-cols-2 gap-4 max-sm:grid-cols-1">
                 {personas.map((p) => (
                   <div
@@ -270,9 +282,10 @@ export default function ContextCenter({ onAddToast }: ContextCenterProps) {
                     className="p-4 bg-[#F8FAFB] border border-solid border-[#E5E9EB] rounded-xl flex flex-col gap-2 relative group/item hover:border-[#6DAEA7]/30 hover:bg-white transition-all shadow-xs"
                   >
                     <button
+                      type="button"
                       onClick={() => handleRemovePersona(p.id)}
-                      className="absolute top-2.5 right-2.5 opacity-0 group-hover/item:opacity-100 bg-transparent border-none text-slate-400 hover:text-red-500 cursor-pointer p-1 text-[0.8rem] transition-opacity"
-                      title="Supprimer"
+                      className="absolute top-2.5 right-2.5 opacity-0 group-hover/item:opacity-100 group-focus-within/item:opacity-100 bg-transparent border-none text-slate-500 hover:text-red-500 cursor-pointer p-1 text-[0.8rem] transition-opacity"
+                      aria-label={`Supprimer le profil ${p.title}`}
                     >
                       ×
                     </button>
@@ -284,26 +297,28 @@ export default function ContextCenter({ onAddToast }: ContextCenterProps) {
                 ))}
               </div>
 
-              {/* Add Persona Form / Button */}
+              {/* Add reader profile form / button */}
               {showPersonaForm ? (
                 <form
                   onSubmit={handleAddPersona}
                   className="p-4 bg-[#F8FAFB] border border-solid border-[#E5E9EB] rounded-xl flex flex-col gap-3"
                 >
                   <input
+                    aria-label="Nom du profil"
                     type="text"
                     required
-                    placeholder="Nom du Persona (ex: Experts en IA)"
+                    placeholder="Profil de lecteur (ex. : jury, lecteur non spécialiste)"
                     value={newPersonaTitle}
                     onChange={(e) => setNewPersonaTitle(e.target.value)}
-                    className="w-full px-3 py-2 text-[0.78rem] bg-white border border-solid border-[#E5E9EB] rounded-lg text-[#2F4858] focus:outline-none focus:border-[#6DAEA7] transition-all"
+                    className="w-full px-3 py-2 text-[0.78rem] bg-white border border-solid border-[#E5E9EB] rounded-lg text-[#2F4858] focus:outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#3E6976] focus-visible:outline-offset-2 focus:border-[#6DAEA7] transition-all"
                   />
                   <textarea
+                    aria-label="Attentes des lecteurs"
                     required
-                    placeholder="Description (ex: Lecteurs intéressés par l'évaluation éthique des algorithmes...)"
+                    placeholder="Quelles sont leurs attentes ou leurs connaissances ?"
                     value={newPersonaDesc}
                     onChange={(e) => setNewPersonaDesc(e.target.value)}
-                    className="w-full px-3 py-2 text-[0.78rem] bg-white border border-solid border-[#E5E9EB] rounded-lg text-[#2F4858] focus:outline-none focus:border-[#6DAEA7] transition-all resize-none h-16"
+                    className="w-full px-3 py-2 text-[0.78rem] bg-white border border-solid border-[#E5E9EB] rounded-lg text-[#2F4858] focus:outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#3E6976] focus-visible:outline-offset-2 focus:border-[#6DAEA7] transition-all resize-none h-16"
                   />
                   <div className="flex justify-end gap-2.5">
                     <button
@@ -332,7 +347,7 @@ export default function ContextCenter({ onAddToast }: ContextCenterProps) {
                     <line x1="20" y1="8" x2="20" y2="14" />
                     <line x1="17" y1="11" x2="23" y2="11" />
                   </svg>
-                  <span>Définir un nouveau Persona</span>
+                  <span>Décrire les lecteurs</span>
                 </button>
               )}
             </div>
@@ -353,13 +368,13 @@ export default function ContextCenter({ onAddToast }: ContextCenterProps) {
                   </svg>
                 </span>
                 <h3 className="text-[1rem] font-bold text-[#2F4858] tracking-tight font-brand">
-                  Bibliothèque de Sources 
+                  Fichiers de référence
                 </h3>
               </div>
             </div>
 
             {/* Drop Zone */}
-            <label className="border border-dashed border-[#E5E9EB] hover:border-[#6DAEA7]/40 rounded-xl p-6 bg-[#F8FAFB] flex flex-col items-center justify-center text-center gap-3 transition-colors group/drop cursor-pointer">
+            <label className="border border-dashed border-[#E5E9EB] hover:border-[#6DAEA7]/40 focus-within:outline focus-within:outline-2 focus-within:outline-[#3E6976] focus-within:outline-offset-2 rounded-xl p-6 bg-[#F8FAFB] flex flex-col items-center justify-center text-center gap-3 transition-colors group/drop cursor-pointer">
               <div className="w-10 h-10 rounded-full bg-white border border-[#E5E9EB] flex items-center justify-center text-[#6DAEA7] group-hover/drop:scale-105 transition-transform duration-300 shadow-xs">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                   <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
@@ -369,12 +384,12 @@ export default function ContextCenter({ onAddToast }: ContextCenterProps) {
               </div>
               <div className="flex flex-col gap-1">
                 <p className="text-[0.78rem] font-bold text-[#2F4858]">Ajouter vos fichiers de recherche</p>
-                <p className="text-[0.65rem] text-slate-500 font-medium">.pdf, .docx, .txt — conservés localement, non envoyés au serveur</p>
+                <p className="text-[0.65rem] text-slate-600 font-medium">PDF, DOCX ou TXT. Le contenu n’est ni lu ni transmis ; seul le nom est affiché dans cette page.</p>
               </div>
               <span className="mt-1.5 bg-white hover:bg-slate-50 text-[#2F4858] font-brand text-[0.72rem] font-bold px-4 py-1.5 rounded-full border border-solid border-[#E5E9EB] transition-all shadow-xs">
                 Parcourir les fichiers
               </span>
-              <input type="file" multiple accept=".pdf,.docx,.txt" onChange={handleFilesSelected} className="hidden" />
+              <input type="file" multiple accept=".pdf,.docx,.txt" onChange={handleFilesSelected} className="sr-only" aria-label="Choisir des fichiers de référence" />
             </label>
 
             {/* Selected Files list */}
@@ -391,9 +406,10 @@ export default function ContextCenter({ onAddToast }: ContextCenterProps) {
                     <p className="text-[0.62rem] text-slate-500 font-semibold mt-0.5">{file.size}</p>
                   </div>
                   <button
+                    type="button"
                     onClick={() => handleRemoveFile(file.id)}
                     className="bg-transparent border-none text-slate-400 hover:text-red-500 cursor-pointer p-1 text-[0.85rem] transition-colors"
-                    title="Retirer la source"
+                    aria-label={`Retirer le fichier ${file.name}`}
                   >
                     ×
                   </button>
@@ -408,13 +424,15 @@ export default function ContextCenter({ onAddToast }: ContextCenterProps) {
             {/* Slider Section */}
             <div className="flex flex-col gap-3">
               <div className="flex justify-between items-center text-[0.68rem] font-bold text-slate-500 tracking-wider uppercase">
-                <span>Créativité / Pensée Latérale</span>
+                <span>Préférence de rédaction (temporaire)</span>
                 <span className="text-[#6DAEA7] font-extrabold">{creativityLevels[creativity - 1]}</span>
               </div>
               <input
                 type="range"
                 min="1"
                 max="3"
+                aria-label="Préférence de rédaction pour cette session"
+                aria-valuetext={creativityLevels[creativity - 1]}
                 value={creativity}
                 onChange={(e) => setCreativity(parseInt(e.target.value))}
                 className="w-full h-1.5 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-[#94D2B8]"

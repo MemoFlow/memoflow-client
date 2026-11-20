@@ -183,25 +183,45 @@ export default function ProgressionPage({ userId, onRequestLogin, onRequestSignu
 
   if (!userId) {
     return (
-      <div className="max-w-[640px] mx-auto mt-10 bg-white border border-[#E5E9EB] rounded-2xl p-10 text-center flex flex-col items-center gap-3 shadow-[0_4px_20px_rgba(47,72,88,0.04)]">
-        <h2 className="text-[1.3rem] font-bold text-[#2F4858] tracking-tight">Suivez votre progression</h2>
-        <p className="text-[0.85rem] text-slate-500 leading-relaxed max-w-[460px]">
-          L'XP, les niveaux, les missions quotidiennes et le classement sont réservés aux comptes MemoFlow.
-          En mode invité, aucune donnée n'est enregistrée.
-        </p>
-        <div className="flex gap-2.5 mt-3">
-          <button
-            onClick={onRequestLogin}
-            className="mf-button mf-button--secondary"
-          >
-            Se connecter
-          </button>
-          <button
-            onClick={onRequestSignup}
-            className="mf-button mf-button--primary"
-          >
-            Créer un compte
-          </button>
+      <div className="max-w-[960px] mx-auto mt-6 flex flex-col gap-6">
+        <section className="bg-white border border-[#E5E9EB] rounded-2xl p-6 sm:p-8 shadow-[0_4px_20px_rgba(47,72,88,0.04)]">
+          <div className="max-w-[640px]">
+            <h2 className="text-[1.3rem] font-bold text-[#2F4858] tracking-tight">Découvrez comment suivre vos progrès</h2>
+            <p className="mt-2 text-[0.85rem] text-slate-600 leading-relaxed">
+              Les actions ci-dessous donnent des points et des jalons dans un compte MemoFlow. En mode invité, votre activité n’est pas enregistrée.
+            </p>
+          </div>
+          <div className="mt-6 grid gap-4 sm:grid-cols-2">
+            {XP_RULES.map((rule) => (
+              <article key={rule.label} className="flex items-start gap-3 rounded-xl border border-[#E5E9EB] bg-[#F8FAFB] p-4">
+                <span className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-[#EAF3DE] text-[#3E6976]">
+                  <FontAwesomeIcon icon={rule.icon} aria-hidden="true" />
+                </span>
+                <div className="min-w-0">
+                  <div className="flex flex-wrap items-baseline justify-between gap-2">
+                    <h3 className="font-brand text-[0.9rem] font-semibold text-[#2F4858]">{rule.label}</h3>
+                    <span className="text-[0.75rem] font-semibold text-[#3E6976]">{rule.reward}</span>
+                  </div>
+                  <p className="mt-1 text-[0.8rem] leading-relaxed text-slate-600">{rule.description}</p>
+                </div>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <div className="bg-white border border-[#E5E9EB] rounded-2xl p-6 sm:p-8 text-center flex flex-col items-center gap-3">
+          <h2 className="text-[1.05rem] font-bold text-[#2F4858]">Créer un compte pour enregistrer votre progression</h2>
+          <p className="text-[0.85rem] text-slate-600 leading-relaxed max-w-[460px]">
+            Connectez-vous ou créez un compte pour retrouver vos points, vos jalons et vos missions.
+          </p>
+          <div className="flex flex-wrap justify-center gap-2.5 mt-2 max-sm:w-full max-sm:flex-col">
+            <button onClick={onRequestSignup} className="mf-button mf-button--primary max-sm:w-full">
+              Créer un compte
+            </button>
+            <button onClick={onRequestLogin} className="mf-button mf-button--secondary max-sm:w-full">
+              Se connecter
+            </button>
+          </div>
         </div>
       </div>
     );

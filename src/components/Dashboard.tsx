@@ -38,7 +38,7 @@ interface Toast {
 const MENU_PROGRESS = 'Ma Progression';
 const MENU_TEMPLATES = 'Modèles';
 const MENU_WRITING = "Espace d'Écriture";
-const MENU_CONTEXT = 'Centre de Contexte';
+const MENU_CONTEXT = 'Cadrage du projet';
 const MENU_CONNECTORS = 'Intégrations & Connecteurs';
 const MENU_SETTINGS = 'Paramètres';
 
@@ -70,7 +70,7 @@ const NAV_ITEMS = [
       <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z" />
     </svg>
   )},
-  { name: MENU_CONTEXT, short: 'Contexte', icon: (
+  { name: MENU_CONTEXT, short: 'Projet', icon: (
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
       <path d="M18 3a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3 3 3 0 0 0 3-3V6a3 3 0 0 0-3-3z" />
       <path d="M6 3a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3 3 3 0 0 0 3-3V6a3 3 0 0 0-3-3z" />
@@ -224,6 +224,12 @@ export default function Dashboard({
 
   return (
     <div className="flex h-dvh w-full overflow-hidden font-sans antialiased transition-all duration-300 bg-[#F8FAFB] text-[#2F4858]">
+      <a
+        href="#dashboard-main"
+        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded-lg focus:bg-white focus:px-4 focus:py-3 focus:text-[#2F4858] focus:shadow-lg"
+      >
+        Aller au contenu principal
+      </a>
 
       {/* SIDEBAR */}
       <aside className={`w-[260px] flex-shrink-0 flex flex-col justify-between p-6 max-lg:hidden shadow-[0_0_15px_rgba(0,0,0,0.02)] transition-all duration-300 bg-white border-r border-[#E5E9EB] ${
@@ -445,7 +451,7 @@ export default function Dashboard({
         )}
 
         {/* CONTENT SPACE */}
-        <main className={`flex-1 overflow-y-auto custom-scrollbar transition-all duration-350 ${
+        <main id="dashboard-main" tabIndex={-1} className={`flex-1 overflow-y-auto custom-scrollbar transition-all duration-350 ${
           activeMenu === MENU_WRITING ? 'p-0 overflow-hidden bg-white max-lg:pb-16' : 'p-8 max-sm:p-4 max-lg:pb-24'
         }`}>
           <Suspense fallback={<LoadingIndicator label="Chargement de la page…" />}>
@@ -455,6 +461,7 @@ export default function Dashboard({
                 onUseTemplate={handleUseTemplate}
                 onCreateBlankDocument={handleCreateNewDocument}
                 onRequestLogin={onRequestLogin}
+                onRequestSignup={onRequestSignup}
               />
             )}
 
@@ -471,27 +478,22 @@ export default function Dashboard({
                 onRefreshDocuments={fetchDocuments}
                 onCreateDocument={handleCreateNewDocument}
                 onOpenSettings={() => navigate(MENU_SETTINGS)}
+                onRequestLogin={onRequestLogin}
+                onRequestSignup={onRequestSignup}
               />
             )}
 
             {activeMenu === MENU_CONTEXT && <ContextCenter onAddToast={addToast} />}
 
-            {activeMenu === MENU_CONNECTORS && (isGuest ? (
-              <div className="max-w-[1000px] mx-auto w-full bg-white border border-[#E5E9EB] rounded-2xl p-10 text-center flex flex-col items-center gap-3">
-                <h3 className="text-[1.05rem] font-bold text-[#2F4858]">Connecteurs réservés aux comptes</h3>
-                <p className="text-[0.85rem] text-slate-500 max-w-[480px]">
-                  Connectez-vous pour lier Notion, Trello ou GitHub à votre espace MemoFlow.
-                </p>
-                <button
-                  onClick={onRequestLogin}
-                  className="mf-button mf-button--primary mt-2"
-                >
-                  Se connecter
-                </button>
-              </div>
-            ) : (
-              <ConnectorsManager addToast={addToast} onOpenPrivacy={onOpenPrivacy} />
-            ))}
+            {activeMenu === MENU_CONNECTORS && (
+              <ConnectorsManager
+                isGuest={isGuest}
+                addToast={addToast}
+                onOpenPrivacy={onOpenPrivacy}
+                onRequestLogin={onRequestLogin}
+                onRequestSignup={onRequestSignup}
+              />
+            )}
 
             {activeMenu === MENU_PROGRESS && (
               <ProgressionPage
@@ -538,7 +540,13 @@ export default function Dashboard({
       )}
 
       {/* TOAST CONTAINER */}
-      <div className="fixed bottom-6 left-6 z-50 flex flex-col gap-3 max-w-[420px] max-sm:left-4 max-sm:right-4 max-lg:bottom-20">
+      <div
+        role="region"
+        aria-label="Notifications"
+        aria-live="polite"
+        aria-relevant="additions text"
+        className="fixed bottom-6 right-6 z-50 flex flex-col gap-3 max-w-[420px] max-sm:left-4 max-sm:right-4 max-lg:bottom-20"
+      >
         {toasts.map((toast) => {
           let barBg = 'bg-[#518B91]';
           let icon = (
