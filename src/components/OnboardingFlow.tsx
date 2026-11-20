@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft, faCheck } from '@fortawesome/free-solid-svg-icons';
 import BrandLogo from './BrandLogo';
+import { trackOnboardingCompleted } from '../services/analytics';
 import {
   PERSONA_CHOICES,
   DELIVERABLE_CHOICES,
@@ -148,6 +149,7 @@ export default function OnboardingFlow({ userId, userName, userEmail, onComplete
       marketing_opt_in: draft.marketing_opt_in,
     };
     await submitOnboarding(userId, answers);
+    trackOnboardingCompleted();
     forgetSignupConsent(userEmail);
     onComplete();
   };

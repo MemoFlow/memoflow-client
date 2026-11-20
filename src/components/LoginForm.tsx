@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import InputField from './InputField';
 import { apiFetch, setToken } from '../services/api';
 import type { UserResponseDto } from '../services/api';
-import { trackLogin } from '../services/analytics';
 import { ROUTES } from '../services/router';
 
 interface LoginFormProps {
@@ -59,7 +58,6 @@ export default function LoginForm({ notice, onSwitchToSignup, onForgotPassword, 
         body: JSON.stringify({ email, password }),
       });
       setToken(res.accessToken);
-      trackLogin();
 
       // 2. Load the actual authenticated user details
       const user = await apiFetch<UserResponseDto>('/users/me');

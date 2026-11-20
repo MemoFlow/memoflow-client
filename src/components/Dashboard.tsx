@@ -5,6 +5,7 @@ import LoadingIndicator from './LoadingIndicator';
 import Link from './Link';
 import { ROUTES, navigate as goTo } from '../services/router';
 import { apiFetch } from '../services/api';
+import { trackDocumentCreated, trackTemplateApplied } from '../services/analytics';
 import type { DocumentResponseDto, UserResponseDto } from '../services/api';
 import type { TemplateChoice } from './TemplatesPage';
 
@@ -178,6 +179,7 @@ export default function Dashboard({
         method: 'POST',
         body: JSON.stringify({ documentId: newDoc.id }),
       });
+      trackTemplateApplied(template.docType || 'thesis');
       addToast('success', 'Modèle appliqué', `Le modèle "${template.title}" a été créé.`);
 
       await fetchDocuments();
@@ -200,6 +202,7 @@ export default function Dashboard({
         method: 'POST',
         body: JSON.stringify({ title: 'Introduction', content: '' }),
       });
+      trackDocumentCreated(isGuest);
 
       await fetchDocuments();
       setSelectedDocumentId(newDoc.id);

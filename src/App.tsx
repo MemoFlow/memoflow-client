@@ -1,4 +1,4 @@
-import { lazy, Suspense, useState, useEffect, useCallback } from 'react';
+import { lazy, Suspense, useState, useEffect, useCallback, useRef } from 'react';
 import type { ReactNode } from 'react';
 import Header from './components/Header';
 import Footer from './components/Footer';
@@ -15,6 +15,8 @@ import {
 } from './services/api';
 import type { LogoutReason, UserResponseDto } from './services/api';
 import { needsOnboarding } from './services/onboarding';
+import { trackLogin, useAnalyticsConsent } from './services/analytics';
+import { identifyPostHogUser, resetPostHogUser } from './services/posthog';
 import { ROUTES, isAppPath, matchRoute, navigate, usePath } from './services/router';
 import './App.css';
 
@@ -44,6 +46,8 @@ const defaultAppPath = (user: UserResponseDto | null) => (user ? ROUTES.template
 
 function App() {
   const path = usePath();
+  const analyticsConsent = useAnalyticsConsent();
+  const identifiedUserId = useRef<string | null>(null);
   // Message shown above the login form (session expired, password changed…)
   const [loginNotice, setLoginNotice] = useState<string | null>(null);
   // Page to come back to after logging in (e.g. /admin, or the page where the session expired)
@@ -77,6 +81,7 @@ function App() {
     const showQuestionnaire = me.role === 'admin' ? false : await needsOnboarding(me.id);
     setUser(me);
     setShowOnboarding(showQuestionnaire);
+    return me;
   }, []);
 
   /** Refreshes the user (e.g. email_verified) without touching the rest of the state */
@@ -109,10 +114,25 @@ function App() {
     initAuth();
   }, [loadCurrentUser]);
 
+  // Identify the persisted authenticated user once, including when the session is restored.
+  useEffect(() => {
+    if (!user || analyticsConsent !== 'granted') return;
+
+    if (identifiedUserId.current && identifiedUserId.current !== user.id) {
+      resetPostHogUser();
+    }
+    if (identifiedUserId.current !== user.id) {
+      identifyPostHogUser(user);
+      identifiedUserId.current = user.id;
+    }
+  }, [analyticsConsent, user]);
+
   // Global logout: explicit logout -> home page; token rejected (401) -> login page
   useEffect(() => {
     const handleLogoutEvent = (event: Event) => {
       const reason = (event as CustomEvent<LogoutReason>).detail;
+      resetPostHogUser();
+      identifiedUserId.current = null;
       disconnectSocket();
       setUser(null);
       setShowOnboarding(false);
@@ -164,7 +184,12 @@ function App() {
 
   const handleAuthSuccess = async () => {
     try {
-      await loadCurrentUser(); // the effect above then leaves /connexion
+      const authenticatedUser = await loadCurrentUser(); // the effect above then leaves /connexion
+      if (analyticsConsent === 'granted') {
+        identifyPostHogUser(authenticatedUser);
+        identifiedUserId.current = authenticatedUser.id;
+        trackLogin();
+      }
       setLoginNotice(null);
     } catch (err) {
       console.error('Failed to load user after authentication:', err);

@@ -7,7 +7,8 @@ import {
   apiFetch
 } from '../services/api';
 import type { ConnectorResponseDto, PlanningJobResponseDto, DocumentResponseDto, SectionResponseDto } from '../services/api';
-import { trackPlanGenerated } from '../services/analytics';
+import { trackGeneratedPlanInserted, trackPlanGenerated } from '../services/analytics';
+import { posthogLogs } from '../services/posthog';
 
 type SaveState = 'idle' | 'saving' | 'saved' | 'error';
 
@@ -217,6 +218,12 @@ export default function WritingSpace({
       });
 
       activeJobIdRef.current = res.job_id;
+      posthogLogs.info('planning job accepted', {
+        event: 'planning_job',
+        outcome: 'accepted',
+        connector_count: selectedConnectors.length,
+        has_document: Boolean(selectedDocumentId),
+      });
 
       // Subscribe over WebSocket
       subscribeToJob(res.job_id);
@@ -225,6 +232,12 @@ export default function WritingSpace({
       startPollInterval(res.job_id);
     } catch (err: unknown) {
       console.error('Error starting planning job:', err);
+      posthogLogs.warn('planning job submission failed', {
+        event: 'planning_job',
+        outcome: 'submission_failed',
+        connector_count: selectedConnectors.length,
+        has_document: Boolean(selectedDocumentId),
+      });
       setJobStatus('failed');
       const errorMsg = err instanceof Error ? err.message : 'Impossible de lancer la planification.';
       setJobError(errorMsg);
@@ -821,6 +834,7 @@ export default function WritingSpace({
                                       content: contentToInsert,
                                     }),
                                   });
+                                  trackGeneratedPlanInserted();
                                   addToast('success', 'Plan inséré', 'Le plan généré a été ajouté comme nouvelle section.');
                                   fetchSections(selectedDocumentId);
                                 } catch (err) {
