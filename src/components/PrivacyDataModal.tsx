@@ -103,7 +103,7 @@ const DATA_CATEGORIES = [
 const THIRD_PARTIES = [
   {
     name: 'Anthropic (Claude)',
-    role: 'Génération IA',
+    role: 'Aide à la reformulation et aux plans',
     data: 'Consignes de planification avec leur contexte, texte des sections à reformuler.',
   },
   {

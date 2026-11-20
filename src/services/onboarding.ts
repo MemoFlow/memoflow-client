@@ -75,7 +75,7 @@ export const LEVEL_CHOICES: Choice<AcademicLevel>[] = [
   { value: 'l3', label: 'L3' },
   { value: 'm1', label: 'M1' },
   { value: 'm2', label: 'M2' },
-  { value: 'other', label: 'Autre (bac+3 à bac+5)' },
+  { value: 'other', label: 'Autre (BUT, BTS ou autre parcours)' },
 ];
 
 export const WORK_TOOL_CHOICES: Choice<WorkTool>[] = [

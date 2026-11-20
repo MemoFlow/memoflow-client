@@ -4,10 +4,12 @@ import {
   connectSocket,
   disconnectSocket,
   subscribeToJob,
-  apiFetch
+  apiFetch,
+  hasGuestDraftContent,
 } from '../services/api';
 import type { ConnectorResponseDto, PlanningJobResponseDto, DocumentResponseDto, SectionResponseDto } from '../services/api';
 import { trackPlanGenerated } from '../services/analytics';
+import { registerNavigationGuard } from '../services/router';
 
 type SaveState = 'idle' | 'saving' | 'saved' | 'error';
 
@@ -23,18 +25,22 @@ interface WritingSpaceProps {
   onRefreshDocuments: () => Promise<void>;
   onCreateDocument: () => void;
   onOpenSettings: () => void;
+  onRequestLogin: () => void;
+  onRequestSignup: () => void;
 }
 
 function AutoResizingTextarea({
   value,
   onChange,
   className,
-  placeholder
+  placeholder,
+  ariaLabel,
 }: {
   value: string;
   onChange: (val: string) => void;
   className?: string;
   placeholder?: string;
+  ariaLabel: string;
 }) {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -60,9 +66,124 @@ function AutoResizingTextarea({
       }}
       className={className}
       placeholder={placeholder}
+      aria-label={ariaLabel}
       rows={1}
       style={{ overflow: 'hidden', resize: 'none' }}
     />
+  );
+}
+
+function GuestDemoDialog({
+  onClose,
+  onCreateDocument,
+}: {
+  onClose: () => void;
+  onCreateDocument: () => void;
+}) {
+  const dialogRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const previouslyFocusedElement =
+      document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    dialogRef.current?.focus();
+    const handleDialogKeys = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        onClose();
+        return;
+      }
+      if (event.key !== 'Tab' || !dialogRef.current) return;
+
+      const focusable = Array.from(
+        dialogRef.current.querySelectorAll<HTMLElement>('button:not([disabled]), a[href], input, textarea, select')
+      );
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (!first || !last) return;
+
+      if (event.shiftKey && (document.activeElement === first || document.activeElement === dialogRef.current)) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    };
+    window.addEventListener('keydown', handleDialogKeys);
+    return () => {
+      window.removeEventListener('keydown', handleDialogKeys);
+      previouslyFocusedElement?.focus();
+    };
+  }, [onClose]);
+
+  const sources = [
+    { name: 'Trello · simulation', description: 'Checklist fictive des étapes d’accueil et retours de l’équipe.' },
+    { name: 'Notion · simulation', description: 'Guide d’intégration et procédure RH inventés pour cet exemple.' },
+    { name: 'GitHub · simulation', description: 'README et tickets fictifs d’une maquette de portail d’accueil.' },
+  ];
+
+  return (
+    <div className="fixed inset-0 z-[70] flex items-center justify-center bg-[#2F4858]/55 p-4">
+      <div
+        ref={dialogRef}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="guest-demo-title"
+        tabIndex={-1}
+        className="w-full max-w-[860px] max-h-[90vh] overflow-y-auto rounded-2xl border border-[#E5E9EB] bg-white p-5 shadow-2xl sm:p-7"
+      >
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <p className="m-0 text-[0.72rem] font-semibold uppercase tracking-wide text-[#3E6976]">Démonstration</p>
+            <h2 id="guest-demo-title" className="mt-1 font-brand text-[1.25rem] font-semibold text-[#2F4858]">
+              Exemple de rapport d’alternance
+            </h2>
+          </div>
+          <button type="button" onClick={onClose} className="mf-button mf-button--secondary !min-h-9 !px-3">
+            Fermer
+          </button>
+        </div>
+
+        <p className="mt-3 rounded-xl border border-[#F0D8A8] bg-[#FFF8E8] p-3 text-[0.8rem] leading-relaxed text-[#6B4E16]">
+          Tout ce qui suit est fictif : aucun compte externe n’est connecté, aucune requête IA n’est lancée et rien n’est sauvegardé.
+        </p>
+
+        <div className="mt-5 grid gap-5 md:grid-cols-[0.9fr_1.1fr]">
+          <section aria-labelledby="guest-demo-sources" className="rounded-xl border border-[#E5E9EB] bg-[#F8FAFB] p-4">
+            <h3 id="guest-demo-sources" className="font-brand text-[0.95rem] font-semibold text-[#2F4858]">
+              Sources simulées
+            </h3>
+            <p className="mt-1 text-[0.78rem] leading-relaxed text-slate-600">
+              Sujet d’exemple : digitaliser l’accueil des nouveaux salariés dans une PME.
+            </p>
+            <ul className="mt-3 space-y-3 p-0 text-[0.78rem] leading-relaxed text-slate-600 list-none">
+              {sources.map((source) => (
+                <li key={source.name}>
+                  <strong className="font-semibold text-[#2F4858]">{source.name}</strong>
+                  <p className="m-0 mt-0.5">{source.description}</p>
+                </li>
+              ))}
+            </ul>
+          </section>
+
+          <section aria-labelledby="guest-demo-plan" className="rounded-xl border border-[#E5E9EB] p-4">
+            <h3 id="guest-demo-plan" className="font-brand text-[0.95rem] font-semibold text-[#2F4858]">
+              Exemple de plan que l’assistant pourrait proposer
+            </h3>
+            <ol className="mt-3 space-y-2 pl-5 text-[0.8rem] leading-relaxed text-slate-600">
+              <li>Analyser le parcours d’intégration actuel et ses difficultés.</li>
+              <li>Concevoir un parcours numérique adapté aux besoins de la PME.</li>
+              <li>Évaluer les effets sur la prise de poste et le travail de l’équipe RH.</li>
+            </ol>
+          </section>
+        </div>
+
+        <div className="mt-6 flex justify-end">
+          <button type="button" onClick={onCreateDocument} className="mf-button mf-button--primary max-sm:w-full">
+            Créer mon document vierge
+          </button>
+        </div>
+      </div>
+    </div>
   );
 }
 
@@ -78,6 +199,8 @@ export default function WritingSpace({
   onRefreshDocuments,
   onCreateDocument,
   onOpenSettings,
+  onRequestLogin,
+  onRequestSignup,
 }: WritingSpaceProps) {
   // Sections states
   const [sections, setSections] = useState<SectionResponseDto[]>([]);
@@ -94,7 +217,22 @@ export default function WritingSpace({
   const [jobError, setJobError] = useState<string | null>(null);
   const [isSubmittingJob, setIsSubmittingJob] = useState(false);
   const [isAssistantOpen, setIsAssistantOpen] = useState(false);
+  const [isGuestDemoOpen, setIsGuestDemoOpen] = useState(false);
+  const closeGuestDemo = useCallback(() => setIsGuestDemoOpen(false), []);
+  const createGuestDocument = useCallback(() => {
+    closeGuestDemo();
+    onCreateDocument();
+  }, [closeGuestDemo, onCreateDocument]);
   const isMobileAssistantOpen = isAssistantOpen && !isFocusMode;
+  const hasUnsavedGuestText =
+    isGuest &&
+    (hasGuestDraftContent() ||
+      (localDocTitle.trim() !== '' && localDocTitle.trim() !== 'Document sans titre') ||
+      sections.some(
+        (section) =>
+          section.content.trim() ||
+          (section.title.trim() && !['Introduction', 'Nouvelle section'].includes(section.title.trim()))
+      ));
 
   const activeJobIdRef = useRef<string | null>(null);
   const pollIntervalRef = useRef<number | null>(null);
@@ -110,6 +248,24 @@ export default function WritingSpace({
     window.addEventListener('keydown', closeOnEscape);
     return () => window.removeEventListener('keydown', closeOnEscape);
   }, [isMobileAssistantOpen]);
+
+  useEffect(() => {
+    if (!hasUnsavedGuestText) return;
+
+    const confirmLeave = () =>
+      window.confirm('Votre brouillon invité ne sera pas sauvegardé. Voulez-vous vraiment quitter cette page ?');
+    const warnBeforeUnload = (event: BeforeUnloadEvent) => {
+      event.preventDefault();
+      event.returnValue = '';
+    };
+    const unregisterNavigationGuard = registerNavigationGuard(confirmLeave);
+    window.addEventListener('beforeunload', warnBeforeUnload);
+
+    return () => {
+      unregisterNavigationGuard();
+      window.removeEventListener('beforeunload', warnBeforeUnload);
+    };
+  }, [hasUnsavedGuestText]);
 
   // Fetch sections function
   const fetchSections = useCallback(async (docId: string) => {
@@ -380,6 +536,12 @@ export default function WritingSpace({
 
   return (
     <div className="flex-1 flex flex-col h-full overflow-hidden bg-[#F8FAFB]">
+      {isGuest && isGuestDemoOpen && (
+        <GuestDemoDialog
+          onClose={closeGuestDemo}
+          onCreateDocument={createGuestDocument}
+        />
+      )}
       {/* Writing Space Sub-Header */}
       {!isFocusMode && (
         <header className="h-[76px] px-8 max-sm:px-4 flex-shrink-0 border-b border-[#E5E9EB] bg-white flex justify-between items-center gap-4 z-20 shadow-[0_1px_4px_rgba(0,0,0,0.01)] transition-all duration-300">
@@ -423,7 +585,7 @@ export default function WritingSpace({
                 <path d="M12 3a6 6 0 0 1 6 6v2a4 4 0 0 1-4 4h-1v-5h3" />
                 <path d="M12 15v2a3 3 0 0 1-3 3" />
               </svg>
-              <span className="max-sm:hidden">Assistant</span>
+              <span>Assistant</span>
             </button>
             <button
               onClick={onOpenSettings}
@@ -454,11 +616,14 @@ export default function WritingSpace({
             {documents.length > 0 && (
               <div className="flex justify-between items-center gap-4 bg-white border border-[#DDE3E6] px-4 py-3 rounded-xl max-sm:flex-col max-sm:items-stretch">
                 <div className="flex items-center gap-2.5">
-                  <span className="text-[0.7rem] text-slate-500 font-bold uppercase tracking-wider">Document Actif :</span>
+                  <label htmlFor="active-document-select" className="text-[0.7rem] text-slate-600 font-semibold">
+                    Document actif
+                  </label>
                   <select
+                    id="active-document-select"
                     value={selectedDocumentId || ''}
                     onChange={(e) => onSelectDocument(e.target.value || null)}
-                    className="text-[0.8rem] font-bold text-[#2F4858] bg-white border border-slate-200 px-3 py-1 rounded-xl outline-none focus:border-[#518B91]"
+                    className="text-[0.8rem] font-bold text-[#2F4858] bg-white border border-slate-200 px-3 py-1 rounded-xl outline-none focus:border-[#518B91] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#3E6976] focus-visible:outline-offset-2"
                   >
                     {documents.map((doc) => (
                       <option key={doc.id} value={doc.id}>
@@ -490,7 +655,11 @@ export default function WritingSpace({
                 </div>
                 <div className="flex flex-col gap-1">
                   <h3 className="text-[1.1rem] font-bold text-[#2F4858]">Aucun document ouvert</h3>
-                  <p className="text-[0.82rem] text-slate-400 font-medium">Sélectionnez un modèle ou créez un nouveau document pour commencer.</p>
+                  <p className="text-[0.82rem] text-slate-500 font-medium">
+                    {isGuest
+                      ? 'Créez un document vierge ou consultez une démonstration fictive.'
+                      : 'Sélectionnez un modèle ou créez un nouveau document pour commencer.'}
+                  </p>
                 </div>
                 <button
                   onClick={onCreateDocument}
@@ -498,6 +667,15 @@ export default function WritingSpace({
                 >
                   Nouveau document
                 </button>
+                {isGuest && (
+                  <button
+                    type="button"
+                    onClick={() => setIsGuestDemoOpen(true)}
+                    className="mf-button mf-button--secondary"
+                  >
+                    Voir une démonstration fictive
+                  </button>
+                )}
               </div>
             ) : (
               <>
@@ -528,13 +706,29 @@ export default function WritingSpace({
                 {/* PAGE SHEET (A4 proportions: 794px wide, ~2.3cm margins) */}
                 <div className="bg-white w-full min-h-[1123px] rounded-[3px] border border-[#DDE3E6] shadow-[0_1px_3px_rgba(47,72,88,0.08),0_8px_24px_rgba(47,72,88,0.08)] px-[88px] py-[88px] max-md:px-12 max-md:py-14 max-sm:px-5 max-sm:py-8 max-sm:min-h-0 flex flex-col gap-6">
                 {/* Editable Title */}
-                <input
-                  type="text"
-                  value={localDocTitle}
-                  onChange={(e) => handleUpdateDocTitle(e.target.value)}
-                  className="w-full text-[2rem] font-extrabold text-[#2F4858] tracking-tight leading-tight border-none outline-none bg-transparent font-brand"
-                  placeholder="Titre du document..."
-                />
+                <div className="relative group/document-title">
+                  <input
+                    type="text"
+                    value={localDocTitle}
+                    onChange={(e) => handleUpdateDocTitle(e.target.value)}
+                    aria-label="Titre du document"
+                    className="w-full pr-8 text-[2rem] font-extrabold text-[#2F4858] tracking-tight leading-tight border-none outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#3E6976] focus-visible:outline-offset-2 bg-transparent font-brand"
+                    placeholder="Titre du document..."
+                  />
+                  <svg
+                    aria-hidden="true"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.8"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="pointer-events-none absolute right-1 top-3 h-4 w-4 text-slate-400 opacity-60 transition-opacity group-hover/document-title:opacity-100"
+                  >
+                    <path d="M12 20h9" />
+                    <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z" />
+                  </svg>
+                </div>
 
                 {isLoadingSections ? (
                   <div className="flex justify-center items-center py-10">
@@ -553,12 +747,13 @@ export default function WritingSpace({
                           type="text"
                           value={sec.title}
                           onChange={(e) => handleUpdateSectionLocal(sec.id, { title: e.target.value })}
-                          className="text-[1.35rem] font-bold text-[#2F4858] font-brand tracking-tight border-none outline-none bg-transparent w-full focus:ring-0 focus:outline-none"
+                          aria-label={`Titre de la section ${sec.title || 'sans titre'}`}
+                          className="text-[1.35rem] font-bold text-[#2F4858] font-brand tracking-tight border-none outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#3E6976] focus-visible:outline-offset-2 bg-transparent w-full focus:ring-0 focus:outline-none"
                           placeholder="Titre de la section..."
                         />
                         <button
                           onClick={() => handleDeleteSection(sec.id)}
-                          className="opacity-0 group-hover/section:opacity-100 p-1.5 text-red-400 hover:text-red-500 hover:bg-red-50 rounded-lg border-none bg-transparent cursor-pointer transition-all"
+                          className="opacity-0 group-hover/section:opacity-100 group-focus-within/section:opacity-100 p-1.5 text-red-400 hover:text-red-500 hover:bg-red-50 rounded-lg border-none bg-transparent cursor-pointer transition-all"
                           title="Supprimer la section"
                         >
                           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
@@ -572,7 +767,8 @@ export default function WritingSpace({
                       <AutoResizingTextarea
                         value={sec.content || ''}
                         onChange={(val) => handleUpdateSectionLocal(sec.id, { content: val })}
-                        className="w-full text-[0.92rem] text-[#2F4858] leading-relaxed font-medium bg-transparent border-none outline-none focus:ring-0 focus:outline-none placeholder-slate-300 min-h-[100px]"
+                        ariaLabel={`Contenu de la section ${sec.title || 'sans titre'}`}
+                        className="w-full text-[0.92rem] text-[#2F4858] leading-relaxed font-medium bg-transparent border-none outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#3E6976] focus-visible:outline-offset-2 focus:ring-0 focus:outline-none placeholder-slate-300 min-h-[100px]"
                         placeholder="Rédigez le contenu de cette section ici..."
                       />
                     </div>
@@ -676,19 +872,29 @@ export default function WritingSpace({
               
               <div className="bg-[#F8FAFB] border border-solid border-[#E5E9EB] rounded-xl p-4 flex flex-col gap-3.5 relative overflow-hidden">
                 {isGuest ? (
-                  <p className="text-[0.75rem] text-slate-500 leading-relaxed m-0">
-                    Le planificateur IA est réservé aux comptes MemoFlow. Connectez-vous depuis les paramètres pour
-                    l'utiliser.
-                  </p>
+                    <div className="flex flex-col items-start gap-3">
+                      <p className="text-[0.75rem] text-slate-600 leading-relaxed m-0">
+                        Pour utiliser l’assistant de plan, créez un compte puis connectez vos outils.
+                      </p>
+                      <div className="flex gap-2 flex-wrap">
+                        <button type="button" onClick={onRequestSignup} className="mf-button mf-button--primary !min-h-9 !px-3 text-xs">
+                          Créer un compte
+                        </button>
+                        <button type="button" onClick={onRequestLogin} className="mf-button mf-button--secondary !min-h-9 !px-3 text-xs">
+                          Se connecter
+                        </button>
+                      </div>
+                    </div>
                 ) : jobStatus === null ? (
                   <form onSubmit={handleLaunchPlanning} className="flex flex-col gap-3">
                     <div className="flex flex-col gap-1">
-                      <label className="text-[0.7rem] font-bold text-[#2F4858]">Consigne / Prompt :</label>
+                      <label htmlFor="planning-prompt" className="text-[0.7rem] font-bold text-[#2F4858]">Votre consigne</label>
                       <textarea
+                        id="planning-prompt"
                         value={planningPrompt}
                         onChange={(e) => setPlanningPrompt(e.target.value)}
                         placeholder="Ex: Rédige le plan détaillé du chapitre 3..."
-                        className="w-full min-h-[70px] p-2.5 text-[0.78rem] bg-white border border-[#E5E9EB] rounded-xl resize-none focus:border-[#518B91]"
+                        className="w-full min-h-[70px] p-2.5 text-[0.78rem] bg-white border border-[#E5E9EB] rounded-xl resize-none focus:border-[#518B91] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#3E6976] focus-visible:outline-offset-2"
                       />
                     </div>
 

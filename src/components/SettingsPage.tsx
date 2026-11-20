@@ -108,7 +108,7 @@ function AnalyticsConsentCard() {
         />
         <span className="text-[0.82rem] text-slate-600 leading-relaxed">
           J'accepte les cookies Google Analytics, qui servent uniquement à mesurer l'audience et l'utilisation de
-          MemoFlow. Si vous les refusez après les avoir acceptés, la page se recharge.
+          MemoFlow. Si vous retirez votre accord, les nouveaux événements ne sont plus envoyés et les cookies Google sont supprimés, sans rechargement de la page.
         </span>
       </label>
     </section>

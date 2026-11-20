@@ -38,7 +38,7 @@ const TITLES: Record<RoutePath, string> = {
   '/ma-progression': 'Ma progression · MemoFlow',
   '/modeles': 'Modèles · MemoFlow',
   '/espace-ecriture': 'Espace d’écriture · MemoFlow',
-  '/centre-de-contexte': 'Centre de contexte · MemoFlow',
+  '/centre-de-contexte': 'Cadrage du projet · MemoFlow',
   '/centre-de-contexte/connecteurs': 'Connecteurs · MemoFlow',
   '/parametres': 'Paramètres · MemoFlow',
 };
@@ -55,6 +55,7 @@ export const APP_PATHS: readonly RoutePath[] = [
 ];
 
 const normalize = (pathname: string) => pathname.replace(/\/+$/, '') || '/';
+const currentLocation = () => window.location.pathname + window.location.search + window.location.hash;
 
 /** Known route for a pathname, or null for an unknown URL */
 export function matchRoute(pathname: string): RoutePath | null {
@@ -64,6 +65,17 @@ export function matchRoute(pathname: string): RoutePath | null {
 
 export const isAppPath = (path: string) => (APP_PATHS as readonly string[]).includes(path);
 
+type NavigationGuard = (to: string) => boolean;
+let navigationGuard: NavigationGuard | null = null;
+let lastKnownLocation = currentLocation();
+
+export function registerNavigationGuard(guard: NavigationGuard): () => void {
+  navigationGuard = guard;
+  return () => {
+    if (navigationGuard === guard) navigationGuard = null;
+  };
+}
+
 function applyTitle(pathname: string) {
   const route = matchRoute(pathname);
   if (route) document.title = TITLES[route];
@@ -72,11 +84,19 @@ function applyTitle(pathname: string) {
 // ─── Store ───────────────────────────────────────────────────────────────────
 const listeners = new Set<() => void>();
 const emit = () => {
+  lastKnownLocation = currentLocation();
   applyTitle(window.location.pathname);
   listeners.forEach((listener) => listener());
 };
 
-window.addEventListener('popstate', emit);
+window.addEventListener('popstate', () => {
+  const nextLocation = currentLocation();
+  if (navigationGuard && !navigationGuard(nextLocation)) {
+    window.history.pushState(null, '', lastKnownLocation);
+    return;
+  }
+  emit();
+});
 applyTitle(window.location.pathname);
 
 /**
@@ -86,6 +106,7 @@ applyTitle(window.location.pathname);
 export function navigate(to: string, { replace = false }: { replace?: boolean } = {}): void {
   const current = window.location.pathname + window.location.search + window.location.hash;
   if (to === current) return;
+  if (navigationGuard && !navigationGuard(to)) return;
   applyTitle(to.split(/[?#]/)[0]);
   if (replace) window.history.replaceState(null, '', to);
   else window.history.pushState(null, '', to);

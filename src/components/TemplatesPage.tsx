@@ -10,6 +10,7 @@ interface TemplatesPageProps {
   onUseTemplate: (template: TemplateChoice) => void;
   onCreateBlankDocument: () => void;
   onRequestLogin: () => void;
+  onRequestSignup: () => void;
 }
 
 export interface TemplateChoice {
@@ -24,6 +25,21 @@ interface TemplateCard extends TemplateChoice {
   description: string;
   sectionsLabel: string;
 }
+
+const PREVIEW_STRUCTURES = [
+  {
+    title: 'Rapport de stage',
+    sections: ['Présenter l’organisation', 'Décrire les missions', 'Analyser les acquis', 'Faire le bilan'],
+  },
+  {
+    title: 'Rapport d’alternance',
+    sections: ['Poser le contexte', 'Décrire les missions', 'Relier théorie et pratique', 'Conclure'],
+  },
+  {
+    title: 'Mémoire de recherche',
+    sections: ['Formuler la question', 'Présenter la méthode', 'Analyser les résultats', 'Discuter et conclure'],
+  },
+];
 
 function pluralSections(count: number): string {
   return `${count} section${count > 1 ? 's' : ''}`;
@@ -62,6 +78,7 @@ export default function TemplatesPage({
   onUseTemplate,
   onCreateBlankDocument,
   onRequestLogin,
+  onRequestSignup,
 }: TemplatesPageProps) {
   const [templatesList, setTemplatesList] = useState<TemplateCard[]>([]);
   const [isLoading, setIsLoading] = useState(!isGuest);
@@ -90,20 +107,43 @@ export default function TemplatesPage({
   const renderBody = () => {
     if (isGuest) {
       return (
-        <div className="bg-white border border-[#E5E9EB] rounded-2xl p-10 text-center flex flex-col items-center gap-3">
-          <h3 className="text-[1.05rem] font-bold text-[#2F4858]">Modèles réservés aux comptes</h3>
-          <p className="text-[0.85rem] text-slate-500 max-w-[480px]">
-            Connectez-vous pour accéder à la bibliothèque de modèles. En mode invité, vous pouvez tout de même rédiger
-            un document vierge (non sauvegardé).
-          </p>
-          <div className="flex gap-2.5 mt-2 flex-wrap justify-center max-sm:w-full max-sm:flex-col">
-            {blankDocButton}
-            <button
-              onClick={onRequestLogin}
-              className="mf-button mf-button--primary max-sm:w-full"
-            >
-              Se connecter
-            </button>
+        <div className="flex flex-col gap-6">
+          <section aria-labelledby="template-preview-title" className="bg-white border border-[#E5E9EB] rounded-2xl p-6 sm:p-8">
+            <div className="mb-5">
+              <h3 id="template-preview-title" className="text-[1.05rem] font-bold text-[#2F4858]">
+                Exemples de structures
+              </h3>
+              <p className="mt-1 text-[0.85rem] text-slate-600">
+                Des points de départ indicatifs, à adapter aux consignes de votre établissement.
+              </p>
+            </div>
+            <div className="grid gap-4 md:grid-cols-3">
+              {PREVIEW_STRUCTURES.map((preview) => (
+                <article key={preview.title} className="rounded-xl border border-[#E5E9EB] bg-[#F8FAFB] p-4">
+                  <h4 className="font-brand text-[0.95rem] font-semibold text-[#2F4858]">{preview.title}</h4>
+                  <ol className="mt-3 list-decimal space-y-1 pl-5 text-[0.78rem] leading-relaxed text-slate-600">
+                    {preview.sections.map((section) => <li key={section}>{section}</li>)}
+                  </ol>
+                </article>
+              ))}
+            </div>
+          </section>
+
+          <div className="bg-white border border-[#E5E9EB] rounded-2xl p-6 sm:p-8 flex flex-col items-center gap-3 text-center">
+            <h3 className="text-[1.05rem] font-bold text-[#2F4858]">Accéder à la bibliothèque complète</h3>
+            <p className="text-[0.85rem] text-slate-600 max-w-[520px]">
+              Créez un compte ou connectez-vous pour consulter et appliquer les modèles. Vous pouvez aussi commencer un
+              document vierge en mode invité ; il ne sera pas sauvegardé.
+            </p>
+            <div className="flex gap-2.5 mt-2 flex-wrap justify-center max-sm:w-full max-sm:flex-col">
+              <button onClick={onRequestSignup} className="mf-button mf-button--primary max-sm:w-full">
+                Créer un compte
+              </button>
+              <button onClick={onRequestLogin} className="mf-button mf-button--secondary max-sm:w-full">
+                Se connecter
+              </button>
+              {blankDocButton}
+            </div>
           </div>
         </div>
       );

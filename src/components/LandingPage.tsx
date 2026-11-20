@@ -74,7 +74,7 @@ const STEPS = [
   },
   {
     title: 'Rédigez',
-    text: 'Écrivez section par section sur une vraie page, en mode focus si besoin. Tout est enregistré automatiquement.',
+    text: 'Écrivez section par section sur une vraie page, en mode focus si besoin. Une fois connecté, votre texte est enregistré automatiquement.',
   },
 ];
 
@@ -107,14 +107,14 @@ const FEATURES = [
   {
     icon: faShieldHalved,
     title: 'Vos travaux restent à vous',
-    text: 'Vos textes vous appartiennent. MemoFlow ne conserve ni vos mots de passe ni les accès à vos outils connectés.',
+    text: 'L’assistant propose des pistes et des reformulations. Vous décidez quoi garder ; le texte final reste le vôtre.',
   },
 ];
 
 const AUDIENCES = [
-  { icon: faBriefcase, title: 'Alternants', text: 'Rapport d’alternance ou mémoire, en parallèle de l’entreprise.' },
-  { icon: faBuilding, title: 'Stagiaires', text: 'Rapport de stage à rendre à la fin de la mission.' },
-  { icon: faGraduationCap, title: 'Étudiants de L3 à M2', text: 'Mémoire de recherche ou professionnel.' },
+  { icon: faBriefcase, title: 'Alternants', text: 'Rapport ou mémoire en RH, commerce, communication, ingénierie et autres domaines.' },
+  { icon: faBuilding, title: 'Stagiaires', text: 'Rapport de stage en marketing, gestion, communication ou métiers techniques.' },
+  { icon: faGraduationCap, title: 'Étudiants', text: 'BUT, BTS, licence ou master : mémoire ou rapport, en informatique comme dans d’autres filières.' },
 ];
 
 /** Illustration of the writing space (not real data) */
@@ -159,6 +159,12 @@ export default function LandingPage({ isLoggedIn, variant = 'default', onOpenPri
 
   return (
     <div className={`min-h-screen w-full flex flex-col ${isIim ? 'bg-[#FFF7ED]' : 'bg-[#F8FAFB]'}`}>
+      <a
+        href="#landing-main"
+        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded-lg focus:bg-white focus:px-4 focus:py-3 focus:text-[#2F4858] focus:shadow-lg"
+      >
+        Aller au contenu principal
+      </a>
       {/* Navigation */}
       <header className={`sticky top-0 z-40 backdrop-blur border-b ${isIim ? 'bg-[#F58200]/95 border-[#D96D00]/40' : 'bg-[#F8FAFB]/90 border-[#E5E9EB]/70'}`}>
         <nav className={`${container} h-[72px] flex items-center justify-between gap-6`}>
@@ -175,6 +181,7 @@ export default function LandingPage({ isLoggedIn, variant = 'default', onOpenPri
               ['#concept', 'Le concept'],
               ['#fonctionnalites', 'Fonctionnalités'],
               ['#pour-qui', 'Pour qui'],
+              ['#commencer-gratuitement', 'Accès gratuit'],
             ].map(([href, label]) => (
               <a key={href} href={href} className={`text-[0.85rem] font-semibold no-underline ${isIim ? 'text-[#17232A] hover:text-[#0F191F]' : 'text-slate-600 hover:text-[#2F4858]'}`}>
                 {label}
@@ -203,20 +210,20 @@ export default function LandingPage({ isLoggedIn, variant = 'default', onOpenPri
         </nav>
       </header>
 
-      <main className="flex-1">
+      <main id="landing-main" tabIndex={-1} className="flex-1">
         {/* Hero */}
         <section className={isIim ? 'bg-[#F58200]' : 'bg-[#F8FAFB]'}>
           <div className={`${container} grid grid-cols-[1.1fr_1fr] gap-14 items-center py-20 max-lg:grid-cols-1 max-lg:py-14`}>
           <div className="flex flex-col gap-6">
             <span className={`self-start px-3 py-1 rounded-full text-[0.75rem] font-bold ${isIim ? 'bg-white text-[#8A3F00]' : 'bg-[#EAF3DE] text-[#3E6976]'}`}>
-              {isIim ? 'Pour les étudiants de l’IIM Digital School' : 'Pour les alternants, stagiaires et étudiants de L3 à M2'}
+              {isIim ? 'Pour les étudiants de l’IIM Digital School' : 'Pour les étudiants, alternants et stagiaires'}
             </span>
             <h1 className="font-brand text-[3.1rem] leading-[1.08] font-bold text-[#2F4858] tracking-tight m-0 max-sm:text-[2.2rem]">
               Rédigez votre mémoire sans repartir d’une page blanche.
             </h1>
             <p className={`text-[1.08rem] leading-relaxed m-0 max-w-[560px] ${isIim ? 'text-[#25343D]' : 'text-slate-600'}`}>
-              MemoFlow rassemble les traces de votre année (Trello, Notion, GitHub), vous aide à construire un plan
-              solide et vous accompagne section par section jusqu’au rendu.
+              MemoFlow vous aide à retrouver vos missions et à structurer un plan de mémoire ou de rapport. L’assistant
+              propose des pistes et des reformulations ; vous choisissez ce que vous gardez et restez l’auteur de votre texte.
             </p>
             <div className="flex gap-3 flex-wrap">
               {isLoggedIn ? (
@@ -235,13 +242,38 @@ export default function LandingPage({ isLoggedIn, variant = 'default', onOpenPri
               )}
             </div>
             {!isLoggedIn && (
-              <p className={`text-[0.8rem] m-0 ${isIim ? 'text-[#25343D]' : 'text-slate-500'}`}>
-                Le mode invité permet de tester l’espace d’écriture : rien n’est enregistré tant que vous n’avez pas de
-                compte.
-              </p>
+              <div className="flex flex-col items-start gap-2">
+                <p className={`text-[0.8rem] m-0 ${isIim ? 'text-[#25343D]' : 'text-slate-600'}`}>
+                  En mode invité, vos textes ne sont pas sauvegardés. Les modèles et l’assistant de plan nécessitent un compte.
+                </p>
+                <Link
+                  to={ROUTES.templates}
+                  className={`text-[0.82rem] font-semibold underline underline-offset-4 ${isIim ? 'text-[#17232A] hover:text-[#0F191F]' : 'text-[#2F4858] hover:text-[#3E6976]'}`}
+                >
+                  Voir un aperçu des modèles
+                </Link>
+              </div>
             )}
           </div>
           <HeroPreview isIim={isIim} />
+          </div>
+        </section>
+
+        <section id="commencer-gratuitement" className="bg-white border-b border-[#E5E9EB] py-12 scroll-mt-[72px]">
+          <div className={`${container} flex items-center justify-between gap-8 max-md:flex-col max-md:items-start`}>
+            <div className="max-w-[720px]">
+              <p className={`text-[0.75rem] font-semibold uppercase tracking-wider m-0 ${sectionEyebrow}`}>Pour commencer</p>
+              <h2 className={`${sectionTitle} mt-2`}>Créez votre compte gratuitement</h2>
+              <p className="mt-3 text-[0.9rem] leading-relaxed text-slate-600">
+                Un compte gratuit permet de sauvegarder vos documents, d’accéder aux modèles, aux connecteurs et à l’assistant de plan. Aucun tarif n’est affiché pour le moment.
+              </p>
+            </div>
+            <Link
+              to={isLoggedIn ? ROUTES.templates : signupRoute}
+              className={`mf-button flex-shrink-0 max-sm:w-full ${isIim ? 'mf-button--primary' : 'mf-button--accent'}`}
+            >
+              {isLoggedIn ? 'Ouvrir mon espace' : 'Créer un compte gratuitement'}
+            </Link>
           </div>
         </section>
 

@@ -205,9 +205,15 @@ function App() {
   const authLayout = (content: ReactNode, showGuestLink = false) =>
     withOverlays(
       <div className="flex flex-col min-h-screen w-full">
+        <a
+          href="#auth-main"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded-lg focus:bg-white focus:px-4 focus:py-3 focus:text-[#2F4858] focus:shadow-lg"
+        >
+          Aller au contenu principal
+        </a>
         <Header />
 
-        <main className="flex-1 flex flex-col items-center justify-center px-4 w-full">
+        <main id="auth-main" tabIndex={-1} className="flex-1 flex flex-col items-center justify-center px-4 w-full">
           {content}
 
           {showGuestLink && (

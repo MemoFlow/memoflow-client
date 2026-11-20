@@ -94,18 +94,28 @@ export function setAnalyticsConsent(granted: boolean): void {
   localStorage.setItem(CONSENT_KEY, granted ? 'granted' : 'denied');
   listeners.forEach((l) => l());
   if (granted) {
-    loadGtm();
+    if (gtmLoaded) {
+      gtag('consent', 'update', { analytics_storage: 'granted' });
+    } else {
+      loadGtm();
+    }
     return;
   }
+  if (gtmLoaded) {
+    gtag('consent', 'update', {
+      ad_storage: 'denied',
+      ad_user_data: 'denied',
+      ad_personalization: 'denied',
+      analytics_storage: 'denied',
+    });
+  }
   deleteGaCookies();
-  // Once loaded, GTM cannot be unloaded: reload so nothing more is sent
-  if (gtmLoaded) window.location.reload();
 }
 
 // ─── Events ──────────────────────────────────────────────────────────────────
 // Never put personal data in parameters (email, name, document titles, tokens).
 function track(event: string, params: Record<string, unknown> = {}): void {
-  if (!gtmLoaded) return; // no consent: nothing is sent
+  if (!gtmLoaded || readConsent() !== 'granted') return;
   window.dataLayer.push({ event, ...params });
 }
 

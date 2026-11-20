@@ -68,6 +68,21 @@ export function resetGuestStore(): void {
   guestSections = {};
 }
 
+export function hasGuestDraftContent(): boolean {
+  const hasNamedDocument = guestDocuments.some(
+    (document) => document.title.trim() && document.title.trim() !== 'Document sans titre'
+  );
+  const hasEditedSection = Object.values(guestSections).some((sections) =>
+    sections.some(
+      (section) =>
+        section.content.trim() ||
+        (section.title.trim() && !['Introduction', 'Nouvelle section'].includes(section.title.trim()))
+    )
+  );
+
+  return hasNamedDocument || hasEditedSection;
+}
+
 function guestId(kind: 'doc' | 'sec'): string {
   guestIdCounter += 1;
   return `guest-${kind}-${Date.now()}-${guestIdCounter}`;

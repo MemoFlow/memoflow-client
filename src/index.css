@@ -182,7 +182,7 @@
   }
 
   /* Smooth focus rings */
-  input:focus {
+  input:focus:not(:focus-visible) {
     outline: none;
   }
 }
