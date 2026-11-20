@@ -93,12 +93,23 @@ export default function WritingSpace({
   const [jobResult, setJobResult] = useState<unknown>(null);
   const [jobError, setJobError] = useState<string | null>(null);
   const [isSubmittingJob, setIsSubmittingJob] = useState(false);
+  const [isAssistantOpen, setIsAssistantOpen] = useState(false);
+  const isMobileAssistantOpen = isAssistantOpen && !isFocusMode;
 
   const activeJobIdRef = useRef<string | null>(null);
   const pollIntervalRef = useRef<number | null>(null);
   const debounceTimersRef = useRef<{ [sectionId: string]: number }>({});
   const pendingSectionUpdatesRef = useRef<{ [sectionId: string]: { title?: string; content?: string } }>({});
   const docTitleTimerRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    if (!isMobileAssistantOpen) return;
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setIsAssistantOpen(false);
+    };
+    window.addEventListener('keydown', closeOnEscape);
+    return () => window.removeEventListener('keydown', closeOnEscape);
+  }, [isMobileAssistantOpen]);
 
   // Fetch sections function
   const fetchSections = useCallback(async (docId: string) => {
@@ -373,7 +384,7 @@ export default function WritingSpace({
       {!isFocusMode && (
         <header className="h-[76px] px-8 max-sm:px-4 flex-shrink-0 border-b border-[#E5E9EB] bg-white flex justify-between items-center gap-4 z-20 shadow-[0_1px_4px_rgba(0,0,0,0.01)] transition-all duration-300">
           {/* Breadcrumbs */}
-          <div className="flex items-center gap-2.5 text-slate-500 font-brand text-[0.88rem] font-semibold min-w-0">
+          <div className="flex items-center gap-2.5 text-slate-500 font-brand text-[0.88rem] font-semibold min-w-0 flex-1">
             <svg
               width="16"
               height="16"
@@ -398,14 +409,31 @@ export default function WritingSpace({
             )}
           </div>
 
-          {/* Profile -> settings */}
-          <button
-            onClick={onOpenSettings}
-            title="Paramètres"
-            className="flex-shrink-0 h-8 w-8 rounded-full overflow-hidden bg-[#94D2B8]/30 border border-[#94D2B8]/40 flex items-center justify-center text-[#2F4858] font-bold text-sm cursor-pointer hover:bg-[#94D2B8]/50 transition-colors"
-          >
-            {userName.charAt(0).toUpperCase()}
-          </button>
+          <div className="flex flex-shrink-0 items-center gap-2">
+            <button
+              type="button"
+              onClick={() => setIsAssistantOpen((open) => !open)}
+              aria-expanded={isMobileAssistantOpen}
+              aria-controls="writing-assistant-panel"
+              aria-label={isMobileAssistantOpen ? "Fermer l'assistant" : "Ouvrir l'assistant"}
+              className="mf-button mf-button--secondary !min-h-9 !px-3 text-xs xl:hidden max-sm:!px-2"
+            >
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M12 3a6 6 0 0 0-6 6v2a4 4 0 0 0 4 4h1v-5H8" />
+                <path d="M12 3a6 6 0 0 1 6 6v2a4 4 0 0 1-4 4h-1v-5h3" />
+                <path d="M12 15v2a3 3 0 0 1-3 3" />
+              </svg>
+              <span className="max-sm:hidden">Assistant</span>
+            </button>
+            <button
+              onClick={onOpenSettings}
+              title="Paramètres"
+              aria-label="Ouvrir les paramètres"
+              className="flex-shrink-0 h-8 w-8 rounded-full overflow-hidden bg-[#94D2B8]/30 border border-[#94D2B8]/40 flex items-center justify-center text-[#2F4858] font-bold text-sm cursor-pointer hover:bg-[#94D2B8]/50 transition-colors"
+            >
+              {userName.charAt(0).toUpperCase()}
+            </button>
+          </div>
         </header>
       )}
 
@@ -593,15 +621,38 @@ export default function WritingSpace({
         </div>
 
         {/* RIGHT COLUMN: ASSISTANT PANEL */}
+        {isMobileAssistantOpen && (
+          <button
+            type="button"
+            className="mf-writing-assistant-backdrop xl:hidden"
+            aria-label="Fermer le panneau de l'assistant"
+            onClick={() => setIsAssistantOpen(false)}
+          />
+        )}
         <aside
-          className={`w-[360px] max-lg:hidden border-l border-solid border-[#E5E9EB] bg-white flex flex-col justify-between overflow-hidden transition-all duration-350 ${
+          id="writing-assistant-panel"
+          aria-label="Assistant MemoFlow"
+          className={`w-[360px] border-l border-solid border-[#E5E9EB] bg-white flex flex-col justify-between overflow-hidden transition-all duration-350 ${
             isFocusMode ? 'w-0 opacity-0 border-none pointer-events-none' : 'opacity-100'
-          }`}
+          } ${isMobileAssistantOpen ? 'max-xl:flex' : 'max-xl:hidden'} mf-writing-assistant-panel`}
         >
+          <div className="xl:hidden flex items-center justify-between gap-3 px-4 py-3 border-b border-[#E5E9EB]">
+            <h3 className="m-0 font-brand text-sm font-semibold text-[#2F4858]">Assistant MemoFlow</h3>
+            <button
+              type="button"
+              onClick={() => setIsAssistantOpen(false)}
+              aria-label="Fermer l'assistant"
+              className="h-9 w-9 flex-shrink-0 rounded-lg border-none bg-transparent text-slate-500 hover:bg-slate-100 cursor-pointer flex items-center justify-center"
+            >
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                <path d="m18 6-12 12M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
           {/* Assistant Header & Widgets */}
           <div className="flex-1 flex flex-col gap-5 p-5 overflow-y-auto custom-scrollbar">
             {/* Assistant Brand Title */}
-            <div className="flex items-center gap-2 text-[#518B91]">
+            <div className="hidden xl:flex items-center gap-2 text-[#518B91]">
               <svg
                 width="18"
                 height="18"

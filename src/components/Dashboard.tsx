@@ -220,8 +220,10 @@ export default function Dashboard({
   const dropdownItemClass =
     'w-full text-left px-4 py-2 text-[0.82rem] transition-all cursor-pointer border-none bg-transparent flex items-center gap-2.5 text-slate-700 hover:bg-slate-50 hover:text-[#2F4858]';
 
+  const activeMenuShort = MOBILE_NAV_ITEMS.find((item) => item.name === activeMenu)?.short ?? activeMenu;
+
   return (
-    <div className="flex h-screen w-screen overflow-hidden font-sans select-none antialiased transition-all duration-300 bg-[#F8FAFB] text-[#2F4858]">
+    <div className="flex h-dvh w-full overflow-hidden font-sans antialiased transition-all duration-300 bg-[#F8FAFB] text-[#2F4858]">
 
       {/* SIDEBAR */}
       <aside className={`w-[260px] flex-shrink-0 flex flex-col justify-between p-6 max-lg:hidden shadow-[0_0_15px_rgba(0,0,0,0.02)] transition-all duration-300 bg-white border-r border-[#E5E9EB] ${
@@ -335,26 +337,30 @@ export default function Dashboard({
 
         {/* HEADER */}
         {activeMenu !== MENU_WRITING && (
-          <header className="h-[76px] px-8 flex-shrink-0 border-b flex justify-between items-center z-20 max-sm:px-4 transition-all duration-350 bg-white border-[#E5E9EB] shadow-[0_1px_4px_rgba(0,0,0,0.01)]">
-            <div className="flex items-center gap-2">
+          <header className="h-[76px] px-8 flex-shrink-0 border-b flex justify-between items-center gap-3 z-20 max-sm:px-4 transition-all duration-350 bg-white border-[#E5E9EB] shadow-[0_1px_4px_rgba(0,0,0,0.01)]">
+              <div className="flex items-center gap-2 min-w-0">
               <Link to={ROUTES.home} className="lg:hidden flex" aria-label="MemoFlow, accueil">
                 <BrandLogo size={32} />
               </Link>
-              <span className="font-brand font-bold text-[#2F4858] tracking-tight text-[1.05rem]">
-                <span className="lg:hidden">MemoFlow · </span>{activeMenu}
+                <span className="font-brand font-bold text-[#2F4858] tracking-tight text-[1.05rem] min-w-0 truncate">
+                  <span className="hidden sm:inline lg:hidden">MemoFlow · </span>
+                  <span className="hidden sm:inline">{activeMenu}</span>
+                  <span className="sm:hidden">{activeMenuShort}</span>
               </span>
             </div>
 
             {/* Right actions */}
-            <div className="flex items-center gap-4">
+              <div className="flex flex-shrink-0 items-center gap-4 max-sm:gap-2">
               <button
                 onClick={handleCreateNewDocument}
-                className="mf-button mf-button--primary shadow-[0_2px_8px_rgba(47,72,88,0.12)] max-sm:!px-3"
+                  aria-label="Nouveau document"
+                  className="mf-button mf-button--primary shadow-[0_2px_8px_rgba(47,72,88,0.12)] max-sm:!px-3 whitespace-nowrap"
               >
-                Nouveau Document
+                  <span className="max-sm:hidden">Nouveau document</span>
+                  <span className="sm:hidden">Nouveau</span>
               </button>
 
-              <div className="h-6 w-[1px] transition-colors bg-slate-200"></div>
+                <div className="h-6 w-[1px] transition-colors bg-slate-200 max-sm:hidden"></div>
 
               {/* Profile widget */}
               <div className="relative">
@@ -511,7 +517,7 @@ export default function Dashboard({
 
       {/* MOBILE / TABLET NAVIGATION (sidebar is hidden below lg) */}
       {!isFocusMode && (
-        <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-[#E5E9EB] flex justify-around px-1 py-1.5 shadow-[0_-2px_10px_rgba(0,0,0,0.03)]">
+        <nav className="mf-mobile-navigation lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-[#E5E9EB] flex justify-around px-1 py-1.5 shadow-[0_-2px_10px_rgba(0,0,0,0.03)]">
           {MOBILE_NAV_ITEMS.map((item) => {
             const isActive = activeMenu === item.name;
             return (

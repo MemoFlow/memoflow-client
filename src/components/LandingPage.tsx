@@ -118,7 +118,7 @@ const AUDIENCES = [
 /** Illustration of the writing space (not real data) */
 function HeroPreview() {
   return (
-    <div aria-hidden="true" className="relative w-full max-w-[460px] mx-auto">
+    <div aria-hidden="true" className="relative w-full max-w-[460px] mx-auto max-sm:overflow-x-clip">
       <div className="absolute -inset-6 bg-[#94D2B8]/25 blur-3xl rounded-full" />
       <div className="relative bg-[#E9EDEF] rounded-2xl p-5 border border-[#DCE3E6] shadow-[0_24px_60px_rgba(47,72,88,0.18)]">
         <div className="flex items-center gap-2 mb-4">
@@ -158,7 +158,7 @@ export default function LandingPage({ isLoggedIn, onOpenPrivacy, onOpenTerms }: 
         <nav className={`${container} h-[72px] flex items-center justify-between gap-6`}>
           <Link to={ROUTES.home} className="flex items-center gap-2.5 no-underline" aria-label="MemoFlow, accueil">
             <BrandLogo size={36} />
-            <span className="font-brand text-[1.3rem] font-bold text-[#2F4858] tracking-tight">MemoFlow</span>
+            <span className="mf-landing-brand-name font-brand text-[1.3rem] font-bold text-[#2F4858] tracking-tight">MemoFlow</span>
           </Link>
           <div className="flex items-center gap-7 max-lg:hidden">
             {[
@@ -171,7 +171,7 @@ export default function LandingPage({ isLoggedIn, onOpenPrivacy, onOpenTerms }: 
               </a>
             ))}
           </div>
-          <div className="flex items-center gap-2.5">
+          <div className="flex items-center gap-2.5 max-sm:gap-1">
             {isLoggedIn ? (
               <Link to={ROUTES.templates} className={`${primaryCta} !px-4 !shadow-none`}>
                 Ouvrir mon espace
@@ -180,11 +180,11 @@ export default function LandingPage({ isLoggedIn, onOpenPrivacy, onOpenTerms }: 
               <>
                 <Link
                   to={ROUTES.login}
-                  className="mf-button mf-button--secondary !border-transparent !bg-transparent !px-3 text-[0.85rem] max-sm:hidden"
+                  className="mf-landing-login mf-button mf-button--secondary !border-transparent !bg-transparent !px-3 text-[0.85rem] max-sm:!px-1.5 max-sm:text-xs whitespace-nowrap"
                 >
                   Se connecter
                 </Link>
-                <Link to={ROUTES.signup} className={`${primaryCta} !px-4 !shadow-none`}>
+                <Link to={ROUTES.signup} className={`${primaryCta} !px-4 !shadow-none max-sm:!px-2.5 whitespace-nowrap`}>
                   Créer un compte
                 </Link>
               </>
