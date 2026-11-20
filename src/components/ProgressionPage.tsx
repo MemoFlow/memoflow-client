@@ -307,7 +307,8 @@ export default function ProgressionPage({ userId, onRequestLogin, onRequestSignu
 
       {/* RIGHT: leaderboard + daily missions */}
       <div className="col-span-4 flex flex-col gap-6 max-lg:col-span-12">
-        <div className={cardClass}>
+        {/* Other users' names: hidden from PostHog replays */}
+        <div className={`${cardClass} ph-no-capture`}>
           <h3 className="text-[0.98rem] font-bold text-[#2F4858] tracking-tight mb-5">Classement</h3>
           <div className="flex flex-col gap-3">
             {leaderboard.length === 0 ? (

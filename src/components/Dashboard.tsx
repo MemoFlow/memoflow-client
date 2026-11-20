@@ -5,6 +5,7 @@ import LoadingIndicator from './LoadingIndicator';
 import Link from './Link';
 import { ROUTES, navigate as goTo } from '../services/router';
 import { apiFetch } from '../services/api';
+import { trackDocumentCreated, trackTemplateApplied } from '../services/analytics';
 import type { DocumentResponseDto, UserResponseDto } from '../services/api';
 import type { TemplateChoice } from './TemplatesPage';
 
@@ -86,6 +87,9 @@ const NAV_ITEMS = [
     </svg>
   )},
 ];
+
+/** Pages whose content is personal: blocked in PostHog session replays */
+const SENSITIVE_MENUS = new Set([MENU_WRITING, MENU_CONTEXT, MENU_SETTINGS]);
 
 const MOBILE_NAV_ITEMS = [...NAV_ITEMS, { name: MENU_SETTINGS, short: 'Paramètres', icon: settingsIcon(18) }];
 
@@ -178,6 +182,7 @@ export default function Dashboard({
         method: 'POST',
         body: JSON.stringify({ documentId: newDoc.id }),
       });
+      trackTemplateApplied(template.docType || 'thesis');
       addToast('success', 'Modèle appliqué', `Le modèle "${template.title}" a été créé.`);
 
       await fetchDocuments();
@@ -200,6 +205,7 @@ export default function Dashboard({
         method: 'POST',
         body: JSON.stringify({ title: 'Introduction', content: '' }),
       });
+      trackDocumentCreated(isGuest);
 
       await fetchDocuments();
       setSelectedDocumentId(newDoc.id);
@@ -368,8 +374,8 @@ export default function Dashboard({
 
                 <div className="h-6 w-[1px] transition-colors bg-slate-200 max-sm:hidden"></div>
 
-              {/* Profile widget */}
-              <div className="relative">
+              {/* Profile widget (name and email: hidden from PostHog replays) */}
+              <div className="relative ph-no-capture">
                 <button
                   onClick={(e) => {
                     e.stopPropagation();
@@ -450,8 +456,10 @@ export default function Dashboard({
           </header>
         )}
 
-        {/* CONTENT SPACE */}
+        {/* CONTENT SPACE (ph-no-capture: documents, plans, files and account data never appear in PostHog replays) */}
         <main id="dashboard-main" tabIndex={-1} className={`flex-1 overflow-y-auto custom-scrollbar transition-all duration-350 ${
+          SENSITIVE_MENUS.has(activeMenu) ? 'ph-no-capture ' : ''
+        }${
           activeMenu === MENU_WRITING ? 'p-0 overflow-hidden bg-white max-lg:pb-16' : 'p-8 max-sm:p-4 max-lg:pb-24'
         }`}>
           <Suspense fallback={<LoadingIndicator label="Chargement de la page…" />}>

@@ -21,9 +21,9 @@ export default function ConsentBanner({ onOpenPrivacy }: { onOpenPrivacy: () => 
       <div className="flex-1 flex flex-col gap-1">
         <p className="font-brand text-[0.95rem] font-bold text-[#2F4858] m-0">Mesure d'audience</p>
         <p className="text-[0.8rem] text-slate-600 leading-relaxed m-0">
-          Avec votre accord, nous utilisons Google Analytics, et PostHog sur le blog, pour savoir quelles pages sont
-          consultées et améliorer MemoFlow. PostHog peut aussi enregistrer le déroulé des visites du blog, sans ce que
-          vous saisissez. Rien n'est déposé ni envoyé si vous refusez. Vous pouvez changer d'avis à tout moment dans
+          Avec votre accord, nous utilisons Google Analytics et PostHog pour savoir quelles pages sont consultées et
+          améliorer MemoFlow. PostHog peut aussi enregistrer le déroulé des visites (clics, défilement), sans ce que
+          vous saisissez ni le contenu de vos documents. Rien n'est déposé ni envoyé si vous refusez. Vous pouvez changer d'avis à tout moment dans
           Paramètres.{' '}
           <button
             type="button"
