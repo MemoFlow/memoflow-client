@@ -314,7 +314,7 @@ export default function ConnectorsManager({ addToast, onOpenPrivacy }: Connector
                       </div>
                       <button
                         onClick={() => handleCancelConnection(connection.id, provider.key)}
-                        className="bg-transparent border border-solid border-red-200 hover:bg-red-50 text-red-500 font-brand text-[0.82rem] font-bold px-4 py-2.5 rounded-xl cursor-pointer transition-all active:scale-[0.97]"
+                        className="mf-button !min-h-10 bg-white text-red-500 border-red-200 hover:bg-red-50"
                       >
                         Annuler
                       </button>
@@ -323,7 +323,7 @@ export default function ConnectorsManager({ addToast, onOpenPrivacy }: Connector
                     <button
                       onClick={() => handleDisconnect(connection.id, provider.key)}
                       disabled={isConnLoading}
-                      className="w-full bg-transparent border border-solid border-slate-200 text-red-500 font-brand text-[0.82rem] font-semibold py-2.5 rounded-xl cursor-pointer hover:bg-red-50/50 hover:border-red-200 disabled:opacity-50 transition-all flex items-center justify-center gap-2"
+                      className="mf-button w-full bg-white text-red-500 border-slate-200 hover:bg-red-50/50 hover:border-red-200"
                     >
                       {isConnLoading ? (
                         <span className="w-4 h-4 border-2 border-red-500/25 border-t-red-500 rounded-full animate-spin"></span>
@@ -335,7 +335,7 @@ export default function ConnectorsManager({ addToast, onOpenPrivacy }: Connector
                     <button
                       onClick={() => handleConnect(provider.key)}
                       disabled={isConnLoading}
-                      className="w-full bg-[#2F4858] hover:bg-[#3E6976] text-white font-brand text-[0.82rem] font-bold py-2.5 rounded-xl border-none cursor-pointer disabled:opacity-50 transition-all flex items-center justify-center gap-2"
+                      className="mf-button mf-button--primary w-full"
                     >
                       {isConnLoading ? (
                         <span className="w-4 h-4 border-2 border-white/25 border-t-white rounded-full animate-spin"></span>

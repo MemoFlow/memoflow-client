@@ -80,7 +80,7 @@ const inputClass =
   'w-full px-4 py-3 rounded-xl border border-solid border-[#E5E9EB] bg-white text-[0.9rem] text-[#2F4858] focus:outline-none focus:border-[#518B91] focus:ring-1 focus:ring-[#518B91]/30';
 
 const primaryBtn =
-  'px-5 py-2.5 rounded-xl bg-[#2F4858] hover:bg-[#3E6976] text-white font-brand text-[0.85rem] font-bold border-none cursor-pointer transition-colors disabled:opacity-40 disabled:cursor-not-allowed';
+  'mf-button mf-button--primary';
 
 function CheckSquare({ checked }: { checked: boolean }) {
   return (

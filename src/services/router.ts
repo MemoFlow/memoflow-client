@@ -26,7 +26,7 @@ export const ROUTES = {
 export type RoutePath = (typeof ROUTES)[keyof typeof ROUTES];
 
 const TITLES: Record<RoutePath, string> = {
-  '/': 'MemoFlow · Rédigez votre mémoire sans repartir de zéro',
+  '/': 'MemoFlow | Rédiger un mémoire ou rapport d’alternance',
   '/connexion': 'Connexion · MemoFlow',
   '/inscription': 'Créer un compte · MemoFlow',
   '/mot-de-passe-oublie': 'Mot de passe oublié · MemoFlow',

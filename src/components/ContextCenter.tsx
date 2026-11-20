@@ -149,7 +149,7 @@ export default function ContextCenter({ onAddToast }: ContextCenterProps) {
             </span>
           </div>
           <h2 className="text-[1.8rem] font-bold text-[#2F4858] tracking-tight font-brand">
-            Centre de Contexte (Context Center)
+            Centre de Contexte
           </h2>
           <p className="text-[0.88rem] text-slate-500 max-w-[800px] leading-relaxed font-medium">
             Centralisez vos paramètres de recherche pour aligner le moteur d'IA de MemoFlow avec vos objectifs académiques et votre ton spécifiques.
@@ -254,7 +254,7 @@ export default function ContextCenter({ onAddToast }: ContextCenterProps) {
                     </svg>
                   </span>
                   <h3 className="text-[1rem] font-bold text-[#2F4858] tracking-tight font-brand">
-                    Public Cible (Target Audience)
+                    Public cible
                   </h3>
                 </div>
                 <span className="text-[0.68rem] font-bold text-slate-500">
@@ -309,13 +309,13 @@ export default function ContextCenter({ onAddToast }: ContextCenterProps) {
                     <button
                       type="button"
                       onClick={() => setShowPersonaForm(false)}
-                      className="px-3 py-1.5 rounded-lg text-[0.72rem] font-bold bg-white text-slate-500 border border-solid border-[#E5E9EB] cursor-pointer hover:bg-slate-50 transition-colors"
+                      className="mf-button mf-button--secondary !min-h-9 !px-3 text-[0.72rem]"
                     >
                       Annuler
                     </button>
                     <button
                       type="submit"
-                      className="px-3 py-1.5 rounded-lg text-[0.72rem] font-bold bg-[#94D2B8] hover:bg-[#C4F4C7] text-[#0F4C3A] hover:text-[#0A382A] border border-[#94D2B8] hover:border-[#7BCBAA] cursor-pointer transition-colors"
+                      className="mf-button mf-button--accent !min-h-9 !px-3 text-[0.72rem]"
                     >
                       Ajouter
                     </button>

@@ -1,16 +1,21 @@
 import { useState, useEffect } from 'react';
-import masterGradeImg from '../assets/master_grade.png';
+import masterGradeImg from '../assets/master_grade-card.webp';
 import masterDegreeImg from '../assets/1_master_degree.jpg';
-import collegeDegreeImg from '../assets/2_college_degree.jpg';
+import collegeDegreeImg from '../assets/college_degree-card.webp';
 import { apiFetch } from '../services/api';
 import type { TemplateResponseDto } from '../services/api';
-import type { TemplateChoice } from './Dashboard';
 
 interface TemplatesPageProps {
   isGuest: boolean;
   onUseTemplate: (template: TemplateChoice) => void;
   onCreateBlankDocument: () => void;
   onRequestLogin: () => void;
+}
+
+export interface TemplateChoice {
+  id: string;
+  title: string;
+  docType: string;
 }
 
 interface TemplateCard extends TemplateChoice {
@@ -76,7 +81,7 @@ export default function TemplatesPage({
   const blankDocButton = (
     <button
       onClick={onCreateBlankDocument}
-      className="bg-white hover:bg-slate-50 text-[#2F4858] border border-solid border-slate-200 font-brand text-[0.8rem] font-bold px-4 py-2 rounded-xl transition-all cursor-pointer active:scale-95"
+      className="mf-button mf-button--secondary max-sm:w-full"
     >
       Commencer un document vierge
     </button>
@@ -91,11 +96,11 @@ export default function TemplatesPage({
             Connectez-vous pour accéder à la bibliothèque de modèles. En mode invité, vous pouvez tout de même rédiger
             un document vierge (non sauvegardé).
           </p>
-          <div className="flex gap-2.5 mt-2 flex-wrap justify-center">
+          <div className="flex gap-2.5 mt-2 flex-wrap justify-center max-sm:w-full max-sm:flex-col">
             {blankDocButton}
             <button
               onClick={onRequestLogin}
-              className="bg-[#2F4858] hover:bg-[#3E6976] text-white font-brand text-[0.8rem] font-bold px-4 py-2 rounded-xl transition-all cursor-pointer border-none active:scale-95"
+              className="mf-button mf-button--primary max-sm:w-full"
             >
               Se connecter
             </button>
@@ -134,6 +139,10 @@ export default function TemplatesPage({
               <img
                 src={tpl.image}
                 alt={tpl.title}
+                width={768}
+                height={432}
+                loading="lazy"
+                decoding="async"
                 className="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-500"
               />
               <span className="absolute top-4 left-4 bg-white/90 backdrop-blur-xs text-[#2F4858] text-[0.72rem] font-bold px-3 py-1 rounded-md shadow-xs border border-white/20">
@@ -155,7 +164,7 @@ export default function TemplatesPage({
                 <span className="text-[0.78rem] font-bold text-slate-400">{tpl.sectionsLabel}</span>
                 <button
                   onClick={() => onUseTemplate(tpl)}
-                  className="bg-[#94D2B8] hover:bg-[#C4F4C7] text-[#0F4C3A] hover:text-[#0A382A] font-brand text-[0.8rem] font-bold px-4 py-1.5 rounded-lg border border-[#94D2B8] hover:border-[#7BCBAA] transition-all cursor-pointer shadow-[0_2px_8px_rgba(148,210,184,0.15)] hover:shadow-md active:scale-95"
+                  className="mf-button mf-button--accent shadow-[0_2px_8px_rgba(148,210,184,0.15)] hover:shadow-md"
                 >
                   Utiliser
                 </button>

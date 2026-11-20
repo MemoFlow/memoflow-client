@@ -28,7 +28,7 @@ export default function InputField({
   const inputType = isPassword && showPassword ? 'text' : type;
 
   return (
-    <div className="flex flex-col gap-1.5 w-full mb-5 text-left">
+    <div className="flex flex-col gap-1.5 w-full text-left">
       <div className="flex justify-between items-center">
         <label htmlFor={id} className="font-brand text-[0.8rem] font-medium text-slate-500 tracking-wider">
           {label}
@@ -44,7 +44,7 @@ export default function InputField({
           value={value}
           onChange={(e) => onChange(e.target.value)}
           required={required}
-          className={`w-full px-4 py-3 font-sans text-[0.95rem] text-slate-800 bg-white border rounded-xl outline-none transition-all duration-200 ${
+          className={`w-full min-h-11 px-4 py-2.5 font-sans text-[0.95rem] text-slate-800 bg-white border rounded-xl outline-none transition-all duration-200 ${
             error 
               ? 'border-red-500 focus:ring-3 focus:ring-red-500/15 focus:border-red-500' 
               : 'border-slate-200 focus:border-brand-green focus:ring-3 focus:ring-brand-green/25'

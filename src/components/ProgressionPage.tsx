@@ -192,13 +192,13 @@ export default function ProgressionPage({ userId, onRequestLogin, onRequestSignu
         <div className="flex gap-2.5 mt-3">
           <button
             onClick={onRequestLogin}
-            className="px-4 py-2 rounded-xl text-[0.82rem] font-bold bg-white text-[#2F4858] border border-solid border-slate-200 hover:bg-slate-50 cursor-pointer"
+            className="mf-button mf-button--secondary"
           >
             Se connecter
           </button>
           <button
             onClick={onRequestSignup}
-            className="px-4 py-2 rounded-xl text-[0.82rem] font-bold bg-[#2F4858] hover:bg-[#3E6976] text-white border-none cursor-pointer"
+            className="mf-button mf-button--primary"
           >
             Créer un compte
           </button>

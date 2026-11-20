@@ -3,7 +3,6 @@ import InputField from './InputField';
 import { apiFetch } from '../services/api';
 import { rememberSignupConsent } from '../services/onboarding';
 import { markVerificationEmailSent } from '../services/authEmail';
-import BrandLogo from './BrandLogo';
 import { trackSignUp } from '../services/analytics';
 
 interface SignupFormProps {
@@ -124,7 +123,7 @@ export default function SignupForm({
         <button
           type="button"
           onClick={onSwitchToLogin}
-          className="w-full bg-brand-green text-brand-green-dark border-none rounded-xl p-3.5 font-sans text-[0.95rem] font-medium cursor-pointer shadow-sm hover:bg-brand-green-hover transition-all"
+          className="mf-button mf-button--primary w-full"
         >
           Se connecter
         </button>
@@ -137,13 +136,7 @@ export default function SignupForm({
 
   return (
     <div className="bg-white border border-slate-100 rounded-[20px] p-12 w-full max-w-[520px] shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05),0_10px_15px_-3px_rgba(0,0,0,0.05),0_20px_25px_-5px_rgba(0,0,0,0.02)] text-center my-10 mx-auto backdrop-blur-md max-sm:p-6 max-sm:my-6 max-sm:rounded-2xl animate-fade-in">
-      {/* Brand Logo inside the card */}
-      <div className="inline-flex items-center gap-2 mb-6 text-brand-green-dark">
-        <BrandLogo size={32} />
-        <span className="font-brand text-[1.15rem] font-medium tracking-tight">MemoFlow</span>
-      </div>
-
-      <h1 className="font-brand text-[1.5rem] font-medium text-slate-800 mb-2 tracking-tight max-sm:text-xl">Commencer l'aventure MemoFlow</h1>
+      <h1 className="font-brand text-[1.8rem] font-medium text-slate-800 mb-2 tracking-tight max-sm:text-xl">Commencer l'aventure MemoFlow</h1>
       <p className="font-sans text-[0.85rem] text-slate-500 mb-9">Structurez votre pensée, libérez votre potentiel</p>
 
       {generalError && (
@@ -152,9 +145,9 @@ export default function SignupForm({
         </div>
       )}
 
-      <form onSubmit={handleSubmit} className="flex flex-col gap-2" noValidate>
+      <form onSubmit={handleSubmit} className="flex flex-col gap-4" noValidate>
         {/* Name Row */}
-        <div className="grid grid-cols-2 gap-4 w-full max-sm:grid-cols-1 max-sm:gap-0">
+        <div className="grid grid-cols-2 gap-4 w-full max-sm:grid-cols-1">
           <InputField
             label="Prénom"
             type="text"
@@ -194,7 +187,7 @@ export default function SignupForm({
           error={errors.email}
         />
 
-        <div className="mb-3">
+        <div>
           <InputField
             label="Mot de passe"
             type="password"
@@ -207,7 +200,7 @@ export default function SignupForm({
             }}
             error={errors.password}
           />
-          <span className="block text-left font-sans text-[0.75rem] text-slate-400 -mt-[0.85rem] mb-5">Saisissez un mot de passe</span>
+          <span className="block text-left font-sans text-[0.75rem] text-slate-500 mt-1">Utilisez au moins 8 caractères.</span>
         </div>
 
         {/* Terms checkbox */}
@@ -270,7 +263,7 @@ export default function SignupForm({
 
         <button
           type="submit"
-          className="w-full bg-brand-green text-brand-green-dark border-none rounded-xl p-3.5 font-sans text-[0.95rem] font-medium cursor-pointer mt-2 flex items-center justify-center shadow-sm hover:bg-brand-green-hover hover:-translate-y-[1px] active:translate-y-0 disabled:opacity-70 disabled:cursor-not-allowed transition-all"
+          className="mf-button mf-button--primary w-full mt-1"
           disabled={isLoading}
         >
           {isLoading ? <span className="w-5 h-5 border-2 border-brand-green-dark/25 border-t-brand-green-dark rounded-full animate-spin"></span> : 'Créer mon compte'}

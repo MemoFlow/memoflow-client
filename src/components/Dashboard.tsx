@@ -1,16 +1,19 @@
-import { useState, useEffect, useCallback } from 'react';
-import TemplatesPage from './TemplatesPage';
-import WritingSpace from './WritingSpace';
-import ContextCenter from './ContextCenter';
-import ConnectorsManager from './ConnectorsManager';
-import ProgressionPage from './ProgressionPage';
-import SettingsPage from './SettingsPage';
+import { lazy, Suspense, useState, useEffect, useCallback } from 'react';
 import EmailVerificationBanner from './EmailVerificationBanner';
 import BrandLogo from './BrandLogo';
+import LoadingIndicator from './LoadingIndicator';
 import Link from './Link';
 import { ROUTES, navigate as goTo } from '../services/router';
 import { apiFetch } from '../services/api';
 import type { DocumentResponseDto, UserResponseDto } from '../services/api';
+import type { TemplateChoice } from './TemplatesPage';
+
+const TemplatesPage = lazy(() => import('./TemplatesPage'));
+const WritingSpace = lazy(() => import('./WritingSpace'));
+const ContextCenter = lazy(() => import('./ContextCenter'));
+const ConnectorsManager = lazy(() => import('./ConnectorsManager'));
+const ProgressionPage = lazy(() => import('./ProgressionPage'));
+const SettingsPage = lazy(() => import('./SettingsPage'));
 
 interface DashboardProps {
   /** Current URL: decides the page shown (see ROUTES) */
@@ -30,12 +33,6 @@ interface Toast {
   type: 'success' | 'assistant' | 'warning' | 'error';
   title: string;
   message: string;
-}
-
-export interface TemplateChoice {
-  id: string;
-  title: string;
-  docType: string;
 }
 
 const MENU_PROGRESS = 'Ma Progression';
@@ -223,8 +220,10 @@ export default function Dashboard({
   const dropdownItemClass =
     'w-full text-left px-4 py-2 text-[0.82rem] transition-all cursor-pointer border-none bg-transparent flex items-center gap-2.5 text-slate-700 hover:bg-slate-50 hover:text-[#2F4858]';
 
+  const activeMenuShort = MOBILE_NAV_ITEMS.find((item) => item.name === activeMenu)?.short ?? activeMenu;
+
   return (
-    <div className="flex h-screen w-screen overflow-hidden font-sans select-none antialiased transition-all duration-300 bg-[#F8FAFB] text-[#2F4858]">
+    <div className="flex h-dvh w-full overflow-hidden font-sans antialiased transition-all duration-300 bg-[#F8FAFB] text-[#2F4858]">
 
       {/* SIDEBAR */}
       <aside className={`w-[260px] flex-shrink-0 flex flex-col justify-between p-6 max-lg:hidden shadow-[0_0_15px_rgba(0,0,0,0.02)] transition-all duration-300 bg-white border-r border-[#E5E9EB] ${
@@ -319,13 +318,13 @@ export default function Dashboard({
             <div className="flex items-center gap-2 flex-shrink-0">
               <button
                 onClick={onRequestLogin}
-                className="px-3 py-1.5 rounded-lg text-[0.75rem] font-bold bg-white text-[#2F4858] border border-solid border-[#BA7517]/25 hover:bg-slate-50 cursor-pointer transition-all"
+                className="mf-button mf-button--secondary !min-h-9 !px-3 text-[0.75rem]"
               >
                 Se connecter
               </button>
               <button
                 onClick={onRequestSignup}
-                className="px-3 py-1.5 rounded-lg text-[0.75rem] font-bold bg-[#2F4858] hover:bg-[#3E6976] text-white border-none cursor-pointer transition-all"
+                className="mf-button mf-button--primary !min-h-9 !px-3 text-[0.75rem]"
               >
                 Créer un compte
               </button>
@@ -338,26 +337,30 @@ export default function Dashboard({
 
         {/* HEADER */}
         {activeMenu !== MENU_WRITING && (
-          <header className="h-[76px] px-8 flex-shrink-0 border-b flex justify-between items-center z-20 max-sm:px-4 transition-all duration-350 bg-white border-[#E5E9EB] shadow-[0_1px_4px_rgba(0,0,0,0.01)]">
-            <div className="flex items-center gap-2">
+          <header className="h-[76px] px-8 flex-shrink-0 border-b flex justify-between items-center gap-3 z-20 max-sm:px-4 transition-all duration-350 bg-white border-[#E5E9EB] shadow-[0_1px_4px_rgba(0,0,0,0.01)]">
+              <div className="flex items-center gap-2 min-w-0">
               <Link to={ROUTES.home} className="lg:hidden flex" aria-label="MemoFlow, accueil">
                 <BrandLogo size={32} />
               </Link>
-              <span className="font-brand font-bold text-[#2F4858] tracking-tight text-[1.05rem]">
-                <span className="lg:hidden">MemoFlow · </span>{activeMenu}
+                <span className="font-brand font-bold text-[#2F4858] tracking-tight text-[1.05rem] min-w-0 truncate">
+                  <span className="hidden sm:inline lg:hidden">MemoFlow · </span>
+                  <span className="hidden sm:inline">{activeMenu}</span>
+                  <span className="sm:hidden">{activeMenuShort}</span>
               </span>
             </div>
 
             {/* Right actions */}
-            <div className="flex items-center gap-4">
+              <div className="flex flex-shrink-0 items-center gap-4 max-sm:gap-2">
               <button
                 onClick={handleCreateNewDocument}
-                className="font-brand text-[0.82rem] font-bold px-4 py-2 rounded-xl transition-all cursor-pointer border-none active:scale-[0.97] bg-[#2F4858] hover:bg-[#3E6976] text-white shadow-[0_2px_8px_rgba(47,72,88,0.12)] max-sm:px-3"
+                  aria-label="Nouveau document"
+                  className="mf-button mf-button--primary shadow-[0_2px_8px_rgba(47,72,88,0.12)] max-sm:!px-3 whitespace-nowrap"
               >
-                Nouveau Document
+                  <span className="max-sm:hidden">Nouveau document</span>
+                  <span className="sm:hidden">Nouveau</span>
               </button>
 
-              <div className="h-6 w-[1px] transition-colors bg-slate-200"></div>
+                <div className="h-6 w-[1px] transition-colors bg-slate-200 max-sm:hidden"></div>
 
               {/* Profile widget */}
               <div className="relative">
@@ -445,74 +448,76 @@ export default function Dashboard({
         <main className={`flex-1 overflow-y-auto custom-scrollbar transition-all duration-350 ${
           activeMenu === MENU_WRITING ? 'p-0 overflow-hidden bg-white max-lg:pb-16' : 'p-8 max-sm:p-4 max-lg:pb-24'
         }`}>
-          {activeMenu === MENU_TEMPLATES && (
-            <TemplatesPage
-              isGuest={isGuest}
-              onUseTemplate={handleUseTemplate}
-              onCreateBlankDocument={handleCreateNewDocument}
-              onRequestLogin={onRequestLogin}
-            />
-          )}
+          <Suspense fallback={<LoadingIndicator label="Chargement de la page…" />}>
+            {activeMenu === MENU_TEMPLATES && (
+              <TemplatesPage
+                isGuest={isGuest}
+                onUseTemplate={handleUseTemplate}
+                onCreateBlankDocument={handleCreateNewDocument}
+                onRequestLogin={onRequestLogin}
+              />
+            )}
 
-          {activeMenu === MENU_WRITING && (
-            <WritingSpace
-              isGuest={isGuest}
-              isFocusMode={isFocusMode}
-              onToggleFocusMode={setIsFocusMode}
-              userName={userName}
-              addToast={addToast}
-              selectedDocumentId={selectedDocumentId}
-              onSelectDocument={setSelectedDocumentId}
-              documents={documents}
-              onRefreshDocuments={fetchDocuments}
-              onCreateDocument={handleCreateNewDocument}
-              onOpenSettings={() => navigate(MENU_SETTINGS)}
-            />
-          )}
+            {activeMenu === MENU_WRITING && (
+              <WritingSpace
+                isGuest={isGuest}
+                isFocusMode={isFocusMode}
+                onToggleFocusMode={setIsFocusMode}
+                userName={userName}
+                addToast={addToast}
+                selectedDocumentId={selectedDocumentId}
+                onSelectDocument={setSelectedDocumentId}
+                documents={documents}
+                onRefreshDocuments={fetchDocuments}
+                onCreateDocument={handleCreateNewDocument}
+                onOpenSettings={() => navigate(MENU_SETTINGS)}
+              />
+            )}
 
-          {activeMenu === MENU_CONTEXT && <ContextCenter onAddToast={addToast} />}
+            {activeMenu === MENU_CONTEXT && <ContextCenter onAddToast={addToast} />}
 
-          {activeMenu === MENU_CONNECTORS && (isGuest ? (
-            <div className="max-w-[1000px] mx-auto w-full bg-white border border-[#E5E9EB] rounded-2xl p-10 text-center flex flex-col items-center gap-3">
-              <h3 className="text-[1.05rem] font-bold text-[#2F4858]">Connecteurs réservés aux comptes</h3>
-              <p className="text-[0.85rem] text-slate-500 max-w-[480px]">
-                Connectez-vous pour lier Notion, Trello ou GitHub à votre espace MemoFlow.
-              </p>
-              <button
-                onClick={onRequestLogin}
-                className="mt-2 px-4 py-2 rounded-xl text-[0.82rem] font-bold bg-[#2F4858] hover:bg-[#3E6976] text-white border-none cursor-pointer"
-              >
-                Se connecter
-              </button>
-            </div>
-          ) : (
-            <ConnectorsManager addToast={addToast} onOpenPrivacy={onOpenPrivacy} />
-          ))}
+            {activeMenu === MENU_CONNECTORS && (isGuest ? (
+              <div className="max-w-[1000px] mx-auto w-full bg-white border border-[#E5E9EB] rounded-2xl p-10 text-center flex flex-col items-center gap-3">
+                <h3 className="text-[1.05rem] font-bold text-[#2F4858]">Connecteurs réservés aux comptes</h3>
+                <p className="text-[0.85rem] text-slate-500 max-w-[480px]">
+                  Connectez-vous pour lier Notion, Trello ou GitHub à votre espace MemoFlow.
+                </p>
+                <button
+                  onClick={onRequestLogin}
+                  className="mf-button mf-button--primary mt-2"
+                >
+                  Se connecter
+                </button>
+              </div>
+            ) : (
+              <ConnectorsManager addToast={addToast} onOpenPrivacy={onOpenPrivacy} />
+            ))}
 
-          {activeMenu === MENU_PROGRESS && (
-            <ProgressionPage
-              userId={user?.id ?? null}
-              onRequestLogin={onRequestLogin}
-              onRequestSignup={onRequestSignup}
-            />
-          )}
+            {activeMenu === MENU_PROGRESS && (
+              <ProgressionPage
+                userId={user?.id ?? null}
+                onRequestLogin={onRequestLogin}
+                onRequestSignup={onRequestSignup}
+              />
+            )}
 
-          {activeMenu === MENU_SETTINGS && (
-            <SettingsPage
-              user={user}
-              onLogout={onLogout}
-              onRequestLogin={onRequestLogin}
-              onRequestSignup={onRequestSignup}
-              onOpenPrivacy={onOpenPrivacy}
-              onOpenTerms={onOpenTerms}
-            />
-          )}
+            {activeMenu === MENU_SETTINGS && (
+              <SettingsPage
+                user={user}
+                onLogout={onLogout}
+                onRequestLogin={onRequestLogin}
+                onRequestSignup={onRequestSignup}
+                onOpenPrivacy={onOpenPrivacy}
+                onOpenTerms={onOpenTerms}
+              />
+            )}
+          </Suspense>
         </main>
       </div>
 
       {/* MOBILE / TABLET NAVIGATION (sidebar is hidden below lg) */}
       {!isFocusMode && (
-        <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-[#E5E9EB] flex justify-around px-1 py-1.5 shadow-[0_-2px_10px_rgba(0,0,0,0.03)]">
+        <nav className="mf-mobile-navigation lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-[#E5E9EB] flex justify-around px-1 py-1.5 shadow-[0_-2px_10px_rgba(0,0,0,0.03)]">
           {MOBILE_NAV_ITEMS.map((item) => {
             const isActive = activeMenu === item.name;
             return (
