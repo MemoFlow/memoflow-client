@@ -205,7 +205,7 @@ export default function ConnectorsManager({ addToast, onOpenPrivacy }: Connector
   return (
     <div className="max-w-[1000px] mx-auto p-4 animate-fade-in">
       <div className="mb-6">
-        <h2 className="text-[1.8rem] font-bold text-[#2F4858] font-brand tracking-tight">Centre de Contexte</h2>
+        <h2 className="text-[1.8rem] font-bold text-[#2F4858] font-brand tracking-tight">Intégrations & Connecteurs</h2>
         <p className="text-sm text-slate-500 font-sans leading-relaxed">
           Liez vos applications externes pour permettre au planificateur IA de collecter du contexte pertinent (sujets, tâches, documentation) sans jamais détenir vos identifiants.
         </p>

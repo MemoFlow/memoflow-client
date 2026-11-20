@@ -42,6 +42,7 @@ const MENU_PROGRESS = 'Ma Progression';
 const MENU_TEMPLATES = 'Modèles';
 const MENU_WRITING = "Espace d'Écriture";
 const MENU_CONTEXT = 'Centre de Contexte';
+const MENU_CONNECTORS = 'Intégrations & Connecteurs';
 const MENU_SETTINGS = 'Paramètres';
 
 const settingsIcon = (size: number) => (
@@ -81,6 +82,12 @@ const NAV_ITEMS = [
       <line x1="9" y1="18" x2="15" y2="18" />
     </svg>
   )},
+  { name: MENU_CONNECTORS, short: 'Connecteurs', icon: (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
+      <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
+    </svg>
+  )},
 ];
 
 const MOBILE_NAV_ITEMS = [...NAV_ITEMS, { name: MENU_SETTINGS, short: 'Paramètres', icon: settingsIcon(18) }];
@@ -91,11 +98,11 @@ const MENU_PATHS: Record<string, string> = {
   [MENU_TEMPLATES]: ROUTES.templates,
   [MENU_WRITING]: ROUTES.writing,
   [MENU_CONTEXT]: ROUTES.context,
+  [MENU_CONNECTORS]: ROUTES.connectors,
   [MENU_SETTINGS]: ROUTES.settings,
 };
 
 function menuForPath(path: string): string {
-  if (path === ROUTES.connectors) return MENU_CONTEXT;
   return Object.keys(MENU_PATHS).find((menu) => MENU_PATHS[menu] === path) ?? MENU_WRITING;
 }
 
@@ -115,7 +122,6 @@ export default function Dashboard({
   const activeMenu = menuForPath(path);
   const [showProfileDropdown, setShowProfileDropdown] = useState(false);
   const [isFocusMode, setIsFocusMode] = useState(false);
-  const contextTab: 'cadrage' | 'connectors' = path === ROUTES.connectors ? 'connectors' : 'cadrage';
 
   // Documents API states
   const [documents, setDocuments] = useState<DocumentResponseDto[]>([]);
@@ -464,49 +470,24 @@ export default function Dashboard({
             />
           )}
 
-          {activeMenu === MENU_CONTEXT && (
-            <div className="flex flex-col gap-6">
-              {/* Context sub-navigation tabs */}
-              <div className="flex border-b border-[#E5E9EB] pb-3 gap-6">
-                {([
-                  ['cadrage', 'Cadrage de Projet'],
-                  ['connectors', 'Intégrations & Connecteurs'],
-                ] as const).map(([key, label]) => (
-                  <button
-                    key={key}
-                    onClick={() => goTo(key === 'connectors' ? ROUTES.connectors : ROUTES.context)}
-                    className={`font-brand text-sm font-bold pb-2 transition-all border-none bg-transparent cursor-pointer relative ${
-                      contextTab === key ? 'text-[#2F4858]' : 'text-slate-400 hover:text-[#2F4858]'
-                    }`}
-                  >
-                    {label}
-                    {contextTab === key && (
-                      <span className="absolute bottom-0 left-0 right-0 h-[2px] bg-[#518B91] rounded-full"></span>
-                    )}
-                  </button>
-                ))}
-              </div>
+          {activeMenu === MENU_CONTEXT && <ContextCenter onAddToast={addToast} />}
 
-              {contextTab === 'cadrage' ? (
-                <ContextCenter onAddToast={addToast} />
-              ) : isGuest ? (
-                <div className="max-w-[1000px] mx-auto w-full bg-white border border-[#E5E9EB] rounded-2xl p-10 text-center flex flex-col items-center gap-3">
-                  <h3 className="text-[1.05rem] font-bold text-[#2F4858]">Connecteurs réservés aux comptes</h3>
-                  <p className="text-[0.85rem] text-slate-500 max-w-[480px]">
-                    Connectez-vous pour lier Notion, Trello ou GitHub à votre espace MemoFlow.
-                  </p>
-                  <button
-                    onClick={onRequestLogin}
-                    className="mt-2 px-4 py-2 rounded-xl text-[0.82rem] font-bold bg-[#2F4858] hover:bg-[#3E6976] text-white border-none cursor-pointer"
-                  >
-                    Se connecter
-                  </button>
-                </div>
-              ) : (
-                <ConnectorsManager addToast={addToast} onOpenPrivacy={onOpenPrivacy} />
-              )}
+          {activeMenu === MENU_CONNECTORS && (isGuest ? (
+            <div className="max-w-[1000px] mx-auto w-full bg-white border border-[#E5E9EB] rounded-2xl p-10 text-center flex flex-col items-center gap-3">
+              <h3 className="text-[1.05rem] font-bold text-[#2F4858]">Connecteurs réservés aux comptes</h3>
+              <p className="text-[0.85rem] text-slate-500 max-w-[480px]">
+                Connectez-vous pour lier Notion, Trello ou GitHub à votre espace MemoFlow.
+              </p>
+              <button
+                onClick={onRequestLogin}
+                className="mt-2 px-4 py-2 rounded-xl text-[0.82rem] font-bold bg-[#2F4858] hover:bg-[#3E6976] text-white border-none cursor-pointer"
+              >
+                Se connecter
+              </button>
             </div>
-          )}
+          ) : (
+            <ConnectorsManager addToast={addToast} onOpenPrivacy={onOpenPrivacy} />
+          ))}
 
           {activeMenu === MENU_PROGRESS && (
             <ProgressionPage
