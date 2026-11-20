@@ -49,10 +49,10 @@ const DATA_CATEGORIES = [
   {
     title: 'Mesure d’audience (si vous l’acceptez)',
     fields:
-      'pages consultées, durée et date des visites, source de la visite (site, réseau social, campagne), type d’appareil et de navigateur, pays, événements anonymes (inscription, connexion, outil connecté, plan généré), identifiant de cookie Google Analytics',
+      'pages consultées, durée et date des visites, source de la visite (site, réseau social, campagne), type d’appareil et de navigateur, pays, événements anonymes (inscription, connexion, outil connecté, plan généré), identifiants de cookie Google Analytics et PostHog ; sur le blog, déroulé des visites (clics, défilement, sans les champs saisis) et erreurs techniques',
     purpose:
       'Comprendre comment MemoFlow est utilisé pour l’améliorer. Aucun cookie n’est déposé sans votre accord, aucune donnée publicitaire n’est activée, et aucun email, nom ou contenu de document n’est transmis. Choix modifiable dans Paramètres.',
-    storage: 'Google Analytics 4 — cookies _ga (13 mois au plus)',
+    storage: 'Google Analytics 4 — cookies _ga (13 mois au plus) ; PostHog — cookie et stockage local ph_*',
   },
   {
     title: 'Activité et progression',
@@ -140,6 +140,11 @@ const THIRD_PARTIES = [
     name: 'Annuaire de l’enseignement supérieur (data.gouv)',
     role: 'Suggestions d’écoles',
     data: 'Le texte saisi dans le champ « Ton école » du questionnaire, pour proposer des noms d’établissements.',
+  },
+  {
+    name: 'PostHog',
+    role: 'Mesure d’audience et enregistrement des visites du blog, seulement avec votre accord',
+    data: 'Pages vues, clics, défilement, erreurs JavaScript et identifiant de cookie, sans les champs saisis. Données hébergées aux États-Unis (PostHog Cloud US).',
   },
   {
     name: 'Google (Tag Manager et Analytics 4)',

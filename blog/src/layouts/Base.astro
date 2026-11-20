@@ -62,6 +62,7 @@ const jsonLd = JSON.stringify({ '@context': 'https://schema.org', '@graph': node
       <div class="wrap">
         <a href="/blog/">Accueil du blog</a>
         <a href="/blog/auteur/francois-hatem/">L'auteur</a>
+        <button type="button" class="lien-consent" id="consent-open">Mesure d'audience</button>
         <span>© MemoFlow</span>
       </div>
     </footer>
@@ -71,9 +72,11 @@ const jsonLd = JSON.stringify({ '@context': 'https://schema.org', '@graph': node
       <div class="consent-texte">
         <p class="consent-titre">Mesure d'audience</p>
         <p>
-          Avec votre accord, nous utilisons Google Analytics pour savoir quelles pages sont consultées et améliorer
-          MemoFlow. Aucun cookie de mesure n'est déposé si vous refusez. Vous pouvez changer d'avis à tout moment dans
-          les Paramètres de MemoFlow. <a href="/">En savoir plus</a>
+          Avec votre accord, nous utilisons Google Analytics et PostHog pour savoir quelles pages sont consultées et
+          améliorer MemoFlow. PostHog peut aussi enregistrer le déroulé de la visite (clics, défilement), sans ce que vous
+          saisissez dans les champs. Rien n'est déposé ni envoyé si vous refusez. Vous pouvez changer d'avis à tout
+          moment avec le lien « Mesure d'audience » en bas de page ou dans les Paramètres de MemoFlow.
+          <a href="/">En savoir plus</a>
         </p>
       </div>
       <div class="consent-choix">
@@ -82,7 +85,8 @@ const jsonLd = JSON.stringify({ '@context': 'https://schema.org', '@graph': node
       </div>
     </div>
     <!-- Même logique que src/services/analytics.ts (Consent Mode v2 basique) : rien n'est chargé avant l'accord.
-         La clé localStorage est partagée avec l'app (même origine). -->
+         La clé localStorage est partagée avec l'app (même origine). PostHog (components/posthog.astro) lit la
+         même clé et réagit aux mêmes boutons data-consent. -->
     <script is:inline>
       (function () {
         var KEY = 'memoflow_analytics_consent';
@@ -106,19 +110,41 @@ const jsonLd = JSON.stringify({ '@context': 'https://schema.org', '@graph': node
           s.src = 'https://www.googletagmanager.com/gtm.js?id=' + GTM_ID;
           document.head.appendChild(s);
         }
+        function deleteGaCookies() {
+          var host = location.hostname;
+          document.cookie.split(';').forEach(function (c) {
+            var name = c.split('=')[0].trim();
+            if (name.indexOf('_ga') !== 0 && name.indexOf('_gid') !== 0) return;
+            ['', host, '.' + host].forEach(function (d) {
+              document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/' + (d ? '; domain=' + d : '');
+            });
+          });
+        }
         var consent = null;
         try { consent = localStorage.getItem(KEY); } catch (e) {}
-        if (consent === 'granted') return loadGtm();
-        if (consent === 'denied') return;
         var banner = document.getElementById('consent');
-        banner.hidden = false;
+
         banner.addEventListener('click', function (e) {
           var choice = e.target.getAttribute('data-consent');
           if (!choice) return;
+          var previous = consent;
+          consent = choice;
           try { localStorage.setItem(KEY, choice); } catch (err) {}
           banner.hidden = true;
-          if (choice === 'granted') loadGtm();
+          if (choice === 'granted') return loadGtm();
+          deleteGaCookies();
+          // Accord retiré : GTM et PostHog ne peuvent pas être déchargés, on recharge sans eux
+          if (previous === 'granted') location.reload();
         });
+
+        // Lien « Mesure d'audience » du pied de page : revoir ou retirer son choix à tout moment
+        document.getElementById('consent-open').addEventListener('click', function () {
+          banner.hidden = false;
+        });
+
+        if (consent === 'granted') return loadGtm();
+        if (consent === 'denied') return deleteGaCookies();
+        banner.hidden = false;
       })();
     </script>
   </body>

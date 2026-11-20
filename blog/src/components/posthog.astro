@@ -1,10 +1,41 @@
 ---
+// Variables lues dans les .env à la racine du dépôt (voir vite.envDir dans astro.config.mjs).
+// Sur Vercel, elles doivent exister dans les variables d'environnement du projet.
 const apiKey = import.meta.env.PUBLIC_POSTHOG_PROJECT_TOKEN;
 const apiHost = import.meta.env.PUBLIC_POSTHOG_HOST;
 const isDev = import.meta.env.DEV;
 ---
 <script is:inline define:vars={{ apiKey, apiHost, isDev }}>
   (function () {
+    var CONSENT_KEY = 'memoflow_analytics_consent';
+
+    // Efface ce que PostHog a pu enregistrer (ph_* et la marque de refus __ph_opt_in_out_*),
+    // dans les cookies, le localStorage et le sessionStorage
+    function isPostHogKey(key) { return /^(__)?ph_/.test(key); }
+    function clearPostHogStorage() {
+      try {
+        [localStorage, sessionStorage].forEach(function (store) {
+          Object.keys(store).forEach(function (key) {
+            if (isPostHogKey(key)) store.removeItem(key);
+          });
+        });
+      } catch (e) {}
+      var host = location.hostname;
+      document.cookie.split(';').forEach(function (c) {
+        var name = c.split('=')[0].trim();
+        if (!isPostHogKey(name)) return;
+        ['', host, '.' + host].forEach(function (d) {
+          document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/' + (d ? '; domain=' + d : '');
+        });
+      });
+    }
+
+    var consent = null;
+    try { consent = localStorage.getItem(CONSENT_KEY); } catch (e) {}
+
+    // Pas d'accord (ou accord retiré, par exemple dans les Paramètres de l'app) : rien ne reste
+    if (consent !== 'granted') clearPostHogStorage();
+
     if (!apiKey) {
       if (isDev) {
         throw new Error('PUBLIC_POSTHOG_PROJECT_TOKEN variable required by PostHog is missing or un-configured, this causes events to be silently missed. This error stops appearing once PUBLIC_POSTHOG_PROJECT_TOKEN is configured');
@@ -25,9 +56,16 @@ const isDev = import.meta.env.DEV;
       if (initialized) return;
       initialized = true;
 
-      !function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split('.');2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement('script')).type='text/javascript',p.crossOrigin='anonymous',p.async=!0,p.src=s.api_host+'/static/array.js',(r=t.getElementsByTagName('script')[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a='posthog',u.people=u.people||[],Object.defineProperty(u,'toString',{configurable:!0,enumerable:!0,writable:!0,value:function(t){var e='posthog';return'posthog'!==a&&(e+='.'+a),t||(e+=' (stub)'),e}}),Object.defineProperty(u.people,'toString',{configurable:!0,enumerable:!0,writable:!0,value:function(){return u.toString(1)+'.people (stub)'}}),o='capture identify alias people.set people.set_once set_config register register_once unregister opt_out_capturing has_opted_out_capturing opt_in_capturing reset isFeatureEnabled onFeatureFlags getFeatureFlag getFeatureFlagPayload reloadFeatureFlags group updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures getActiveMatchingSurveys getSurveys getNextSurveyStep onSessionId'.split(' '),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
+      // Extrait officiel PostHog : le SDK est servi par le CDN us-assets.i.posthog.com
+      !function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split('.');2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement('script')).type='text/javascript',p.crossOrigin='anonymous',p.async=!0,p.src=s.api_host.replace('.i.posthog.com','-assets.i.posthog.com')+'/static/array.js',(r=t.getElementsByTagName('script')[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a='posthog',u.people=u.people||[],Object.defineProperty(u,'toString',{configurable:!0,enumerable:!0,writable:!0,value:function(t){var e='posthog';return'posthog'!==a&&(e+='.'+a),t||(e+=' (stub)'),e}}),Object.defineProperty(u.people,'toString',{configurable:!0,enumerable:!0,writable:!0,value:function(){return u.toString(1)+'.people (stub)'}}),o='capture identify alias people.set people.set_once set_config register register_once unregister opt_out_capturing has_opted_out_capturing opt_in_capturing reset isFeatureEnabled onFeatureFlags getFeatureFlag getFeatureFlagPayload reloadFeatureFlags group updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures getActiveMatchingSurveys getSurveys getNextSurveyStep onSessionId'.split(' '),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
       window.posthog.init(apiKey, {
         api_host: apiHost,
+        // Les lecteurs du blog sont anonymes : pas de profil de personne côté PostHog
+        person_profiles: 'identified_only',
+        // Session Replay (s'il est activé dans le projet PostHog) : aucun champ saisi n'est enregistré
+        session_recording: {
+          maskAllInputs: true
+        },
         capture_exceptions: {
           capture_unhandled_errors: true,
           capture_unhandled_rejections: true,
@@ -46,16 +84,18 @@ const isDev = import.meta.env.DEV;
       });
     }
 
-    try {
-      if (localStorage.getItem('memoflow_analytics_consent') === 'granted') {
-        initializePostHog();
-      }
-    } catch (error) {}
+    if (consent === 'granted') initializePostHog();
 
+    // Choix fait dans la bannière de consentement (Base.astro)
     document.addEventListener('click', function (event) {
       var target = event.target;
-      if (target instanceof Element && target.getAttribute('data-consent') === 'granted') {
+      if (!(target instanceof Element)) return;
+      var choice = target.getAttribute('data-consent');
+      if (choice === 'granted') {
         initializePostHog();
+      } else if (choice === 'denied') {
+        if (initialized && window.posthog && window.posthog.opt_out_capturing) window.posthog.opt_out_capturing();
+        clearPostHogStorage();
       }
     });
   })();

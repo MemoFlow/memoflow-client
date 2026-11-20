@@ -65,6 +65,22 @@ function loadGtm(): void {
   document.head.appendChild(script);
 }
 
+/** PostHog (blog, même origine) : cookies et stockage ph_* et marque de refus __ph_opt_in_out_* */
+function deletePostHogStorage(): void {
+  const isPostHogKey = (key: string) => /^(__)?ph_/.test(key);
+  [localStorage, sessionStorage].forEach((store) => {
+    Object.keys(store).filter(isPostHogKey).forEach((key) => store.removeItem(key));
+  });
+  const host = window.location.hostname;
+  document.cookie.split(';').forEach((c) => {
+    const name = c.split('=')[0].trim();
+    if (!isPostHogKey(name)) return;
+    ['', host, `.${host}`].forEach((d) => {
+      document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/${d ? `; domain=${d}` : ''}`;
+    });
+  });
+}
+
 function deleteGaCookies(): void {
   const host = window.location.hostname;
   const domains = ['', host, `.${host}`, `.${host.split('.').slice(-2).join('.')}`];
@@ -110,6 +126,7 @@ export function setAnalyticsConsent(granted: boolean): void {
     });
   }
   deleteGaCookies();
+  deletePostHogStorage();
 }
 
 // ─── Events ──────────────────────────────────────────────────────────────────
