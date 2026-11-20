@@ -107,8 +107,9 @@ function AnalyticsConsentCard() {
           className="mt-0.5 w-4 h-4 accent-[#518B91] cursor-pointer flex-shrink-0"
         />
         <span className="text-[0.82rem] text-slate-600 leading-relaxed">
-          J'accepte les cookies Google Analytics, qui servent uniquement à mesurer l'audience et l'utilisation de
-          MemoFlow. Si vous retirez votre accord, les nouveaux événements ne sont plus envoyés et les cookies Google sont supprimés, sans rechargement de la page.
+          J'accepte la mesure d'audience : Google Analytics sur MemoFlow, et PostHog sur le blog (pages vues et
+          déroulé des visites, sans ce que vous saisissez). Si vous retirez votre accord, plus rien n'est envoyé et les
+          cookies Google et PostHog sont supprimés, sans rechargement de la page.
         </span>
       </label>
     </section>
