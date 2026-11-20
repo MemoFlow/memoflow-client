@@ -110,12 +110,13 @@ function track(event: string, params: Record<string, unknown> = {}): void {
 }
 
 /**
- * Blog article that sent the visitor here: blog CTAs link to /inscription?from=<slug>.
- * Read once at load, before any navigation drops the query string. Slug-shaped values only.
+ * Acquisition source captured on arrival, before in-app navigation drops the query string.
+ * Blog CTAs use /inscription?from=<slug>; the IIM campaign has its own landing route.
  */
 const SIGNUP_SOURCE = (() => {
   const from = new URLSearchParams(window.location.search).get('from');
-  return from && /^[a-z0-9-]{1,80}$/.test(from) ? from : undefined;
+  if (from && /^[a-z0-9-]{1,80}$/.test(from)) return from;
+  return window.location.pathname === '/iim' ? 'iim' : undefined;
 })();
 
 /** Acquisition: account creation form accepted (POST /auth/register → 202) */
