@@ -1,6 +1,7 @@
 ---
 import { SITE } from '../site';
 import { breadcrumbList, type Crumb } from '../schema';
+import PostHog from '../components/posthog.astro';
 import '../blog.css';
 
 interface Props {
@@ -37,6 +38,7 @@ const jsonLd = JSON.stringify({ '@context': 'https://schema.org', '@graph': node
     <meta property="og:site_name" content="MemoFlow" />
     <meta property="og:locale" content="fr_FR" />
     {nodes.length > 0 && <script type="application/ld+json" set:html={jsonLd} />}
+    <PostHog />
   </head>
   <body>
     <header class="site-header">

@@ -30,5 +30,19 @@ const href = `/inscription?from=${encodeURIComponent(slug)}`;
 <aside class="cta" aria-label="Essayer MemoFlow">
   <p class="cta-titre">{titre}</p>
   <p>{texte}</p>
-  <a class="btn" href={href}>Commence gratuitement</a>
+  <a class="btn" href={href} data-posthog-signup-cta>Commence gratuitement</a>
 </aside>
+
+<script is:inline define:vars={{ type, slug }}>
+  document.querySelector('[data-posthog-signup-cta]')?.addEventListener('click', function () {
+    window.posthog?.capture('signup_cta_clicked', {
+      cta_type: type,
+      article_slug: slug,
+    });
+    window.posthog?.logger?.info('signup CTA clicked', {
+      event: 'signup_cta_clicked',
+      cta_type: type,
+      article_slug: slug,
+    });
+  });
+</script>
