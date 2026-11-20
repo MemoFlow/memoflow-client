@@ -332,6 +332,7 @@ function App() {
   return withOverlays(
     <LandingPage
       isLoggedIn={user !== null}
+      variant={path === ROUTES.iim ? 'iim' : 'default'}
       onOpenPrivacy={() => handleOpenPrivacy('overview')}
       onOpenTerms={() => handleOpenPrivacy('terms')}
     />

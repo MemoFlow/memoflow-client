@@ -7,6 +7,7 @@ import { useSyncExternalStore } from 'react';
  */
 export const ROUTES = {
   home: '/',
+  iim: '/iim',
   login: '/connexion',
   signup: '/inscription',
   forgotPassword: '/mot-de-passe-oublie',
@@ -27,6 +28,7 @@ export type RoutePath = (typeof ROUTES)[keyof typeof ROUTES];
 
 const TITLES: Record<RoutePath, string> = {
   '/': 'MemoFlow | Rédiger un mémoire ou rapport d’alternance',
+  '/iim': 'MemoFlow pour les étudiants de l’IIM Digital School',
   '/connexion': 'Connexion · MemoFlow',
   '/inscription': 'Créer un compte · MemoFlow',
   '/mot-de-passe-oublie': 'Mot de passe oublié · MemoFlow',
