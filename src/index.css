@@ -112,7 +112,7 @@
     top: 0.5rem;
     left: 50%;
     bottom: 1rem;
-    width: min(28rem, calc(100% - 1rem));
+    width: min(34rem, calc(100% - 1rem));
     transform: translateX(-50%);
     z-index: 50;
     border: 1px solid var(--border-subtle);

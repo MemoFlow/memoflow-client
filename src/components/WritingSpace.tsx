@@ -1,13 +1,23 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import {
+  acceptAiConsent,
+  ApiError,
   getToken,
   connectSocket,
   disconnectSocket,
   subscribeToJob,
   apiFetch,
   hasGuestDraftContent,
+  isAiConsentRequiredError,
 } from '../services/api';
-import type { ConnectorResponseDto, PlanningJobResponseDto, DocumentResponseDto, SectionResponseDto } from '../services/api';
+import type {
+  AiConsentDto,
+  ConnectorResponseDto,
+  PlanningJobResponseDto,
+  DocumentResponseDto,
+  SectionResponseDto,
+  UserResponseDto,
+} from '../services/api';
 import { trackPlanGenerated } from '../services/analytics';
 import { registerNavigationGuard } from '../services/router';
 
@@ -187,6 +197,60 @@ function GuestDemoDialog({
   );
 }
 
+function AiConsentNotice({
+  version,
+  isAccepting,
+  error,
+  onAccept,
+}: {
+  version: string;
+  isAccepting: boolean;
+  error: string | null;
+  onAccept: () => void;
+}) {
+  const [hasConfirmed, setHasConfirmed] = useState(false);
+
+  return (
+    <form onSubmit={(event) => { event.preventDefault(); onAccept(); }} className="flex flex-col gap-3">
+      <div className="flex items-start gap-3">
+        <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-xl bg-[#EAF3DE] text-[#3E6976]" aria-hidden="true">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+            <path d="m9 12 2 2 4-4" />
+          </svg>
+        </span>
+        <div>
+          <h4 className="m-0 font-brand text-[0.9rem] font-bold text-[#2F4858]">Votre accord est nécessaire</h4>
+          <p className="m-0 mt-1 text-[0.75rem] leading-relaxed text-slate-600">
+            Pour créer un plan, votre consigne et les extraits des connecteurs que vous choisissez sont transmis à
+            Anthropic Claude. Les résultats sont enregistrés dans votre compte. Cet accord est distinct des cookies et
+            peut être retiré dans Paramètres.
+          </p>
+        </div>
+      </div>
+      <label className="flex cursor-pointer items-start gap-2.5 rounded-lg border border-[#DDE3E6] bg-white p-3 text-[0.75rem] leading-relaxed text-[#2F4858]">
+        <input
+          type="checkbox"
+          checked={hasConfirmed}
+          disabled={isAccepting}
+          onChange={(event) => setHasConfirmed(event.target.checked)}
+          className="mt-0.5 h-4 w-4 flex-shrink-0 accent-[#518B91]"
+        />
+        <span>J’ai pris connaissance de cet avis et j’accepte l’utilisation des fonctions d’intelligence artificielle.</span>
+      </label>
+      {error && (
+        <p role="alert" className="m-0 rounded-lg border border-red-100 bg-[#FCEBEB] p-2.5 text-[0.74rem] leading-relaxed text-red-600">
+          {error}
+        </p>
+      )}
+      <button type="submit" disabled={!hasConfirmed || isAccepting} className="mf-button mf-button--primary w-full">
+        {isAccepting ? 'Enregistrement de votre choix…' : 'Accepter et activer l’assistant'}
+      </button>
+      <span className="text-center text-[0.65rem] text-slate-400">Avis IA · version {version}</span>
+    </form>
+  );
+}
+
 export default function WritingSpace({
   isGuest,
   isFocusMode,
@@ -216,6 +280,11 @@ export default function WritingSpace({
   const [jobResult, setJobResult] = useState<unknown>(null);
   const [jobError, setJobError] = useState<string | null>(null);
   const [isSubmittingJob, setIsSubmittingJob] = useState(false);
+  const [aiConsent, setAiConsent] = useState<AiConsentDto | null>(null);
+  const [aiConsentLoadState, setAiConsentLoadState] = useState<'loading' | 'ready' | 'error'>('loading');
+  const [aiConsentLoadError, setAiConsentLoadError] = useState<string | null>(null);
+  const [aiConsentActionError, setAiConsentActionError] = useState<string | null>(null);
+  const [isAcceptingAiConsent, setIsAcceptingAiConsent] = useState(false);
   const [isAssistantOpen, setIsAssistantOpen] = useState(false);
   const [isGuestDemoOpen, setIsGuestDemoOpen] = useState(false);
   const closeGuestDemo = useCallback(() => setIsGuestDemoOpen(false), []);
@@ -239,6 +308,57 @@ export default function WritingSpace({
   const debounceTimersRef = useRef<{ [sectionId: string]: number }>({});
   const pendingSectionUpdatesRef = useRef<{ [sectionId: string]: { title?: string; content?: string } }>({});
   const docTitleTimerRef = useRef<number | null>(null);
+
+  const loadAiConsent = useCallback(async () => {
+    try {
+      const currentUser = await apiFetch<UserResponseDto>('/users/me');
+      if (!currentUser.ai_consent) throw new Error('Le statut du consentement IA est indisponible.');
+      setAiConsent(currentUser.ai_consent);
+      setAiConsentLoadState('ready');
+      setAiConsentLoadError(null);
+    } catch (err) {
+      setAiConsentLoadState('error');
+      setAiConsentLoadError(err instanceof Error ? err.message : 'Impossible de vérifier le consentement IA.');
+      throw err;
+    }
+  }, []);
+
+  useEffect(() => {
+    if (isGuest) return;
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- Consent is loaded asynchronously after mount.
+    void loadAiConsent().catch((err: unknown) => {
+      console.error('Error fetching AI consent:', err);
+    });
+  }, [isGuest, loadAiConsent]);
+
+  const handleAcceptAiConsent = async () => {
+    if (!aiConsent) return;
+    setIsAcceptingAiConsent(true);
+    setAiConsentActionError(null);
+    try {
+      const updatedUser = await acceptAiConsent(aiConsent.current_version);
+      if (!updatedUser.ai_consent) throw new Error('Le serveur n’a pas confirmé votre consentement IA.');
+      setAiConsent(updatedUser.ai_consent);
+      setAiConsentLoadState('ready');
+    } catch (err) {
+      if (err instanceof ApiError && err.statusCode === 409) {
+        try {
+          await loadAiConsent();
+          setAiConsentActionError('L’avis a été actualisé. Relisez-le, puis confirmez à nouveau votre choix.');
+        } catch (refreshError) {
+          console.error('Error refreshing AI notice after version conflict:', refreshError);
+          setAiConsentActionError(
+            refreshError instanceof Error ? refreshError.message : 'Impossible de charger le nouvel avis IA.'
+          );
+        }
+      } else {
+        console.error('Error accepting AI consent:', err);
+        setAiConsentActionError(err instanceof Error ? err.message : 'Impossible d’enregistrer votre accord.');
+      }
+    } finally {
+      setIsAcceptingAiConsent(false);
+    }
+  };
 
   useEffect(() => {
     if (!isMobileAssistantOpen) return;
@@ -381,6 +501,18 @@ export default function WritingSpace({
       startPollInterval(res.job_id);
     } catch (err: unknown) {
       console.error('Error starting planning job:', err);
+      if (isAiConsentRequiredError(err)) {
+        setJobStatus(null);
+        setJobError(null);
+        setAiConsentLoadState('loading');
+        setAiConsentLoadError(null);
+        try {
+          await loadAiConsent();
+        } catch (refreshError) {
+          console.error('Error refreshing AI consent after planning rejection:', refreshError);
+        }
+        return;
+      }
       setJobStatus('failed');
       const errorMsg = err instanceof Error ? err.message : 'Impossible de lancer la planification.';
       setJobError(errorMsg);
@@ -828,7 +960,7 @@ export default function WritingSpace({
         <aside
           id="writing-assistant-panel"
           aria-label="Assistant MemoFlow"
-          className={`w-[360px] border-l border-solid border-[#E5E9EB] bg-white flex flex-col justify-between overflow-hidden transition-all duration-350 ${
+          className={`w-[clamp(360px,30vw,420px)] border-l border-solid border-[#E5E9EB] bg-white flex flex-col justify-between overflow-hidden transition-all duration-350 ${
             isFocusMode ? 'w-0 opacity-0 border-none pointer-events-none' : 'opacity-100'
           } ${isMobileAssistantOpen ? 'max-xl:flex' : 'max-xl:hidden'} mf-writing-assistant-panel`}
         >
@@ -885,6 +1017,32 @@ export default function WritingSpace({
                         </button>
                       </div>
                     </div>
+                ) : aiConsentLoadState === 'loading' ? (
+                  <div className="flex items-center gap-2 text-[0.75rem] text-slate-500" role="status">
+                    <span className="h-4 w-4 rounded-full border-2 border-[#94D2B8]/40 border-t-[#518B91] animate-spin" />
+                    Vérification de votre accord…
+                  </div>
+                ) : aiConsentLoadState === 'error' ? (
+                  <div className="flex flex-col items-start gap-3">
+                    <p role="alert" className="m-0 text-[0.75rem] leading-relaxed text-red-600">
+                      {aiConsentLoadError}
+                    </p>
+                    <button type="button" onClick={() => {
+                      setAiConsentLoadState('loading');
+                      setAiConsentLoadError(null);
+                      void loadAiConsent().catch((err: unknown) => console.error('Error retrying AI consent lookup:', err));
+                    }} className="mf-button mf-button--secondary !min-h-9 !px-3 text-xs">
+                      Réessayer
+                    </button>
+                  </div>
+                ) : aiConsent?.required ? (
+                  <AiConsentNotice
+                    key={aiConsent.current_version}
+                    version={aiConsent.current_version}
+                    isAccepting={isAcceptingAiConsent}
+                    error={aiConsentActionError}
+                    onAccept={() => void handleAcceptAiConsent()}
+                  />
                 ) : jobStatus === null ? (
                   <form onSubmit={handleLaunchPlanning} className="flex flex-col gap-3">
                     <div className="flex flex-col gap-1">

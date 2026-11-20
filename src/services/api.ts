@@ -52,6 +52,12 @@ export const isDeadLinkError = (e: unknown) =>
 export const isEmailNotVerifiedError = (e: unknown) =>
   e instanceof ApiError && e.statusCode === 403 && e.rawMessage === 'Email not verified';
 
+export const isAiConsentRequiredError = (e: unknown) =>
+  e instanceof ApiError &&
+  e.statusCode === 403 &&
+  (e.error === 'AI_CONSENT_REQUIRED' ||
+    (typeof e.rawMessage === 'string' && /AI consent is required/i.test(e.rawMessage)));
+
 // ─── Guest mode ───────────────────────────────────────────────────────────────
 // Without a session, the app stays usable but data lives only in memory:
 // nothing is sent to the backend and everything is lost on page reload.
@@ -484,6 +490,13 @@ export function subscribeToJob(jobId: string): void {
 }
 
 // API DTO Types
+export interface AiConsentDto {
+  accepted_at: string | null;
+  version: string | null;
+  current_version: string;
+  required: boolean;
+}
+
 export interface UserResponseDto {
   id: string;
   email: string;
@@ -495,6 +508,18 @@ export interface UserResponseDto {
   disabled_at?: string | null;
   /** false until the user clicks the link of the verification email */
   email_verified?: boolean;
+  ai_consent?: AiConsentDto;
+}
+
+export function acceptAiConsent(version: string): Promise<UserResponseDto> {
+  return apiFetch<UserResponseDto>('/users/me/ai-consent', {
+    method: 'POST',
+    body: JSON.stringify({ version }),
+  });
+}
+
+export function withdrawAiConsent(): Promise<void> {
+  return apiFetch<void>('/users/me/ai-consent', { method: 'DELETE' });
 }
 
 export interface ConnectorResponseDto {
