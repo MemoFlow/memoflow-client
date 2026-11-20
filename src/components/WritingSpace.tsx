@@ -441,7 +441,7 @@ export default function WritingSpace({
                 </div>
                 <button
                   onClick={handleAddSection}
-                  className="bg-[#94D2B8] hover:bg-[#C4F4C7] text-[#0F4C3A] hover:text-[#0A382A] font-brand text-[0.78rem] font-bold px-3 py-1.5 rounded-xl border border-[#94D2B8] hover:border-[#7BCBAA] transition-all cursor-pointer flex items-center gap-1.5 shadow-xs hover:shadow-sm active:bg-[#94D2B8]"
+                  className="mf-button mf-button--accent !min-h-9 !px-3 shadow-xs hover:shadow-sm"
                 >
                   <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
                     <line x1="12" y1="5" x2="12" y2="19" />
@@ -466,7 +466,7 @@ export default function WritingSpace({
                 </div>
                 <button
                   onClick={onCreateDocument}
-                  className="bg-[#2F4858] hover:bg-[#3E6976] text-white font-brand text-[0.82rem] font-bold px-4 py-2 rounded-xl border-none cursor-pointer transition-all"
+                  className="mf-button mf-button--primary"
                 >
                   Nouveau document
                 </button>
@@ -645,7 +645,7 @@ export default function WritingSpace({
                       <label className="text-[0.7rem] font-bold text-[#2F4858]">Connecteurs de contexte actifs :</label>
                       {activeConnectors.length === 0 ? (
                         <span className="text-[0.7rem] text-slate-400 italic mt-0.5">
-                          Aucun connecteur actif. Configurez-les dans le Centre de Contexte.
+                          Aucun connecteur actif. Configurez-les dans Intégrations & Connecteurs.
                         </span>
                       ) : (
                         <div className="flex gap-3 flex-wrap mt-1">
@@ -674,7 +674,7 @@ export default function WritingSpace({
                     <button
                       type="submit"
                       disabled={isSubmittingJob || !planningPrompt.trim()}
-                      className="w-full bg-[#2F4858] hover:bg-[#3E6976] text-white font-brand text-[0.78rem] font-bold py-2.5 rounded-xl border-none cursor-pointer disabled:opacity-50 transition-all flex items-center justify-center gap-1.5"
+                      className="mf-button mf-button--primary w-full"
                     >
                       {isSubmittingJob ? (
                         <span className="w-4 h-4 border-2 border-white/25 border-t-white rounded-full animate-spin"></span>

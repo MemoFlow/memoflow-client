@@ -1,16 +1,19 @@
-import { useState, useEffect, useCallback } from 'react';
-import TemplatesPage from './TemplatesPage';
-import WritingSpace from './WritingSpace';
-import ContextCenter from './ContextCenter';
-import ConnectorsManager from './ConnectorsManager';
-import ProgressionPage from './ProgressionPage';
-import SettingsPage from './SettingsPage';
+import { lazy, Suspense, useState, useEffect, useCallback } from 'react';
 import EmailVerificationBanner from './EmailVerificationBanner';
 import BrandLogo from './BrandLogo';
+import LoadingIndicator from './LoadingIndicator';
 import Link from './Link';
 import { ROUTES, navigate as goTo } from '../services/router';
 import { apiFetch } from '../services/api';
 import type { DocumentResponseDto, UserResponseDto } from '../services/api';
+import type { TemplateChoice } from './TemplatesPage';
+
+const TemplatesPage = lazy(() => import('./TemplatesPage'));
+const WritingSpace = lazy(() => import('./WritingSpace'));
+const ContextCenter = lazy(() => import('./ContextCenter'));
+const ConnectorsManager = lazy(() => import('./ConnectorsManager'));
+const ProgressionPage = lazy(() => import('./ProgressionPage'));
+const SettingsPage = lazy(() => import('./SettingsPage'));
 
 interface DashboardProps {
   /** Current URL: decides the page shown (see ROUTES) */
@@ -30,12 +33,6 @@ interface Toast {
   type: 'success' | 'assistant' | 'warning' | 'error';
   title: string;
   message: string;
-}
-
-export interface TemplateChoice {
-  id: string;
-  title: string;
-  docType: string;
 }
 
 const MENU_PROGRESS = 'Ma Progression';
@@ -319,13 +316,13 @@ export default function Dashboard({
             <div className="flex items-center gap-2 flex-shrink-0">
               <button
                 onClick={onRequestLogin}
-                className="px-3 py-1.5 rounded-lg text-[0.75rem] font-bold bg-white text-[#2F4858] border border-solid border-[#BA7517]/25 hover:bg-slate-50 cursor-pointer transition-all"
+                className="mf-button mf-button--secondary !min-h-9 !px-3 text-[0.75rem]"
               >
                 Se connecter
               </button>
               <button
                 onClick={onRequestSignup}
-                className="px-3 py-1.5 rounded-lg text-[0.75rem] font-bold bg-[#2F4858] hover:bg-[#3E6976] text-white border-none cursor-pointer transition-all"
+                className="mf-button mf-button--primary !min-h-9 !px-3 text-[0.75rem]"
               >
                 Créer un compte
               </button>
@@ -352,7 +349,7 @@ export default function Dashboard({
             <div className="flex items-center gap-4">
               <button
                 onClick={handleCreateNewDocument}
-                className="font-brand text-[0.82rem] font-bold px-4 py-2 rounded-xl transition-all cursor-pointer border-none active:scale-[0.97] bg-[#2F4858] hover:bg-[#3E6976] text-white shadow-[0_2px_8px_rgba(47,72,88,0.12)] max-sm:px-3"
+                className="mf-button mf-button--primary shadow-[0_2px_8px_rgba(47,72,88,0.12)] max-sm:!px-3"
               >
                 Nouveau Document
               </button>
@@ -445,68 +442,70 @@ export default function Dashboard({
         <main className={`flex-1 overflow-y-auto custom-scrollbar transition-all duration-350 ${
           activeMenu === MENU_WRITING ? 'p-0 overflow-hidden bg-white max-lg:pb-16' : 'p-8 max-sm:p-4 max-lg:pb-24'
         }`}>
-          {activeMenu === MENU_TEMPLATES && (
-            <TemplatesPage
-              isGuest={isGuest}
-              onUseTemplate={handleUseTemplate}
-              onCreateBlankDocument={handleCreateNewDocument}
-              onRequestLogin={onRequestLogin}
-            />
-          )}
+          <Suspense fallback={<LoadingIndicator label="Chargement de la page…" />}>
+            {activeMenu === MENU_TEMPLATES && (
+              <TemplatesPage
+                isGuest={isGuest}
+                onUseTemplate={handleUseTemplate}
+                onCreateBlankDocument={handleCreateNewDocument}
+                onRequestLogin={onRequestLogin}
+              />
+            )}
 
-          {activeMenu === MENU_WRITING && (
-            <WritingSpace
-              isGuest={isGuest}
-              isFocusMode={isFocusMode}
-              onToggleFocusMode={setIsFocusMode}
-              userName={userName}
-              addToast={addToast}
-              selectedDocumentId={selectedDocumentId}
-              onSelectDocument={setSelectedDocumentId}
-              documents={documents}
-              onRefreshDocuments={fetchDocuments}
-              onCreateDocument={handleCreateNewDocument}
-              onOpenSettings={() => navigate(MENU_SETTINGS)}
-            />
-          )}
+            {activeMenu === MENU_WRITING && (
+              <WritingSpace
+                isGuest={isGuest}
+                isFocusMode={isFocusMode}
+                onToggleFocusMode={setIsFocusMode}
+                userName={userName}
+                addToast={addToast}
+                selectedDocumentId={selectedDocumentId}
+                onSelectDocument={setSelectedDocumentId}
+                documents={documents}
+                onRefreshDocuments={fetchDocuments}
+                onCreateDocument={handleCreateNewDocument}
+                onOpenSettings={() => navigate(MENU_SETTINGS)}
+              />
+            )}
 
-          {activeMenu === MENU_CONTEXT && <ContextCenter onAddToast={addToast} />}
+            {activeMenu === MENU_CONTEXT && <ContextCenter onAddToast={addToast} />}
 
-          {activeMenu === MENU_CONNECTORS && (isGuest ? (
-            <div className="max-w-[1000px] mx-auto w-full bg-white border border-[#E5E9EB] rounded-2xl p-10 text-center flex flex-col items-center gap-3">
-              <h3 className="text-[1.05rem] font-bold text-[#2F4858]">Connecteurs réservés aux comptes</h3>
-              <p className="text-[0.85rem] text-slate-500 max-w-[480px]">
-                Connectez-vous pour lier Notion, Trello ou GitHub à votre espace MemoFlow.
-              </p>
-              <button
-                onClick={onRequestLogin}
-                className="mt-2 px-4 py-2 rounded-xl text-[0.82rem] font-bold bg-[#2F4858] hover:bg-[#3E6976] text-white border-none cursor-pointer"
-              >
-                Se connecter
-              </button>
-            </div>
-          ) : (
-            <ConnectorsManager addToast={addToast} onOpenPrivacy={onOpenPrivacy} />
-          ))}
+            {activeMenu === MENU_CONNECTORS && (isGuest ? (
+              <div className="max-w-[1000px] mx-auto w-full bg-white border border-[#E5E9EB] rounded-2xl p-10 text-center flex flex-col items-center gap-3">
+                <h3 className="text-[1.05rem] font-bold text-[#2F4858]">Connecteurs réservés aux comptes</h3>
+                <p className="text-[0.85rem] text-slate-500 max-w-[480px]">
+                  Connectez-vous pour lier Notion, Trello ou GitHub à votre espace MemoFlow.
+                </p>
+                <button
+                  onClick={onRequestLogin}
+                  className="mf-button mf-button--primary mt-2"
+                >
+                  Se connecter
+                </button>
+              </div>
+            ) : (
+              <ConnectorsManager addToast={addToast} onOpenPrivacy={onOpenPrivacy} />
+            ))}
 
-          {activeMenu === MENU_PROGRESS && (
-            <ProgressionPage
-              userId={user?.id ?? null}
-              onRequestLogin={onRequestLogin}
-              onRequestSignup={onRequestSignup}
-            />
-          )}
+            {activeMenu === MENU_PROGRESS && (
+              <ProgressionPage
+                userId={user?.id ?? null}
+                onRequestLogin={onRequestLogin}
+                onRequestSignup={onRequestSignup}
+              />
+            )}
 
-          {activeMenu === MENU_SETTINGS && (
-            <SettingsPage
-              user={user}
-              onLogout={onLogout}
-              onRequestLogin={onRequestLogin}
-              onRequestSignup={onRequestSignup}
-              onOpenPrivacy={onOpenPrivacy}
-              onOpenTerms={onOpenTerms}
-            />
-          )}
+            {activeMenu === MENU_SETTINGS && (
+              <SettingsPage
+                user={user}
+                onLogout={onLogout}
+                onRequestLogin={onRequestLogin}
+                onRequestSignup={onRequestSignup}
+                onOpenPrivacy={onOpenPrivacy}
+                onOpenTerms={onOpenTerms}
+              />
+            )}
+          </Suspense>
         </main>
       </div>
 

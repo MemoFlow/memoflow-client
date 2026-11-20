@@ -18,10 +18,8 @@ interface SettingsPageProps {
 
 const cardClass = 'bg-white border border-[#E5E9EB] rounded-2xl p-6 shadow-[0_4px_20px_rgba(47,72,88,0.03)] flex flex-col gap-4';
 const titleClass = 'text-[1rem] font-bold text-[#2F4858] tracking-tight font-brand';
-const secondaryBtn =
-  'px-4 py-2 rounded-xl text-[0.82rem] font-bold bg-white text-[#2F4858] border border-solid border-slate-200 hover:bg-slate-50 cursor-pointer transition-all';
-const primaryBtn =
-  'px-4 py-2 rounded-xl text-[0.82rem] font-bold bg-[#2F4858] hover:bg-[#3E6976] text-white border-none cursor-pointer transition-all';
+const secondaryBtn = 'mf-button mf-button--secondary';
+const primaryBtn = 'mf-button mf-button--primary';
 
 function formatRole(role: string): string {
   const map: Record<string, string> = {
@@ -169,7 +167,7 @@ export default function SettingsPage({
             <p className="text-[0.82rem] text-slate-500 m-0">Vos documents sont enregistrés sur votre compte.</p>
             <button
               onClick={onLogout}
-              className="px-4 py-2 rounded-xl text-[0.82rem] font-bold bg-white text-red-500 border border-solid border-red-200 hover:bg-red-50 cursor-pointer transition-all"
+              className="mf-button bg-white text-red-500 border-red-200 hover:bg-red-50"
             >
               Se déconnecter
             </button>

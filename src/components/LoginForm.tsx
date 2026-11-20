@@ -77,7 +77,7 @@ export default function LoginForm({ notice, onSwitchToSignup, onForgotPassword, 
   const forgotPasswordLink = (
     <a
       href={ROUTES.forgotPassword}
-      className="font-mono text-[0.75rem] text-brand-green-dark font-medium hover:underline"
+      className="font-sans text-[0.75rem] text-brand-green-dark font-medium hover:underline"
       onClick={(e) => {
         e.preventDefault();
         onForgotPassword();
@@ -104,7 +104,7 @@ export default function LoginForm({ notice, onSwitchToSignup, onForgotPassword, 
         </div>
       )}
 
-      <form onSubmit={handleSubmit} className="flex flex-col gap-2" noValidate>
+      <form onSubmit={handleSubmit} className="flex flex-col gap-4" noValidate>
         <InputField
           label="Email"
           type="email"
@@ -134,7 +134,7 @@ export default function LoginForm({ notice, onSwitchToSignup, onForgotPassword, 
 
         <button
           type="submit"
-          className="w-full bg-brand-green text-brand-green-dark border-none rounded-xl p-3.5 font-sans text-[0.95rem] font-medium cursor-pointer mt-3 flex items-center justify-center shadow-sm hover:bg-brand-green-hover hover:-translate-y-[1px] active:translate-y-0 disabled:opacity-70 disabled:cursor-not-allowed transition-all"
+          className="mf-button mf-button--primary w-full mt-1"
           disabled={isLoading}
         >
           {isLoading ? (

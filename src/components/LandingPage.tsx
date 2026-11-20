@@ -29,9 +29,9 @@ interface LandingPageProps {
 
 const container = 'w-full max-w-[1120px] mx-auto px-8 max-sm:px-5';
 const primaryCta =
-  'inline-flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-xl bg-[#2F4858] hover:bg-[#3E6976] text-white font-brand text-[0.95rem] font-bold no-underline transition-colors shadow-[0_8px_20px_rgba(47,72,88,0.18)]';
+  'mf-button mf-button--primary shadow-[0_8px_20px_rgba(47,72,88,0.18)]';
 const secondaryCta =
-  'inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-white text-[#2F4858] border border-solid border-[#D5DEE2] hover:border-[#518B91] font-brand text-[0.95rem] font-bold no-underline transition-colors';
+  'mf-button mf-button--secondary';
 const sectionTitle = 'font-brand text-[2rem] font-bold text-[#2F4858] tracking-tight m-0 max-sm:text-[1.6rem]';
 const sectionLead = 'text-[1rem] text-slate-600 leading-relaxed m-0 mt-3 max-w-[640px]';
 
@@ -64,7 +64,7 @@ const PROBLEMS = [
 const STEPS = [
   {
     title: 'Rassemblez',
-    text: 'Connectez Trello, Notion ou GitHub dans le Centre de contexte : MemoFlow sait où se trouvent les traces de votre travail.',
+    text: 'Connectez Trello, Notion ou GitHub depuis l’onglet Intégrations & Connecteurs : MemoFlow sait où se trouvent les traces de votre travail.',
   },
   {
     title: 'Structurez',
@@ -89,7 +89,7 @@ const FEATURES = [
   },
   {
     icon: faPlug,
-    title: 'Centre de contexte',
+    title: 'Intégrations & Connecteurs',
     text: 'Vos comptes Trello, Notion et GitHub reliés en quelques secondes, révocables à tout moment.',
   },
   {
@@ -160,7 +160,7 @@ export default function LandingPage({ isLoggedIn, onOpenPrivacy, onOpenTerms }: 
             <BrandLogo size={36} />
             <span className="font-brand text-[1.3rem] font-bold text-[#2F4858] tracking-tight">MemoFlow</span>
           </Link>
-          <div className="flex items-center gap-7 max-md:hidden">
+          <div className="flex items-center gap-7 max-lg:hidden">
             {[
               ['#concept', 'Le concept'],
               ['#fonctionnalites', 'Fonctionnalités'],
@@ -173,18 +173,18 @@ export default function LandingPage({ isLoggedIn, onOpenPrivacy, onOpenTerms }: 
           </div>
           <div className="flex items-center gap-2.5">
             {isLoggedIn ? (
-              <Link to={ROUTES.templates} className={`${primaryCta} !px-4 !py-2.5 !text-[0.85rem] !shadow-none`}>
+              <Link to={ROUTES.templates} className={`${primaryCta} !px-4 !shadow-none`}>
                 Ouvrir mon espace
               </Link>
             ) : (
               <>
                 <Link
                   to={ROUTES.login}
-                  className="px-3 py-2.5 text-[0.85rem] font-bold text-[#2F4858] no-underline hover:underline max-sm:hidden"
+                  className="mf-button mf-button--secondary !border-transparent !bg-transparent !px-3 text-[0.85rem] max-sm:hidden"
                 >
                   Se connecter
                 </Link>
-                <Link to={ROUTES.signup} className={`${primaryCta} !px-4 !py-2.5 !text-[0.85rem] !shadow-none`}>
+                <Link to={ROUTES.signup} className={`${primaryCta} !px-4 !shadow-none`}>
                   Créer un compte
                 </Link>
               </>
@@ -319,7 +319,7 @@ export default function LandingPage({ isLoggedIn, onOpenPrivacy, onOpenTerms }: 
             </div>
             <Link
               to={isLoggedIn ? ROUTES.templates : ROUTES.signup}
-              className="inline-flex items-center gap-2.5 px-6 py-3.5 rounded-xl bg-[#94D2B8] hover:bg-[#A9DEC7] text-[#2F4858] font-brand text-[0.95rem] font-bold no-underline transition-colors flex-shrink-0"
+              className="mf-button mf-button--accent flex-shrink-0"
             >
               {isLoggedIn ? 'Ouvrir mon espace' : 'Créer mon compte'} <FontAwesomeIcon icon={faArrowRight} />
             </Link>

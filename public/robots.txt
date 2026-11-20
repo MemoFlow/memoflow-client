@@ -16,8 +16,16 @@ User-agent: Google-Extended
 Content-Signal: search=yes, ai-input=yes, ai-train=yes
 Allow: /blog/
 Disallow: /admin
+Disallow: /connexion
+Disallow: /inscription
+Disallow: /ma-progression
+Disallow: /modeles
+Disallow: /espace-ecriture
+Disallow: /centre-de-contexte
+Disallow: /parametres
 Disallow: /reset-password
 Disallow: /verify-email
-Disallow: /forgot-password
+Disallow: /mot-de-passe-oublie
 
 Sitemap: https://memoflow-client.vercel.app/blog/sitemap.xml
+Sitemap: https://memoflow-client.vercel.app/sitemap.xml

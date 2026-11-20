@@ -1,4 +1,4 @@
-import { io, Socket } from 'socket.io-client';
+import type { Socket } from 'socket.io-client';
 
 const API_BASE = (import.meta.env.VITE_API_URL);
 
@@ -380,6 +380,7 @@ function toFriendlyErrorMessage(status: number, backendMessage: unknown, path: s
 
 // WebSocket client management
 let socketInstance: Socket | null = null;
+let socketRequestId = 0;
 
 export interface SocketCallbacks {
   onReady?: () => void;
@@ -390,57 +391,68 @@ export interface SocketCallbacks {
   onDisconnect?: () => void;
 }
 
-export function connectSocket(token: string, callbacks: SocketCallbacks): Socket {
+export function connectSocket(token: string, callbacks: SocketCallbacks): void {
+  const requestId = ++socketRequestId;
+
   if (socketInstance) {
     socketInstance.disconnect();
+    socketInstance = null;
   }
 
-  // Establish connection with token in handshake auth block
-  socketInstance = io(API_BASE, {
-    auth: {
-      token,
-    },
-    transports: ['websocket', 'polling'],
-  });
+  void import('socket.io-client')
+    .then(({ io }) => {
+      if (requestId !== socketRequestId || token !== getToken()) return;
 
-  socketInstance.on('connect', () => {
-    console.log('Socket.IO connected to backend');
-  });
+      // Establish connection with token in handshake auth block
+      const socket = io(API_BASE, {
+        auth: {
+          token,
+        },
+        transports: ['websocket', 'polling'],
+      });
+      socketInstance = socket;
 
-  socketInstance.on('ready', () => {
-    console.log('Socket.IO authenticated and ready');
-    if (callbacks.onReady) callbacks.onReady();
-  });
+      socket.on('connect', () => {
+        console.log('Socket.IO connected to backend');
+      });
 
-  socketInstance.on('planning.status', (data: { jobId: string; status: 'pending' | 'running' }) => {
-    console.log('Socket event planning.status:', data);
-    if (callbacks.onStatus) callbacks.onStatus(data);
-  });
+      socket.on('ready', () => {
+        console.log('Socket.IO authenticated and ready');
+        if (callbacks.onReady) callbacks.onReady();
+      });
 
-  socketInstance.on('planning.completed', (data: { jobId: string; status: 'completed'; result: unknown }) => {
-    console.log('Socket event planning.completed:', data);
-    if (callbacks.onCompleted) callbacks.onCompleted(data);
-  });
+      socket.on('planning.status', (data: { jobId: string; status: 'pending' | 'running' }) => {
+        console.log('Socket event planning.status:', data);
+        if (callbacks.onStatus) callbacks.onStatus(data);
+      });
 
-  socketInstance.on('planning.failed', (data: { jobId: string; status: 'failed'; errorCode: string | null; errorMessage: string | null }) => {
-    console.log('Socket event planning.failed:', data);
-    if (callbacks.onFailed) callbacks.onFailed(data);
-  });
+      socket.on('planning.completed', (data: { jobId: string; status: 'completed'; result: unknown }) => {
+        console.log('Socket event planning.completed:', data);
+        if (callbacks.onCompleted) callbacks.onCompleted(data);
+      });
 
-  socketInstance.on('planning.error', (data: { jobId: string; message: string }) => {
-    console.warn('Socket event planning.error:', data);
-    if (callbacks.onError) callbacks.onError(data);
-  });
+      socket.on('planning.failed', (data: { jobId: string; status: 'failed'; errorCode: string | null; errorMessage: string | null }) => {
+        console.log('Socket event planning.failed:', data);
+        if (callbacks.onFailed) callbacks.onFailed(data);
+      });
 
-  socketInstance.on('disconnect', () => {
-    console.log('Socket.IO disconnected');
-    if (callbacks.onDisconnect) callbacks.onDisconnect();
-  });
+      socket.on('planning.error', (data: { jobId: string; message: string }) => {
+        console.warn('Socket event planning.error:', data);
+        if (callbacks.onError) callbacks.onError(data);
+      });
 
-  return socketInstance;
+      socket.on('disconnect', () => {
+        console.log('Socket.IO disconnected');
+        if (callbacks.onDisconnect) callbacks.onDisconnect();
+      });
+    })
+    .catch((error: unknown) => {
+      console.error('Failed to load the Socket.IO client:', error);
+    });
 }
 
 export function disconnectSocket(): void {
+  socketRequestId += 1;
   if (socketInstance) {
     socketInstance.disconnect();
     socketInstance = null;

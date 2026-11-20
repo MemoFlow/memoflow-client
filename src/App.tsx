@@ -1,17 +1,9 @@
-import { useState, useEffect, useCallback } from 'react';
+import { lazy, Suspense, useState, useEffect, useCallback } from 'react';
 import type { ReactNode } from 'react';
 import Header from './components/Header';
 import Footer from './components/Footer';
-import LoginForm from './components/LoginForm';
-import SignupForm from './components/SignupForm';
-import Dashboard from './components/Dashboard';
-import LandingPage from './components/LandingPage';
 import ConsentBanner from './components/ConsentBanner';
-import PrivacyDataModal from './components/PrivacyDataModal';
-import OnboardingFlow from './components/OnboardingFlow';
-import AdminPage from './components/AdminPage';
-import BrandLogo from './components/BrandLogo';
-import { ForgotPasswordPage, ResetPasswordPage, VerifyEmailPage } from './components/AuthPages';
+import LoadingIndicator from './components/LoadingIndicator';
 import type { PrivacyModalTab } from './components/PrivacyDataModal';
 import {
   getToken,
@@ -26,8 +18,26 @@ import { needsOnboarding } from './services/onboarding';
 import { ROUTES, isAppPath, matchRoute, navigate, usePath } from './services/router';
 import './App.css';
 
+const LoginForm = lazy(() => import('./components/LoginForm'));
+const SignupForm = lazy(() => import('./components/SignupForm'));
+const Dashboard = lazy(() => import('./components/Dashboard'));
+const LandingPage = lazy(() => import('./components/LandingPage'));
+const PrivacyDataModal = lazy(() => import('./components/PrivacyDataModal'));
+const OnboardingFlow = lazy(() => import('./components/OnboardingFlow'));
+const AdminPage = lazy(() => import('./components/AdminPage'));
+const ForgotPasswordPage = lazy(() =>
+  import('./components/AuthPages').then((module) => ({ default: module.ForgotPasswordPage }))
+);
+const ResetPasswordPage = lazy(() =>
+  import('./components/AuthPages').then((module) => ({ default: module.ResetPasswordPage }))
+);
+const VerifyEmailPage = lazy(() =>
+  import('./components/AuthPages').then((module) => ({ default: module.VerifyEmailPage }))
+);
+
 const SESSION_EXPIRED_NOTICE = 'Votre session a expiré. Reconnectez-vous pour continuer.';
 const PASSWORD_CHANGED_NOTICE = 'Mot de passe modifié. Connectez-vous avec votre nouveau mot de passe.';
+const pageLoading = <LoadingIndicator label="Chargement de la page…" />;
 
 /** First app page after login (or when a logged-in user opens /connexion) */
 const defaultAppPath = (user: UserResponseDto | null) => (user ? ROUTES.templates : ROUTES.writing);
@@ -171,19 +181,21 @@ function App() {
     goToLogin(null, PASSWORD_CHANGED_NOTICE);
   };
 
-  const privacyModal = (
-    <PrivacyDataModal
-      key={privacyModalTab}
-      isOpen={isPrivacyModalOpen}
-      onClose={() => setIsPrivacyModalOpen(false)}
-      initialTab={privacyModalTab}
-    />
-  );
+  const privacyModal = isPrivacyModalOpen ? (
+    <Suspense fallback={null}>
+      <PrivacyDataModal
+        key={privacyModalTab}
+        isOpen
+        onClose={() => setIsPrivacyModalOpen(false)}
+        initialTab={privacyModalTab}
+      />
+    </Suspense>
+  ) : null;
 
   // Shared by every page: privacy modal + analytics consent banner
   const withOverlays = (page: ReactNode) => (
     <>
-      {page}
+      <Suspense fallback={pageLoading}>{page}</Suspense>
       {privacyModal}
       <ConsentBanner onOpenPrivacy={() => handleOpenPrivacy('third-parties')} />
     </>
@@ -218,13 +230,7 @@ function App() {
 
   if (isInitializing) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen bg-[#F8FAFB]">
-        <BrandLogo size={72} className="animate-pulse-slow mb-4" />
-        <span className="font-brand font-bold text-xl text-[#2F4858]">Chargement de MemoFlow...</span>
-        <div className="w-12 h-1 bg-[#94D2B8]/30 rounded-full mt-4 overflow-hidden relative">
-          <div className="absolute inset-0 bg-[#3E6976] animate-infinite-scroll w-1/2 rounded-full"></div>
-        </div>
-      </div>
+      <LoadingIndicator label="Chargement de MemoFlow..." fullScreen showLogo />
     );
   }
 
@@ -291,13 +297,15 @@ function App() {
   if (isAppPath(path)) {
     if (user && showOnboarding) {
       return (
-        <OnboardingFlow
-          userId={user.id}
-          userName={user.display_name}
-          userEmail={user.email}
-          onComplete={() => setShowOnboarding(false)}
-          onPostpone={() => setShowOnboarding(false)}
-        />
+        <Suspense fallback={pageLoading}>
+          <OnboardingFlow
+            userId={user.id}
+            userName={user.display_name}
+            userEmail={user.email}
+            onComplete={() => setShowOnboarding(false)}
+            onPostpone={() => setShowOnboarding(false)}
+          />
+        </Suspense>
       );
     }
 

@@ -10,7 +10,7 @@ import EmailVerificationBanner from './EmailVerificationBanner';
 const cardClass =
   'bg-white border border-slate-100 rounded-[20px] p-12 w-full max-w-[520px] shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05),0_10px_15px_-3px_rgba(0,0,0,0.05),0_20px_25px_-5px_rgba(0,0,0,0.02)] text-center my-10 mx-auto max-sm:p-6 max-sm:my-6 max-sm:rounded-2xl animate-fade-in';
 const primaryBtn =
-  'w-full bg-brand-green text-brand-green-dark border-none rounded-xl p-3.5 font-sans text-[0.95rem] font-medium cursor-pointer mt-2 flex items-center justify-center shadow-sm hover:bg-brand-green-hover disabled:opacity-70 disabled:cursor-not-allowed transition-all';
+  'mf-button mf-button--primary w-full mt-1';
 const linkBtn =
   'bg-transparent border-none text-brand-green-dark font-brand text-[0.85rem] font-semibold cursor-pointer p-0 hover:underline';
 
@@ -89,7 +89,7 @@ export function ForgotPasswordPage({ onBackToLogin }: { onBackToLogin: () => voi
     <Card title="Mot de passe oublié">
       <Text>Saisissez l'adresse email de votre compte : nous vous enverrons un lien pour choisir un nouveau mot de passe.</Text>
       {error && <ErrorMessage>{error}</ErrorMessage>}
-      <form onSubmit={handleSubmit} className="flex flex-col gap-2" noValidate>
+      <form onSubmit={handleSubmit} className="flex flex-col gap-4" noValidate>
         <InputField
           label="Email"
           type="email"
@@ -170,7 +170,7 @@ export function ResetPasswordPage({ onDone, onRequestNewLink }: ResetPasswordPag
     <Card title="Nouveau mot de passe">
       <Text>Choisissez un nouveau mot de passe d'au moins 8 caractères. Vous serez ensuite déconnecté de tous vos appareils.</Text>
       {error && <ErrorMessage>{error}</ErrorMessage>}
-      <form onSubmit={handleSubmit} className="flex flex-col gap-2" noValidate>
+      <form onSubmit={handleSubmit} className="flex flex-col gap-4" noValidate>
         <InputField
           label="Nouveau mot de passe"
           type="password"
