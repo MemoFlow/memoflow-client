@@ -21,6 +21,9 @@ import Footer from './Footer';
 import Link from './Link';
 import { ROUTES } from '../services/router';
 import iimLogo from '../assets/iim-logo.jpg';
+import shotConnectors from '../assets/connecteurs.webp';
+import shotTemplates from '../assets/modele.webp';
+import shotWriting from '../assets/espace_de_travail.webp';
 
 interface LandingPageProps {
   isLoggedIn: boolean;
@@ -63,18 +66,22 @@ const PROBLEMS = [
   },
 ];
 
+/** Each step is illustrated by a real screenshot of the app */
 const STEPS = [
   {
     title: 'Rassemblez',
     text: 'Connectez Trello, Notion ou GitHub depuis l’onglet Intégrations & Connecteurs : MemoFlow sait où se trouvent les traces de votre travail.',
+    image: { src: shotConnectors, width: 1200, height: 714, alt: 'Page Intégrations & Connecteurs de MemoFlow, avec Notion, Trello et GitHub à associer.' },
   },
   {
     title: 'Structurez',
     text: 'Partez d’un modèle de mémoire ou de rapport, puis demandez à l’assistant un plan construit à partir de vos outils connectés.',
+    image: { src: shotTemplates, width: 1200, height: 482, alt: 'Bibliothèque de modèles de MemoFlow : rapports de stage prêts à l’emploi, avec leur nombre de sections.' },
   },
   {
     title: 'Rédigez',
     text: 'Écrivez section par section sur une vraie page, en mode focus si besoin. Une fois connecté, votre texte est enregistré automatiquement.',
+    image: { src: shotWriting, width: 1043, height: 800, alt: 'Espace d’écriture de MemoFlow : un document découpé en sections, avec le bouton Mode Focus.' },
   },
 ];
 
@@ -302,14 +309,30 @@ export default function LandingPage({ isLoggedIn, variant = 'default', onOpenPri
         <section className={`${container} py-20 max-sm:py-14`}>
           <p className={`text-[0.75rem] font-bold uppercase tracking-wider m-0 ${sectionEyebrow}`}>Comment ça marche</p>
           <h2 className={`${sectionTitle} mt-2`}>Trois étapes, de vos outils au document final</h2>
-          <ol className="grid grid-cols-3 gap-5 mt-10 list-none p-0 max-md:grid-cols-1">
+          <ol className="flex flex-col gap-8 mt-12 list-none p-0 max-md:gap-6">
             {STEPS.map((s, i) => (
-              <li key={s.title} className="relative p-6 rounded-2xl bg-white border border-[#E5E9EB] flex flex-col gap-3">
-                <span className={`w-9 h-9 rounded-full text-white font-brand font-bold flex items-center justify-center ${isIim ? 'bg-[#A94F00]' : 'bg-[#2F4858]'}`}>
-                  {i + 1}
-                </span>
-                <h3 className="font-brand text-[1.05rem] font-bold text-[#2F4858] m-0">{s.title}</h3>
-                <p className="text-[0.88rem] text-slate-600 leading-relaxed m-0">{s.text}</p>
+              <li
+                key={s.title}
+                className={`grid gap-12 items-center p-10 rounded-3xl bg-white border border-[#E5E9EB] shadow-[0_2px_6px_rgba(47,72,88,0.04),0_18px_44px_rgba(47,72,88,0.10)] max-lg:grid-cols-1 max-lg:gap-6 max-lg:p-7 max-sm:p-5 max-sm:rounded-2xl ${
+                  i % 2 === 1 ? 'grid-cols-[minmax(0,7fr)_minmax(0,5fr)]' : 'grid-cols-[minmax(0,5fr)_minmax(0,7fr)]'
+                }`}
+              >
+                <div className={`flex flex-col gap-3 ${i % 2 === 1 ? 'lg:order-2' : ''}`}>
+                  <span className={`w-10 h-10 rounded-full text-white font-brand font-bold flex items-center justify-center ${isIim ? 'bg-[#A94F00]' : 'bg-[#2F4858]'}`}>
+                    {i + 1}
+                  </span>
+                  <h3 className="font-brand text-[1.4rem] font-bold text-[#2F4858] m-0 max-sm:text-[1.2rem]">{s.title}</h3>
+                  <p className="text-[0.98rem] text-slate-600 leading-relaxed m-0 max-w-[460px]">{s.text}</p>
+                </div>
+                <img
+                  src={s.image.src}
+                  alt={s.image.alt}
+                  width={s.image.width}
+                  height={s.image.height}
+                  loading="lazy"
+                  decoding="async"
+                  className={`block w-full h-auto rounded-xl border border-[#E5E9EB] bg-[#F8FAFB] p-2 shadow-[0_6px_18px_rgba(47,72,88,0.08)] ${i % 2 === 1 ? 'lg:order-1' : ''}`}
+                />
               </li>
             ))}
           </ol>
